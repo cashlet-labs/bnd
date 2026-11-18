@@ -94,7 +94,7 @@ describe("buildBinding", () => {
     const ids = new Set([
       bindingId(base),
       bindingId({ ...base, createdAt: 6 }),
-      bindingId({ ...base, bch: { ...base.bch, network: "testnet" } }),
+      bindingId({ ...base, bch: { ...base.bch, network: "chipnet" } }),
       bindingId({ ...base, previous: "ab".repeat(32) }),
       bindingId({ ...base, bch: { ...base.bch, keyHash: "00".repeat(20) } }),
     ]);

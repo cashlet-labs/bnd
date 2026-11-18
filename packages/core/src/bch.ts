@@ -2,14 +2,15 @@ import { decodeCashAddress, encodeCashAddress } from "@bitauth/libauth";
 import { ripemd160 } from "@noble/hashes/legacy.js";
 import { sha256 } from "@noble/hashes/sha2.js";
 
-export const BCH_NETWORKS = ["mainnet", "testnet", "chipnet"] as const;
+/** Networks BND version 1 supports. Other test networks may be added in a later version. */
+export const BCH_NETWORKS = ["mainnet", "chipnet"] as const;
 export type BchNetwork = (typeof BCH_NETWORKS)[number];
 
 export function isBchNetwork(value: unknown): value is BchNetwork {
   return typeof value === "string" && (BCH_NETWORKS as readonly string[]).includes(value);
 }
 
-/** CashAddr prefix for a network. Testnet and chipnet share `bchtest`. */
+/** CashAddr prefix for a network. Chipnet uses `bchtest`, like every BCH test network. */
 export function addressPrefix(network: BchNetwork): "bitcoincash" | "bchtest" {
   return network === "mainnet" ? "bitcoincash" : "bchtest";
 }
@@ -49,8 +50,8 @@ export interface DecodedBchAddress {
 
 /**
  * Decode a prefixed, lowercase P2PKH CashAddr. P2SH addresses, other
- * prefixes, prefix-less and mixed-case input are rejected. The prefix cannot
- * tell testnet from chipnet, so callers must compare the network separately.
+ * prefixes, prefix-less and mixed-case input are rejected. The `bchtest` prefix
+ * is shared by every BCH test network, so callers must compare the network separately.
  */
 export function decodeBchAddress(address: string): DecodedBchAddress {
   if (typeof address !== "string" || address !== address.toLowerCase() || !address.includes(":")) {

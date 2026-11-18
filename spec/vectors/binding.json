@@ -170,6 +170,21 @@
       }
     },
     {
+      "name": "testnet is not a version 1 network",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "testnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
       "name": "zero createdAt",
       "record": {
         "protocol": "bnd",

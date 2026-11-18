@@ -70,7 +70,7 @@ describe("bchProofMessage", () => {
     const messages = new Set([
       first.message,
       bchProofMessage({ ...record, createdAt: record.createdAt + 1 }),
-      bchProofMessage({ ...record, bch: { ...record.bch, network: "testnet" } }),
+      bchProofMessage({ ...record, bch: { ...record.bch, network: "chipnet" } }),
       bchProofMessage({ ...record, previous: "ab".repeat(32) }),
     ]);
     expect(messages.size).toBe(4);
