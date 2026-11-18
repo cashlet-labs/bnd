@@ -16,7 +16,9 @@
     "packages/*",
     "apps/*"
   ],
-  "scripts": {},
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "22.20.5",
