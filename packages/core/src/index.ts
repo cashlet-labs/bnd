@@ -45,3 +45,5 @@ export type { TxProofRequest, TxProofSignature } from "./tx-proof.js";
 export { signTxProofRequest } from "./tx-proof.js";
 export { createKeySigner, parseBchProof, proveBchControl, verifyBchProof } from "./bch-proof.js";
 export type { BchProof, BchProofType, BchSigner } from "./bch-proof.js";
+export { eventId, isEventShape, signEvent, verifyEventSignature } from "./event.js";
+export type { NostrEvent, UnsignedEvent } from "./event.js";
