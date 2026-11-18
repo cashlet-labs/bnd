@@ -13,8 +13,6 @@ export type { BchNetwork, DecodedBchAddress } from "./bch.js";
 export { deriveBchKey, deriveNostrKey } from "./keys.js";
 export type { BchKey, NostrKey } from "./keys.js";
 export {
-  BINDING_D_TAG,
-  BINDING_EVENT_KIND,
   BindingError,
   PROTOCOL_ID,
   PROTOCOL_VERSION,
@@ -45,3 +43,23 @@ export type { TxProofRequest, TxProofSignature } from "./tx-proof.js";
 export { signTxProofRequest } from "./tx-proof.js";
 export { createKeySigner, parseBchProof, proveBchControl, verifyBchProof } from "./bch-proof.js";
 export type { BchProof, BchProofType, BchSigner } from "./bch-proof.js";
+export { eventId, isEventShape, signEvent, verifyEventSignature } from "./event.js";
+export type { NostrEvent, UnsignedEvent } from "./event.js";
+export {
+  BINDING_D_TAG,
+  BINDING_EVENT_KIND,
+  buildBindingEventTemplate,
+  createBinding,
+  createNostrKeySigner,
+  parseBindingEvent,
+  pickCurrentBinding,
+  verifyBinding,
+} from "./binding-event.js";
+export type {
+  BindingEnvelope,
+  CreateBindingOptions,
+  NostrSigner,
+  ParsedBindingEvent,
+  VerifiedBinding,
+  VerifyBindingResult,
+} from "./binding-event.js";

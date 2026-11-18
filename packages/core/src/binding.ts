@@ -6,10 +6,6 @@ import { canonicalBytes } from "./canonical.js";
 
 export const PROTOCOL_ID = "bnd";
 export const PROTOCOL_VERSION = 1;
-/** Addressable Nostr event kind carrying a binding (provisional, see spec). */
-export const BINDING_EVENT_KIND = 30910;
-/** Fixed `d` tag: a Nostr key has at most one live binding. */
-export const BINDING_D_TAG = "bnd1";
 
 const BINDING_ID_DOMAIN = new TextEncoder().encode("bnd/1/binding-id\n");
 
