@@ -3,6 +3,7 @@ export type { CanonicalValue } from "./canonical.js";
 export { base64ToBytes, bytesToBase64, bytesToHex, hexToBytes } from "./bytes.js";
 export {
   BCH_NETWORKS,
+  CHAIN_IDS,
   addressPrefix,
   decodeBchAddress,
   encodeBchAddress,
@@ -64,3 +65,39 @@ export type {
   VerifyBindingResult,
 } from "./binding-event.js";
 export { npubDecode, npubEncode } from "./npub.js";
+export { verifyMessageSignature } from "./bch-message.js";
+export { bindingStatement, proveStatement, verifyStatementProof } from "./bch-proof.js";
+export type { BchStatement } from "./bch-proof.js";
+export {
+  bindingTxCommitment,
+  buildCommitmentTxRequest,
+  commitmentData,
+  commitmentOutpointHash,
+  verifyCommitmentTx,
+} from "./tx-proof.js";
+export type { TxCommitment } from "./tx-proof.js";
+export {
+  AUTH_EVENT_KIND,
+  AUTH_EVENT_WINDOW_SECONDS,
+  CHALLENGE_TTL_SECONDS,
+  authEventTemplate,
+  authStatement,
+  checkLoginResponse,
+  createLoginResponse,
+  isAuthLevel,
+  issueChallenge,
+  parseChallenge,
+  verifyLogin,
+} from "./auth.js";
+export type {
+  AuthChallenge,
+  AuthIdentity,
+  AuthLevel,
+  CreateLoginResponseOptions,
+  IssueChallengeOptions,
+  LoginResponse,
+  LoginResult,
+  VerifyLoginOptions,
+} from "./auth.js";
+export { ChallengeStoreFullError, MemoryChallengeStore } from "./challenge-store.js";
+export type { ChallengeStore, MemoryChallengeStoreOptions } from "./challenge-store.js";

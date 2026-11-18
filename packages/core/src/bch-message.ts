@@ -87,24 +87,39 @@ export function recoverMessageKeyHash(message: string, signature: string): Uint8
   return keyHashFromPublicKey(publicKey);
 }
 
-/** Check a signed-message proof against a binding record. */
-export function verifyMessageProof(record: BindingRecord, signature: string): VerifyResult {
+/** Check that `signature` is a message proof of `text` by the key with this HASH160. */
+export function verifyMessageSignature(
+  keyHash: string,
+  text: string,
+  signature: string,
+): VerifyResult {
   let expected: Uint8Array;
-  let message: string;
   try {
-    const parsed = parseBinding(record);
-    expected = hexToBytes(parsed.bch.keyHash);
-    message = bchProofMessage(parsed);
-  } catch (error) {
-    return fail(`invalid binding: ${(error as Error).message}`);
+    expected = hexToBytes(keyHash, 20);
+  } catch {
+    return fail("invalid key hash");
   }
   let actual: Uint8Array;
   try {
-    actual = recoverMessageKeyHash(message, signature);
+    actual = recoverMessageKeyHash(text, signature);
   } catch (error) {
     return fail(`invalid message proof: ${(error as Error).message}`);
   }
   return bytesEqual(actual, expected)
     ? OK
     : fail("message proof was not signed by the bound BCH key");
+}
+
+/** Check a signed-message proof against a binding record. */
+export function verifyMessageProof(record: BindingRecord, signature: string): VerifyResult {
+  let keyHash: string;
+  let message: string;
+  try {
+    const parsed = parseBinding(record);
+    keyHash = parsed.bch.keyHash;
+    message = bchProofMessage(parsed);
+  } catch (error) {
+    return fail(`invalid binding: ${(error as Error).message}`);
+  }
+  return verifyMessageSignature(keyHash, message, signature);
 }

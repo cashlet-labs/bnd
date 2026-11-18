@@ -23,7 +23,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "build": "npm run build --workspaces --if-present",
-    "dev:relay": "tsx apps/dev-relay/src/cli.ts"
+    "dev:relay": "tsx apps/dev-relay/src/cli.ts",
+    "dev:verifier": "tsx apps/verifier/src/cli.ts"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

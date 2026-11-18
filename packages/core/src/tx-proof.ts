@@ -21,8 +21,8 @@ import { fail, OK, type VerifyResult } from "./result.js";
  * confirmed. It only demonstrates that the key signed this exact commitment.
  */
 
-const VIRTUAL_UTXO_DOMAIN = new TextEncoder().encode("bnd/1/virtual-utxo\n");
-const COMMITMENT_TAG = new TextEncoder().encode("bnd1");
+const BINDING_OUTPOINT_DOMAIN = "bnd/1/virtual-utxo\n";
+const BINDING_TAG = "bnd1";
 /** SIGHASH_ALL | SIGHASH_FORKID | SIGHASH_UTXOS: signs every output and every spent output. */
 const SIGHASH_ALL_FORKID_UTXOS = 0x61;
 const OP_RETURN = 0x6a;
@@ -40,58 +40,111 @@ export interface TxProofRequest {
   userPrompt: string;
 }
 
-/** The 36 bytes committed in the OP_RETURN output: `"bnd1" || bindingId`. */
-export function txProofCommitment(record: BindingRecord): Uint8Array {
-  const id = hexToBytes(bindingId(record));
-  const data = new Uint8Array(COMMITMENT_TAG.length + id.length);
-  data.set(COMMITMENT_TAG);
-  data.set(id, COMMITMENT_TAG.length);
+/**
+ * What a transaction proof commits to. The tag and outpoint domain keep a proof
+ * for one purpose from being accepted for another, such as a binding proof
+ * presented as a login.
+ */
+export interface TxCommitment {
+  /** HASH160 of the key that must sign, as lowercase hex. */
+  keyHash: string;
+  /** Text hashed with the digest to form the virtual outpoint. */
+  outpointDomain: string;
+  /** Four ASCII characters placed before the digest in the OP_RETURN data. */
+  tag: string;
+  /** 32 bytes naming the statement being approved. */
+  digest: Uint8Array;
+  /** What to call the statement in error messages. */
+  subject: string;
+  /** Short text a wallet can show next to the request. */
+  prompt: string;
+}
+
+function assertCommitment(commitment: TxCommitment): void {
+  if (!/^[0-9a-f]{40}$/.test(commitment.keyHash)) throw new TypeError("invalid key hash");
+  if (commitment.digest.length !== 32) throw new TypeError("digest must be 32 bytes");
+  if (!/^[\x20-\x7e]{4}$/.test(commitment.tag))
+    throw new TypeError("tag must be 4 ASCII characters");
+}
+
+/** The 36 bytes committed in the OP_RETURN output: tag followed by the digest. */
+export function commitmentData(commitment: TxCommitment): Uint8Array {
+  assertCommitment(commitment);
+  const data = new Uint8Array(4 + 32);
+  data.set(new TextEncoder().encode(commitment.tag));
+  data.set(commitment.digest, 4);
   return data;
 }
 
-/** Outpoint hash of the virtual input: SHA-256 of a domain tag and the binding ID. */
-export function virtualOutpointHash(record: BindingRecord): Uint8Array {
-  const id = hexToBytes(bindingId(record));
-  const data = new Uint8Array(VIRTUAL_UTXO_DOMAIN.length + id.length);
-  data.set(VIRTUAL_UTXO_DOMAIN);
-  data.set(id, VIRTUAL_UTXO_DOMAIN.length);
+/** Outpoint hash of the virtual input: SHA-256 of a domain tag and the digest. */
+export function commitmentOutpointHash(commitment: TxCommitment): Uint8Array {
+  assertCommitment(commitment);
+  const domain = new TextEncoder().encode(commitment.outpointDomain);
+  const data = new Uint8Array(domain.length + 32);
+  data.set(domain);
+  data.set(commitment.digest, domain.length);
   return sha256(data);
 }
 
-function commitmentScript(record: BindingRecord): Uint8Array {
-  const data = txProofCommitment(record);
+function commitmentScript(commitment: TxCommitment): Uint8Array {
+  const data = commitmentData(commitment);
   return Uint8Array.of(OP_RETURN, data.length, ...data);
 }
 
-function sourceOutputFor(record: BindingRecord): Output {
+/** The commitment a binding proof makes. */
+export function bindingTxCommitment(record: BindingRecord): TxCommitment {
+  const parsed = parseBinding(record);
+  const id = bindingId(parsed);
   return {
-    lockingBytecode: encodeLockingBytecodeP2pkh(hexToBytes(record.bch.keyHash)),
-    valueSatoshis: 0n,
+    keyHash: parsed.bch.keyHash,
+    outpointDomain: BINDING_OUTPOINT_DOMAIN,
+    tag: BINDING_TAG,
+    digest: hexToBytes(id),
+    subject: "binding",
+    prompt: `Prove you control this key for BND binding ${id.slice(0, 16)}. Nothing is sent.`,
   };
 }
 
-/** Build the unsigned proof transaction that a wallet is asked to sign. */
-export function buildTxProofRequest(record: BindingRecord): TxProofRequest {
-  const parsed = parseBinding(record);
+/** Build the unsigned proof transaction for any commitment. */
+export function buildCommitmentTxRequest(commitment: TxCommitment): TxProofRequest {
+  assertCommitment(commitment);
   const transaction: Transaction = {
     version: TX_VERSION,
     locktime: 0,
     inputs: [
       {
-        outpointTransactionHash: virtualOutpointHash(parsed),
+        outpointTransactionHash: commitmentOutpointHash(commitment),
         outpointIndex: 0,
         sequenceNumber: SEQUENCE,
         unlockingBytecode: new Uint8Array(),
       },
     ],
-    outputs: [{ lockingBytecode: commitmentScript(parsed), valueSatoshis: 0n }],
+    outputs: [{ lockingBytecode: commitmentScript(commitment), valueSatoshis: 0n }],
   };
   return {
     transaction,
-    sourceOutput: sourceOutputFor(parsed),
+    sourceOutput: {
+      lockingBytecode: encodeLockingBytecodeP2pkh(hexToBytes(commitment.keyHash)),
+      valueSatoshis: 0n,
+    },
     transactionHex: bytesToHex(encodeTransaction(transaction)),
-    userPrompt: `Prove you control this key for BND binding ${bindingId(parsed).slice(0, 16)}. Nothing is sent.`,
+    userPrompt: commitment.prompt,
   };
+}
+
+/** The 36 bytes committed in a binding proof's OP_RETURN output: `"bnd1" || bindingId`. */
+export function txProofCommitment(record: BindingRecord): Uint8Array {
+  return commitmentData(bindingTxCommitment(record));
+}
+
+/** Outpoint hash of a binding proof's virtual input. */
+export function virtualOutpointHash(record: BindingRecord): Uint8Array {
+  return commitmentOutpointHash(bindingTxCommitment(record));
+}
+
+/** Build the unsigned proof transaction that a wallet is asked to sign for a binding. */
+export function buildTxProofRequest(record: BindingRecord): TxProofRequest {
+  return buildCommitmentTxRequest(bindingTxCommitment(record));
 }
 
 export type TxProofSignature = "schnorr" | "ecdsa";
@@ -173,13 +226,13 @@ function parseP2pkhUnlock(bytecode: Uint8Array): P2pkhUnlock | null {
 
 const vm = createVirtualMachineBCH(true);
 
-/** Check a signed proof transaction against a binding record. */
-export function verifyTxProof(record: BindingRecord, transactionHex: string): VerifyResult {
+/** Check a signed proof transaction against any commitment. */
+export function verifyCommitmentTx(commitment: TxCommitment, transactionHex: string): VerifyResult {
   let expected: TxProofRequest;
   try {
-    expected = buildTxProofRequest(record);
+    expected = buildCommitmentTxRequest(commitment);
   } catch (error) {
-    return fail(`invalid binding: ${(error as Error).message}`);
+    return fail(`invalid commitment: ${(error as Error).message}`);
   }
 
   let raw: Uint8Array;
@@ -210,16 +263,16 @@ export function verifyTxProof(record: BindingRecord, transactionHex: string): Ve
   if (
     input.outpointIndex !== 0 ||
     input.sequenceNumber !== SEQUENCE ||
-    !bytesEqual(input.outpointTransactionHash, virtualOutpointHash(record))
+    !bytesEqual(input.outpointTransactionHash, commitmentOutpointHash(commitment))
   ) {
-    return fail("transaction proof does not spend this binding's virtual output");
+    return fail(`transaction proof does not spend this ${commitment.subject}'s virtual output`);
   }
   if (
     output.valueSatoshis !== 0n ||
     output.token !== undefined ||
-    !bytesEqual(output.lockingBytecode, commitmentScript(record))
+    !bytesEqual(output.lockingBytecode, commitmentScript(commitment))
   ) {
-    return fail("transaction proof does not commit to this binding");
+    return fail(`transaction proof does not commit to this ${commitment.subject}`);
   }
 
   const unlock = parseP2pkhUnlock(input.unlockingBytecode);
@@ -235,4 +288,15 @@ export function verifyTxProof(record: BindingRecord, transactionHex: string): Ve
   if (typeof verified === "string")
     return fail(`transaction proof signature is invalid: ${verified}`);
   return OK;
+}
+
+/** Check a signed proof transaction against a binding record. */
+export function verifyTxProof(record: BindingRecord, transactionHex: string): VerifyResult {
+  let commitment: TxCommitment;
+  try {
+    commitment = bindingTxCommitment(record);
+  } catch (error) {
+    return fail(`invalid binding: ${(error as Error).message}`);
+  }
+  return verifyCommitmentTx(commitment, transactionHex);
 }

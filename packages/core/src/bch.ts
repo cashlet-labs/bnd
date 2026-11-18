@@ -10,6 +10,21 @@ export function isBchNetwork(value: unknown): value is BchNetwork {
   return typeof value === "string" && (BCH_NETWORKS as readonly string[]).includes(value);
 }
 
+/**
+ * CAIP-2 chain ID of each network, in the `bip122` namespace: `bip122:` and the
+ * first 32 hex characters of a block hash that exists on that chain only.
+ *
+ * Mainnet uses block 478559, the first Bitcoin Cash block, as listed by the
+ * CAIP-2 `bip122` namespace. Chipnet shares its first blocks with testnet4, so
+ * its ID uses chipnet block 335882 (hash 000000000000e0b99c152c6119f94eae2faa0891
+ * e0f54eeb055c4474e1e6e023), checked on two chipnet servers. A chipnet reset
+ * changes this value.
+ */
+export const CHAIN_IDS: Readonly<Record<BchNetwork, string>> = {
+  mainnet: "bip122:000000000000000000651ef99cb9fcbe",
+  chipnet: "bip122:000000000000e0b99c152c6119f94eae",
+};
+
 /** CashAddr prefix for a network. Chipnet uses `bchtest`, like every BCH test network. */
 export function addressPrefix(network: BchNetwork): "bitcoincash" | "bchtest" {
   return network === "mainnet" ? "bitcoincash" : "bchtest";
