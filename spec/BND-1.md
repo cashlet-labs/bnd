@@ -125,8 +125,8 @@ signatures and non-canonical Base64 are rejected, so one signature has one
 text form.
 
 Test vectors: `spec/vectors/bch-message-proof.json`. The hash was checked with
-an independent implementation, and the signature matches the algorithm used by
-the Paytaca and Selene wallets for `bch_signMessage`.
+an independent implementation, and the signature matches the algorithm that
+wallets implement for WalletConnect `bch_signMessage`.
 
 ### 4.2 Transaction proof
 
