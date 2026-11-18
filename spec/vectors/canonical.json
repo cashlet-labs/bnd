@@ -1,0 +1,53 @@
+{
+  "description": "Canonical JSON vectors for BND-1. Each accepted case maps an input value to the exact expected text. Each rejected case must raise an error.",
+  "accepted": [
+    { "name": "empty object", "input": {}, "expected": "{}" },
+    { "name": "empty array", "input": [], "expected": "[]" },
+    {
+      "name": "scalars",
+      "input": [null, true, false, 0, -1, 9007199254740991],
+      "expected": "[null,true,false,0,-1,9007199254740991]"
+    },
+    {
+      "name": "keys are sorted",
+      "input": { "b": 1, "a": 2, "aa": 3, "A": 4 },
+      "expected": "{\"A\":4,\"a\":2,\"aa\":3,\"b\":1}"
+    },
+    {
+      "name": "nested objects are sorted",
+      "input": { "z": { "y": 1, "x": [{ "d": 1, "c": 2 }] }, "a": null },
+      "expected": "{\"a\":null,\"z\":{\"x\":[{\"c\":2,\"d\":1}],\"y\":1}}"
+    },
+    { "name": "array order is preserved", "input": [3, 1, 2], "expected": "[3,1,2]" },
+    {
+      "name": "string escapes",
+      "input": "line\nquote\"back\\slash\u0001",
+      "expected": "\"line\\nquote\\\"back\\\\slash\\u0001\""
+    },
+    {
+      "name": "non-ASCII text is not escaped",
+      "input": "caf\u00e9 \u20ac \ud83d\ude00",
+      "expected": "\"caf\u00e9 \u20ac \ud83d\ude00\""
+    },
+    {
+      "name": "RFC 8785 section 3.2.3 key ordering",
+      "input": {
+        "\u20ac": "Euro Sign",
+        "\r": "Carriage Return",
+        "\ufb33": "Hebrew Letter Dalet With Dagesh",
+        "1": "One",
+        "\ud83d\ude00": "Emoji: Grinning Face",
+        "\u0080": "Control",
+        "\u00f6": "Latin Small Letter O With Diaeresis"
+      },
+      "expected": "{\"\\r\":\"Carriage Return\",\"1\":\"One\",\"\u0080\":\"Control\",\"\u00f6\":\"Latin Small Letter O With Diaeresis\",\"\u20ac\":\"Euro Sign\",\"\ud83d\ude00\":\"Emoji: Grinning Face\",\"\ufb33\":\"Hebrew Letter Dalet With Dagesh\"}"
+    }
+  ],
+  "rejected": [
+    { "name": "fractional number", "input": 1.5 },
+    { "name": "number beyond the safe integer range", "input": 9007199254740992 },
+    { "name": "lone high surrogate in a string", "input": "a\ud800b" },
+    { "name": "lone low surrogate in a string", "input": "\udc00" },
+    { "name": "lone surrogate in an object key", "input": { "\ud800": 1 } }
+  ]
+}
