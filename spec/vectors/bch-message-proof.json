@@ -1,0 +1,43 @@
+{
+  "description": "BCH message proof vectors for BND-1. The signature is a standard Bitcoin Signed Message compact signature (header 31 + recoveryId, Base64). The hash was cross-checked with an independent SHA-256d.",
+  "mnemonic": "leader monkey parrot ring guide accident before fence cannon height naive bean",
+  "cases": [
+    {
+      "name": "first binding on mainnet",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      },
+      "message": "bnd/1/bch-proof\nbinding: 1efede82e3da09cd2579eff9cdd888d263e9047abdc18e6c3808ff63acb7a242\nnostr: 17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\nbch: bitcoincash:qrk96lntm80kjww9gye5cej7uh0wjyd8yskyw66u3y\ncreated: 1700000000",
+      "messageHash": "de7b44d70ca3ac5e83c3c130d2d432c23678b74920a1d96c2bffe6ca6f9916a7",
+      "signature": "IOKjuNIWI2yS1Z4b+S1nt1TBVaIdtBnLbeRqOhcNc1NhezwAccCdtFw/3a17HPfaXiOFl44mdEczRZK9soFc1Ng="
+    },
+    {
+      "name": "successor binding on chipnet",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "chipnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000100,
+        "previous": "1efede82e3da09cd2579eff9cdd888d263e9047abdc18e6c3808ff63acb7a242"
+      },
+      "message": "bnd/1/bch-proof\nbinding: 8d1374faaedd5797873ef9887fcd1363a3191b7fd4dca351511779c246f1ed5f\nnostr: 17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\nbch: bchtest:qrk96lntm80kjww9gye5cej7uh0wjyd8ysjk2actkc\ncreated: 1700000100",
+      "messageHash": "5af8801230542988787a2c1c60959cfe0ff7fa5d5ad1ea27afe0428fb56aab63",
+      "signature": "IBnjNCMMhNsMjFPJogD1zFNLp+6mOVGIDt8qTKdSoISiXkNj99DIeEFOG3IC8Ly5fj7mpTfEOkvKDY72EGfEJzg="
+    }
+  ]
+}
