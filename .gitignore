@@ -6,3 +6,5 @@ coverage/
 
 # Vite local env files
 *.local
+playwright-report/
+test-results/

@@ -24,7 +24,8 @@
     "format:check": "prettier --check .",
     "build": "npm run build --workspaces --if-present",
     "dev:relay": "tsx apps/dev-relay/src/cli.ts",
-    "dev:verifier": "tsx apps/verifier/src/cli.ts"
+    "dev:verifier": "tsx apps/verifier/src/cli.ts",
+    "test:e2e": "npm run test:e2e -w @cashlet-labs/web"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
