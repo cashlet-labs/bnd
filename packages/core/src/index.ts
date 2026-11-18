@@ -64,3 +64,14 @@ export type {
   VerifyBindingResult,
 } from "./binding-event.js";
 export { npubDecode, npubEncode } from "./npub.js";
+export { verifyMessageSignature } from "./bch-message.js";
+export { bindingStatement, proveStatement, verifyStatementProof } from "./bch-proof.js";
+export type { BchStatement } from "./bch-proof.js";
+export {
+  bindingTxCommitment,
+  buildCommitmentTxRequest,
+  commitmentData,
+  commitmentOutpointHash,
+  verifyCommitmentTx,
+} from "./tx-proof.js";
+export type { TxCommitment } from "./tx-proof.js";
