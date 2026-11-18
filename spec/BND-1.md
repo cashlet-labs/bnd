@@ -12,17 +12,17 @@ both. The keys are independent and no private key leaves its owner.
 | ------------------- | ---------------------------- |
 | Protocol identifier | `bnd`                        |
 | Protocol version    | `1`                          |
-| Binding event kind  | `30910` (provisional)        |
+| Binding event kind  | `30078` (NIP-78)             |
 | Binding `d` tag     | `bnd1`                       |
+| Key hash tag        | `b`                          |
 | Nostr key path      | `m/44'/1237'/<account>'/0/0` |
 | Canonical encoding  | JSON Canonicalization Scheme |
 
-Kind `30910` is an addressable event kind (NIP-01, range 30000–39999) that is
-not listed in the NIPs kind table at the time of writing. The number is defined
-in one place and may change before the spec is final.
-
-Because the `d` tag is fixed, a Nostr key has at most one live binding.
-Replacing it publishes a newer event with the same kind, key and `d` tag.
+Kind `30078` is NIP-78 application-specific data, an addressable kind (NIP-01,
+range 30000–39999). It needs no registration, and public relays accept it
+(see section 6). The fixed `d` tag keeps binding events apart from other
+applications' NIP-78 data and means a Nostr key has at most one live binding:
+a newer event with the same kind, key and `d` tag replaces the older one.
 
 ## 2. Canonical encoding
 
@@ -189,15 +189,81 @@ Section 9 covers replacement.
 
 ## 5. Nostr event
 
-TODO.
+A binding is published as one Nostr event. The Nostr key's own signature on the
+event is the Nostr half of the binding, and the BCH proof in the content is the
+BCH half. The event has exactly this form:
+
+```text
+kind:        30078
+pubkey:      the bound Nostr key
+created_at:  equals record.createdAt
+tags:        [["d","bnd1"], ["b","<record.bch.keyHash>"]]
+content:     canonical JSON of { "bchProof": <proof>, "record": <record> }
+id, sig:     NIP-01 event ID and BIP-340 signature
+```
+
+The tags are exactly those two, in that order. The `b` tag holds the 20-byte BCH
+key hash as lowercase hex. Relays index single-letter tags, so a `b` filter finds
+the Nostr identities that claim a BCH key. A claim without a valid BCH proof
+fails verification, so a false claim has no effect except to be ignored.
+
+The content is the canonical encoding from section 2, of an object with
+exactly the two members `bchProof` and `record`. Verifiers compare the event
+text to the canonical form, so one binding has one text form.
+
+A Nostr signer receives an event template and returns the signed event. The
+interface matches NIP-07, so a browser extension or any signer that can sign
+a Nostr event works. The signer MUST NOT change the template. A verifier
+rejects an event whose time, tags or author differ from the record.
+
+Test vectors: `spec/vectors/binding-event.json`.
 
 ## 6. Discovery and revocation
 
-TODO.
+Discovery uses an ordinary Nostr subscription:
+
+```json
+{ "kinds": [30078], "authors": ["<nostr public key>"], "#d": ["bnd1"] }
+```
+
+A Nostr key can also be found from a BCH key: `{ "kinds": [30078], "#b": ["<key hash>"] }`.
+Results of the second query are claims, not facts, and each one MUST be
+verified.
+
+A client queries several relays, verifies every event, ignores the invalid ones,
+and takes the newest valid binding by `created_at`. When two events have the
+same time, the lower event ID wins, as on relays. Relays are untrusted: they can
+withhold events or serve old ones, so asking more than one relay is the only
+defence against a stale answer. A verifier never trusts what a relay says
+about validity.
+
+At the time of writing, a test event of this form was accepted and returned by
+`#d` and `#b` queries on public relays, including `nos.lol`, `relay.primal.net`,
+`offchain.pub`, `nostr.mom`, `relay.snort.social` and `relay.damus.io`.
+
+TODO: revocation and succession (sections 6 and 9).
 
 ## 7. Verification
 
-TODO.
+A verifier takes one event and needs no network. It accepts the binding only if
+every step below passes, and reports the first failure:
+
+1. The value is a well-formed NIP-01 event, and its kind is `30078`.
+2. The content is canonical JSON with exactly `bchProof` and `record`.
+3. The record is valid under section 3, including strict hex and no unknown
+   members, and the proof object is one of the two forms in section 4.
+4. The event's author equals `record.nostr.publicKey`, its time equals
+   `record.createdAt`, and its tags are exactly the two in section 5.
+5. The NIP-01 event ID matches the event and the BIP-340 signature is valid.
+6. The BCH proof is valid for the record under section 4.1 or 4.2.
+
+Both signatures are required. An event with a valid BCH proof and no valid Nostr
+signature is not a binding, and neither is the reverse. A verifier reports
+which proof type the BCH key gave.
+
+Newest-wins discovery (section 6) is safe only until succession rules exist. A
+holder of the Nostr key alone could publish a newer binding to a different
+BCH key. Section 9 will require authorization from the keys being replaced.
 
 ## 8. Authentication
 
