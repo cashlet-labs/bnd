@@ -1,0 +1,30 @@
+{
+  "name": "bnd-core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "BND: cryptographic binding of Bitcoin Cash and Nostr identities",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cashlet-labs/bnd-core.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {},
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "22.20.5",
+    "eslint": "10.15.0",
+    "prettier": "3.10.1",
+    "tsx": "4.23.15",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.73.0",
+    "vitest": "5.1.0"
+  }
+}
