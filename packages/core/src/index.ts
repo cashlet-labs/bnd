@@ -75,3 +75,28 @@ export {
   verifyCommitmentTx,
 } from "./tx-proof.js";
 export type { TxCommitment } from "./tx-proof.js";
+export {
+  AUTH_EVENT_KIND,
+  AUTH_EVENT_WINDOW_SECONDS,
+  CHALLENGE_TTL_SECONDS,
+  authEventTemplate,
+  authStatement,
+  checkLoginResponse,
+  createLoginResponse,
+  isAuthLevel,
+  issueChallenge,
+  parseChallenge,
+  verifyLogin,
+} from "./auth.js";
+export type {
+  AuthChallenge,
+  AuthIdentity,
+  AuthLevel,
+  CreateLoginResponseOptions,
+  IssueChallengeOptions,
+  LoginResponse,
+  LoginResult,
+  VerifyLoginOptions,
+} from "./auth.js";
+export { ChallengeStoreFullError, MemoryChallengeStore } from "./challenge-store.js";
+export type { ChallengeStore, MemoryChallengeStoreOptions } from "./challenge-store.js";
