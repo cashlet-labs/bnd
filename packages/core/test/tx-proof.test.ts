@@ -201,14 +201,14 @@ describe("verifyTxProof: rejections", () => {
   });
 
   it("rejects a different signature hash type", () => {
-    for (const hashType of [0x01, 0x41 ^ 0x80, 0x43]) {
+    for (const hashType of [0x00, 0x01, 0x21, 0x41, 0x43, 0x62, 0xc1, 0xe1]) {
       const tampered = mutate(first.signedEcdsa, (tx) => {
         const script = Uint8Array.from(tx.inputs[0]!.unlockingBytecode);
         script[script[0]!] = hashType;
         tx.inputs[0]!.unlockingBytecode = script;
       });
       expect(verifyTxProof(record, tampered)).toMatchObject({
-        reason: "transaction proof must use SIGHASH_ALL | FORKID",
+        reason: "transaction proof must use SIGHASH_ALL | FORKID | UTXOS (0x61)",
       });
     }
   });

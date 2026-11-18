@@ -3,10 +3,9 @@ import {
   decodeTransaction,
   encodeLockingBytecodeP2pkh,
   encodeTransaction,
-  generateTransaction,
-  importWalletTemplate,
-  walletTemplateP2pkhNonHd,
-  walletTemplateToCompilerBCH,
+  generateSigningSerializationBCH,
+  hash256,
+  secp256k1 as libauthSecp256k1,
   type Output,
   type Transaction,
 } from "@bitauth/libauth";
@@ -24,7 +23,8 @@ import { fail, OK, type VerifyResult } from "./result.js";
 
 const VIRTUAL_UTXO_DOMAIN = new TextEncoder().encode("bnd/1/virtual-utxo\n");
 const COMMITMENT_TAG = new TextEncoder().encode("bnd1");
-const SIGHASH_ALL_FORKID = 0x41;
+/** SIGHASH_ALL | SIGHASH_FORKID | SIGHASH_UTXOS: signs every output and every spent output. */
+const SIGHASH_ALL_FORKID_UTXOS = 0x61;
 const OP_RETURN = 0x6a;
 const TX_VERSION = 2;
 const SEQUENCE = 0xffffffff;
@@ -96,19 +96,15 @@ export function buildTxProofRequest(record: BindingRecord): TxProofRequest {
 
 export type TxProofSignature = "schnorr" | "ecdsa";
 
-function compilerFor(signature: TxProofSignature) {
-  const template = structuredClone(walletTemplateP2pkhNonHd);
-  if (signature === "ecdsa") {
-    template.scripts.unlock!.script = "<key.ecdsa_signature.all_outputs>\n<key.public_key>";
-  }
-  const imported = importWalletTemplate(template);
-  if (typeof imported === "string") throw new Error(imported);
-  return walletTemplateToCompilerBCH(imported);
+function push(data: Uint8Array): Uint8Array {
+  if (data.length === 0 || data.length > 75) throw new RangeError("unsupported push length");
+  return Uint8Array.of(data.length, ...data);
 }
 
 /**
- * Sign a proof request with a local private key. Wallet protocols return the
- * same kind of signed transaction. Returns the signed transaction as hex.
+ * Sign a proof request with a local private key, with hash type 0x61. The
+ * result is the same kind of signed transaction a wallet returns over a wallet
+ * protocol. Returns the signed transaction as hex.
  */
 export function signTxProofRequest(
   privateKey: Uint8Array,
@@ -119,29 +115,35 @@ export function signTxProofRequest(
   if (request.transaction.inputs.length !== 1 || input === undefined) {
     throw new Error("a proof request has exactly one input");
   }
-  const result = generateTransaction({
-    version: request.transaction.version,
-    locktime: request.transaction.locktime,
-    outputs: request.transaction.outputs,
+  const preimage = generateSigningSerializationBCH(
+    { inputIndex: 0, sourceOutputs: [request.sourceOutput], transaction: request.transaction },
+    {
+      coveredBytecode: request.sourceOutput.lockingBytecode,
+      signingSerializationType: Uint8Array.of(SIGHASH_ALL_FORKID_UTXOS),
+    },
+  );
+  const sighash = hash256(preimage);
+  const signature =
+    (options.signature ?? "schnorr") === "schnorr"
+      ? libauthSecp256k1.signMessageHashSchnorr(privateKey, sighash)
+      : libauthSecp256k1.signMessageHashDER(privateKey, sighash);
+  if (typeof signature === "string")
+    throw new Error(`could not sign transaction proof: ${signature}`);
+  const publicKey = libauthSecp256k1.derivePublicKeyCompressed(privateKey);
+  if (typeof publicKey === "string") throw new Error(`invalid private key: ${publicKey}`);
+  const signed: Transaction = {
+    ...request.transaction,
     inputs: [
       {
-        outpointTransactionHash: input.outpointTransactionHash,
-        outpointIndex: input.outpointIndex,
-        sequenceNumber: input.sequenceNumber,
-        unlockingBytecode: {
-          compiler: compilerFor(options.signature ?? "schnorr"),
-          data: { keys: { privateKeys: { key: privateKey } } },
-          valueSatoshis: request.sourceOutput.valueSatoshis,
-          script: "unlock",
-          token: undefined,
-        },
+        ...input,
+        unlockingBytecode: Uint8Array.of(
+          ...push(Uint8Array.of(...signature, SIGHASH_ALL_FORKID_UTXOS)),
+          ...push(publicKey),
+        ),
       },
     ],
-  });
-  if (!result.success) {
-    throw new Error(`could not build transaction proof: ${JSON.stringify(result)}`);
-  }
-  return bytesToHex(encodeTransaction(result.transaction));
+  };
+  return bytesToHex(encodeTransaction(signed));
 }
 
 /** Build the proof request for a record and sign it with a local private key. */
@@ -222,8 +224,8 @@ export function verifyTxProof(record: BindingRecord, transactionHex: string): Ve
 
   const unlock = parseP2pkhUnlock(input.unlockingBytecode);
   if (!unlock) return fail("transaction proof has a malformed unlocking script");
-  if (unlock.signature[unlock.signature.length - 1] !== SIGHASH_ALL_FORKID) {
-    return fail("transaction proof must use SIGHASH_ALL | FORKID");
+  if (unlock.signature[unlock.signature.length - 1] !== SIGHASH_ALL_FORKID_UTXOS) {
+    return fail("transaction proof must use SIGHASH_ALL | FORKID | UTXOS (0x61)");
   }
 
   const verified = vm.verify({
