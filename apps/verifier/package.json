@@ -1,0 +1,15 @@
+{
+  "name": "@cashlet-labs/verifier",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A demonstration application that logs users in with their BND identity",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@cashlet-labs/bnd-core": "*",
+    "@cashlet-labs/bnd-nostr": "*"
+  }
+}
