@@ -1,6 +1,6 @@
 export { canonicalize, canonicalBytes, CanonicalizationError } from "./canonical.js";
 export type { CanonicalValue } from "./canonical.js";
-export { bytesToHex, hexToBytes } from "./bytes.js";
+export { base64ToBytes, bytesToBase64, bytesToHex, hexToBytes } from "./bytes.js";
 export {
   BCH_NETWORKS,
   addressPrefix,
@@ -26,7 +26,6 @@ export {
   parseBinding,
 } from "./binding.js";
 export type { BindingRecord, BuildBindingInput } from "./binding.js";
-export { base64ToBytes, bytesToBase64 } from "./bytes.js";
 export {
   bchProofMessage,
   bitcoinMessageHash,
@@ -35,3 +34,11 @@ export {
   verifyMessageProof,
 } from "./bch-message.js";
 export type { VerifyResult } from "./result.js";
+export {
+  buildTxProofRequest,
+  signTxProof,
+  txProofCommitment,
+  verifyTxProof,
+  virtualOutpointHash,
+} from "./tx-proof.js";
+export type { TxProofRequest, TxProofSignature } from "./tx-proof.js";
