@@ -1,0 +1,246 @@
+{
+  "description": "Binding record vectors for BND-1. The binding ID is SHA-256 over the UTF-8 bytes of 'bnd/1/binding-id\\n' followed by the canonical record. IDs were cross-checked with an independent SHA-256 implementation.",
+  "mnemonic": "leader monkey parrot ring guide accident before fence cannon height naive bean",
+  "keys": {
+    "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+    "bchKeyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724",
+    "nostrPath": "m/44'/1237'/0'/0/0",
+    "bchPath": "m/44'/145'/0'/0/0"
+  },
+  "valid": [
+    {
+      "name": "first binding on mainnet",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      },
+      "canonical": "{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"mainnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1}",
+      "bindingId": "1efede82e3da09cd2579eff9cdd888d263e9047abdc18e6c3808ff63acb7a242",
+      "address": "bitcoincash:qrk96lntm80kjww9gye5cej7uh0wjyd8yskyw66u3y"
+    },
+    {
+      "name": "successor binding on chipnet",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "chipnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000100,
+        "previous": "1efede82e3da09cd2579eff9cdd888d263e9047abdc18e6c3808ff63acb7a242"
+      },
+      "canonical": "{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"1efede82e3da09cd2579eff9cdd888d263e9047abdc18e6c3808ff63acb7a242\",\"protocol\":\"bnd\",\"version\":1}",
+      "bindingId": "8d1374faaedd5797873ef9887fcd1363a3191b7fd4dca351511779c246f1ed5f",
+      "address": "bchtest:qrk96lntm80kjww9gye5cej7uh0wjyd8ysjk2actkc"
+    }
+  ],
+  "invalid": [
+    {
+      "name": "wrong protocol",
+      "record": {
+        "protocol": "other",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
+      "name": "wrong version",
+      "record": {
+        "protocol": "bnd",
+        "version": 2,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
+      "name": "unknown top-level field",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000,
+        "extra": 1
+      }
+    },
+    {
+      "name": "unknown nested field",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724",
+          "address": "x"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
+      "name": "uppercase nostr key",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162C921DC4D2518F9A101DB33695DF1AFB56AB82F5FF3E5DA6EEC3CA5CD917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
+      "name": "nostr key not on the curve",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "0000000000000000000000000000000000000000000000000000000000000005"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
+      "name": "short key hash",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a7"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
+      "name": "unknown network",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "regtest",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      }
+    },
+    {
+      "name": "zero createdAt",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 0
+      }
+    },
+    {
+      "name": "fractional createdAt",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1.5
+      }
+    },
+    {
+      "name": "string createdAt",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": "1700000000"
+      }
+    },
+    {
+      "name": "malformed previous",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "nostr": {
+          "publicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+        },
+        "bch": {
+          "network": "chipnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000100,
+        "previous": "abc"
+      }
+    },
+    {
+      "name": "missing nostr",
+      "record": {
+        "protocol": "bnd",
+        "version": 1,
+        "bch": {
+          "network": "mainnet",
+          "keyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+        },
+        "createdAt": 1700000000
+      }
+    }
+  ]
+}
