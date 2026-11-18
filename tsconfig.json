@@ -1,5 +1,13 @@
 {
   "extends": "./tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "rootDir": "." },
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": ".",
+    "paths": {
+      "@cashlet-labs/bnd-core": ["./packages/core/src/index.ts"],
+      "@cashlet-labs/bnd-nostr": ["./packages/nostr/src/index.ts"],
+      "@cashlet-labs/bnd-nostr/testing": ["./packages/nostr/src/testing.ts"]
+    }
+  },
   "include": ["packages/*/src", "packages/*/test", "apps/*/src", "test", "*.config.ts"]
 }

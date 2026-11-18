@@ -63,3 +63,4 @@ export type {
   VerifiedBinding,
   VerifyBindingResult,
 } from "./binding-event.js";
+export { npubDecode, npubEncode } from "./npub.js";
