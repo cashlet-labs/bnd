@@ -76,6 +76,48 @@ async function respond(
 }
 
 describe("authStatement", () => {
+  it("names the site with its port when it has one", async () => {
+    const b = await getBinding();
+    const challenge: AuthChallenge = {
+      nonce: "ab".repeat(32),
+      audience: "http://127.0.0.1:8787/login",
+      level: "nostr",
+      issuedAt: T0,
+      expiresAt: T0 + 300,
+    };
+    const statement = authStatement(challenge, b.record);
+    expect(statement.text.split("\n")[0]).toBe(
+      "127.0.0.1:8787 wants you to sign in with your Bitcoin Cash account:",
+    );
+    expect(statement.commitment.prompt).toBe("Sign in to 127.0.0.1:8787. No funds move.");
+  });
+
+  it("uses the mainnet chain ID for a mainnet binding", async () => {
+    const mainnet = await createBinding({
+      nostrSigner,
+      bchSigner,
+      bchKeyHash: bchKey.keyHash,
+      network: "mainnet",
+      proofType: "message",
+      createdAt: T0 - 1000,
+    });
+    const challenge = await setup().issue();
+    expect(authStatement(challenge, mainnet.record).text).toContain(
+      "Chain ID: bip122:000000000000000000651ef99cb9fcbe",
+    );
+    expect(authStatement(challenge, mainnet.record).text).toContain(
+      "your Bitcoin Cash account:\nbitcoincash:q",
+    );
+  });
+
+  it("keeps every line free of carriage returns and trailing spaces", async () => {
+    const b = await getBinding();
+    const text = authStatement(await setup().issue(), b.record).text;
+    for (const line of text.split("\n")) {
+      expect(line).not.toMatch(/\r|\s$/);
+    }
+  });
+
   it("builds the exact text", async () => {
     const b = await getBinding();
     const challenge: AuthChallenge = {
@@ -88,15 +130,21 @@ describe("authStatement", () => {
     const statement = authStatement(challenge, b.record);
     expect(statement.text).toBe(
       [
-        "bnd/1/auth",
-        "audience: https://app.example/login",
-        "level: dual",
-        `nonce: ${"ab".repeat(32)}`,
-        `binding: ${b.bindingId}`,
-        `nostr: ${nostrKey.publicKey}`,
-        `bch: ${b.bch.address}`,
-        `issued: ${T0}`,
-        `expires: ${T0 + 300}`,
+        "app.example wants you to sign in with your Bitcoin Cash account:",
+        b.bch.address,
+        "",
+        "Sign in with BND at level dual.",
+        "",
+        "URI: https://app.example/login",
+        "Version: 1",
+        `Nonce: ${"ab".repeat(32)}`,
+        "Issued At: 2023-11-14T22:13:20Z",
+        "Expiration Time: 2023-11-14T22:18:20Z",
+        "Chain ID: bip122:000000000000e0b99c152c6119f94eae",
+        "Resources:",
+        `- nostr:${npubEncode(nostrKey.publicKey)}`,
+        `- bnd:binding/${b.bindingId}`,
+        "- bnd:level/dual",
       ].join("\n"),
     );
     expect(statement.digest).toBe(bytesToHex(sha256(new TextEncoder().encode(statement.text))));
@@ -131,7 +179,7 @@ describe("authStatement", () => {
     expect(login.outpointDomain).not.toBe(bind.outpointDomain);
     expect(bytesToHex(login.digest)).not.toBe(bytesToHex(bind.digest));
     expect(login.prompt.length).toBeLessThanOrEqual(200);
-    expect(login.prompt).toContain("app.example");
+    expect(login.prompt).toBe("Sign in to app.example. No funds move.");
   });
 });
 

@@ -8,7 +8,7 @@ import {
   type BchSigner,
   type BchStatement,
 } from "./bch-proof.js";
-import type { BchNetwork } from "./bch.js";
+import { CHAIN_IDS, type BchNetwork } from "./bch.js";
 import { bindingAddress, bindingId, type BindingRecord } from "./binding.js";
 import { verifyBinding, type NostrSigner, type VerifiedBinding } from "./binding-event.js";
 import { bytesToHex, isHex } from "./bytes.js";
@@ -126,10 +126,15 @@ export async function issueChallenge(
   return challenge;
 }
 
+function rfc3339(seconds: number): string {
+  return new Date(seconds * 1000).toISOString().replace(".000Z", "Z");
+}
+
 /**
- * The statement both keys approve for a login. Its text is shown by a wallet
- * that signs messages, and its digest is what a transaction proof and the
- * Nostr event commit to.
+ * The statement both keys approve for a login, written as a CAIP-122 "Sign in
+ * with X" message so wallets and users see a familiar layout. A wallet that
+ * signs messages shows this text. A transaction proof and the Nostr event
+ * commit to its SHA-256 digest.
  */
 export function authStatement(
   challenge: AuthChallenge,
@@ -138,16 +143,23 @@ export function authStatement(
   digest: string;
 } {
   const parsed = parseChallenge(challenge);
+  const domain = new URL(parsed.audience).host;
   const text = [
-    "bnd/1/auth",
-    `audience: ${parsed.audience}`,
-    `level: ${parsed.level}`,
-    `nonce: ${parsed.nonce}`,
-    `binding: ${bindingId(record)}`,
-    `nostr: ${record.nostr.publicKey}`,
-    `bch: ${bindingAddress(record)}`,
-    `issued: ${parsed.issuedAt}`,
-    `expires: ${parsed.expiresAt}`,
+    `${domain} wants you to sign in with your Bitcoin Cash account:`,
+    bindingAddress(record),
+    "",
+    `Sign in with BND at level ${parsed.level}.`,
+    "",
+    `URI: ${parsed.audience}`,
+    "Version: 1",
+    `Nonce: ${parsed.nonce}`,
+    `Issued At: ${rfc3339(parsed.issuedAt)}`,
+    `Expiration Time: ${rfc3339(parsed.expiresAt)}`,
+    `Chain ID: ${CHAIN_IDS[record.bch.network]}`,
+    "Resources:",
+    `- nostr:${npubEncode(record.nostr.publicKey)}`,
+    `- bnd:binding/${bindingId(record)}`,
+    `- bnd:level/${parsed.level}`,
   ].join("\n");
   const digest = sha256(new TextEncoder().encode(text));
   return {
@@ -160,7 +172,7 @@ export function authStatement(
       tag: AUTH_TAG,
       digest,
       subject: "login",
-      prompt: `Log in to ${new URL(parsed.audience).host} with BND. Nothing is sent.`.slice(0, 200),
+      prompt: `Sign in to ${domain}. No funds move.`.slice(0, 200),
     },
   };
 }

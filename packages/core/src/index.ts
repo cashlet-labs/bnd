@@ -3,6 +3,7 @@ export type { CanonicalValue } from "./canonical.js";
 export { base64ToBytes, bytesToBase64, bytesToHex, hexToBytes } from "./bytes.js";
 export {
   BCH_NETWORKS,
+  CHAIN_IDS,
   addressPrefix,
   decodeBchAddress,
   encodeBchAddress,
