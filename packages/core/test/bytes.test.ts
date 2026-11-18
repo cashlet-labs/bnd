@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { bytesEqual, bytesToHex, hexToBytes, isHex } from "../src/bytes.js";
+import {
+  base64ToBytes,
+  bytesEqual,
+  bytesToBase64,
+  bytesToHex,
+  hexToBytes,
+  isHex,
+} from "../src/bytes.js";
 
 describe("hex helpers", () => {
   it("round-trips bytes", () => {
@@ -36,5 +43,35 @@ describe("hex helpers", () => {
     expect(bytesEqual(new Uint8Array([1, 2]), new Uint8Array([1, 2]))).toBe(true);
     expect(bytesEqual(new Uint8Array([1, 2]), new Uint8Array([1, 3]))).toBe(false);
     expect(bytesEqual(new Uint8Array([1]), new Uint8Array([1, 2]))).toBe(false);
+  });
+});
+
+describe("canonical Base64", () => {
+  it("round-trips bytes of every padding length", () => {
+    for (const length of [0, 1, 2, 3, 4, 5, 64, 65]) {
+      const bytes = Uint8Array.from({ length }, (_, i) => (i * 37 + 11) & 0xff);
+      expect(base64ToBytes(bytesToBase64(bytes))).toEqual(bytes);
+    }
+  });
+
+  it("matches known encodings", () => {
+    expect(bytesToBase64(new TextEncoder().encode("Man"))).toBe("TWFu");
+    expect(bytesToBase64(new TextEncoder().encode("Ma"))).toBe("TWE=");
+    expect(bytesToBase64(new TextEncoder().encode("M"))).toBe("TQ==");
+  });
+
+  it.each([
+    ["missing padding", "TQ"],
+    ["URL-safe characters", "-_-_"],
+    ["whitespace", "TWFu\n"],
+    ["non-zero trailing bits", "TR=="],
+    ["extra padding", "TQ==="],
+    ["wrong alphabet", "TW*u"],
+  ])("rejects %s", (_name, text) => {
+    expect(() => base64ToBytes(text)).toThrow(TypeError);
+  });
+
+  it("rejects non-string input", () => {
+    expect(() => base64ToBytes(undefined as unknown as string)).toThrow(TypeError);
   });
 });

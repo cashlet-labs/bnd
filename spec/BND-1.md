@@ -83,7 +83,101 @@ compressed secp256k1 BCH key.
 
 ## 4. BCH ownership proof
 
-TODO.
+A binding is only valid if the holder of the bound BCH key approved it. The
+approval is one of two proof types. Both are first-class. A verifier MUST
+accept either and MUST NOT prefer or convert one into the other. The signer
+chooses which type to produce, based on what its wallet connection supports.
+
+```json
+{ "type": "message", "signature": "<Base64>" }
+{ "type": "tx", "transaction": "<lowercase hex>" }
+```
+
+A proof object has exactly those members. Anything else is rejected.
+
+### 4.1 Message proof
+
+The wallet signs this exact UTF-8 text, with lines separated by `\n` and no
+trailing newline. The verifier builds the text from the record, so no
+free-form text is ever signed.
+
+```text
+bnd/1/bch-proof
+binding: <bindingId>
+nostr: <nostr public key, lowercase hex>
+bch: <plain CashAddr of the bound key on the record's network>
+created: <createdAt>
+```
+
+The signature uses the Bitcoin Signed Message rules:
+
+```text
+hash      = SHA-256( SHA-256( 0x18 || "Bitcoin Signed Message:\n" ||
+                              CompactSize(len(message)) || message ) )
+signature = Base64( (31 + recoveryId) || r || s )       65 bytes
+```
+
+The verifier requires canonical padded Base64, exactly 65 bytes, a header from
+31 to 34 (compressed key), and a low S value. It recovers the public key from
+the signature, computes its HASH160, and compares that to `bch.keyHash`.
+Uncompressed headers (27 to 30), segwit headers (35 and above), high-S
+signatures and non-canonical Base64 are rejected, so one signature has one
+text form.
+
+Test vectors: `spec/vectors/bch-message-proof.json`. The hash was checked with
+an independent implementation, and the signature matches the algorithm used by
+the Paytaca and Selene wallets for `bch_signMessage`.
+
+### 4.2 Transaction proof
+
+Some wallet connections can sign transactions but not messages. For those, the
+proof is a signed Bitcoin Cash transaction that spends a **virtual output** of
+the bound key. The input refers to no real output, so the transaction cannot be
+confirmed or broadcast for any purpose.
+
+| Part           | Value                                                                                                          |
+| -------------- | -------------------------------------------------------------------------------------------------------------- |
+| Version        | `2`                                                                                                            |
+| Locktime       | `0`                                                                                                            |
+| Input count    | `1`                                                                                                            |
+| Input outpoint | hash `SHA-256("bnd/1/virtual-utxo\n" \|\| bindingId bytes)`, index `0`                                         |
+| Input sequence | `0xffffffff`                                                                                                   |
+| Spent output   | `OP_DUP OP_HASH160 <bch.keyHash> OP_EQUALVERIFY OP_CHECKSIG`, 0 sats                                           |
+| Unlocking      | two pushes: the signature followed by the hash type byte, then the 33-byte compressed public key; nothing else |
+| Hash type      | `0x41` (`SIGHASH_ALL \| FORKID`)                                                                               |
+| Output count   | `1`                                                                                                            |
+| Output         | value 0, script `OP_RETURN` pushing `"bnd1" \|\| bindingId bytes` (36 bytes)                                   |
+
+The signature may be Schnorr or ECDSA. The verifier decodes the transaction,
+requires it to re-encode to the same bytes, compares every field above, parses
+the unlocking script strictly, and then runs the Bitcoin Cash script engine
+over the input with the reconstructed spent output. The script engine checks
+the signature and that the public key hashes to `bch.keyHash`.
+
+Why this is safe:
+
+- The outpoint is derived from the binding ID and does not exist, so the
+  transaction has no value and no effect on any chain.
+- The signature commits to the outpoint and the output, so it cannot be reused
+  for a different binding, network or time.
+- No chain access is needed to verify it.
+
+A wallet protocol carries the unsigned transaction, the spent output and a
+short prompt, and returns the signed transaction. WizardConnect
+(`sign_transaction_request`) and WalletConnect (`bch_signTransaction`) both do
+this. Wallets that sign only inputs they own, by path, need no change. A wallet
+that refuses to sign a transaction with an unknown input cannot produce this
+proof, and a user of that wallet can use the message proof instead if the
+wallet supports it.
+
+Test vectors: `spec/vectors/bch-tx-proof.json`.
+
+### 4.3 What the proof does and does not show
+
+A proof shows that the holder of the BCH key approved this exact binding.
+Section 5 adds the Nostr key's matching approval. Neither proof says anything
+about who the person is, or whether either key has been compromised since.
+Section 9 covers replacement.
 
 ## 5. Nostr event
 

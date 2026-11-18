@@ -34,3 +34,28 @@ export function bytesEqual(a: Uint8Array, b: Uint8Array): boolean {
   for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
   return true;
 }
+
+const BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/;
+
+/** Encode bytes as canonical padded Base64. */
+export function bytesToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  for (const byte of bytes) binary += String.fromCharCode(byte);
+  return btoa(binary);
+}
+
+/**
+ * Decode canonical padded Base64. Whitespace, URL-safe characters, missing
+ * padding and non-zero trailing bits are rejected, so each byte string has one
+ * text form and a signature cannot be re-encoded into a different string.
+ */
+export function base64ToBytes(text: string): Uint8Array {
+  if (typeof text !== "string" || !BASE64.test(text)) {
+    throw new TypeError("expected canonical padded Base64");
+  }
+  const binary = atob(text);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  if (bytesToBase64(bytes) !== text) throw new TypeError("expected canonical padded Base64");
+  return bytes;
+}
