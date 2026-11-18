@@ -104,7 +104,7 @@ export function parseBinding(value: unknown): BindingRecord {
 
   const bch = expectObject(top.bch, "binding.bch", ["network", "keyHash"]);
   if (!isBchNetwork(bch.network)) {
-    throw new BindingError("binding.bch.network must be mainnet, testnet or chipnet");
+    throw new BindingError("binding.bch.network must be mainnet or chipnet");
   }
   if (!isHex(bch.keyHash, 20)) {
     throw new BindingError("binding.bch.keyHash must be 20 bytes of lowercase hex");

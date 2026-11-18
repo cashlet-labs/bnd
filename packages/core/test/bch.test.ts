@@ -39,8 +39,7 @@ describe("encodeBchAddress", () => {
     expect(bytesToHex(decoded.keyHash)).toBe(GENERATOR_HASH);
   });
 
-  it("uses the bchtest prefix for testnet and chipnet", () => {
-    expect(encodeBchAddress(hexToBytes(SPEC_HASH), "testnet")).toMatch(/^bchtest:q/);
+  it("uses the bchtest prefix for chipnet", () => {
     expect(encodeBchAddress(hexToBytes(SPEC_HASH), "chipnet")).toMatch(/^bchtest:q/);
   });
 
@@ -72,7 +71,7 @@ describe("decodeBchAddress", () => {
   });
 
   it("round-trips on every network", () => {
-    for (const network of ["mainnet", "testnet", "chipnet"] as const) {
+    for (const network of ["mainnet", "chipnet"] as const) {
       const decoded = decodeBchAddress(encodeBchAddress(hexToBytes(SPEC_HASH), network));
       expect(decoded.prefix).toBe(addressPrefix(network));
     }
@@ -115,6 +114,8 @@ describe("isBchNetwork", () => {
     expect(isBchNetwork("mainnet")).toBe(true);
     expect(isBchNetwork("chipnet")).toBe(true);
     expect(isBchNetwork("regtest")).toBe(false);
+    expect(isBchNetwork("testnet")).toBe(false);
+    expect(isBchNetwork("testnet4")).toBe(false);
     expect(isBchNetwork(undefined)).toBe(false);
   });
 });

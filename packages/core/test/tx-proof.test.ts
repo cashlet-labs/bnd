@@ -136,7 +136,7 @@ describe("verifyTxProof: rejections", () => {
   });
 
   it("rejects a proof for the same record on another network", () => {
-    const other: BindingRecord = { ...record, bch: { ...record.bch, network: "testnet" } };
+    const other: BindingRecord = { ...record, bch: { ...record.bch, network: "chipnet" } };
     expect(verifyTxProof(other, signed).ok).toBe(false);
   });
 
