@@ -43,7 +43,7 @@ one person. It is a JSON object with exactly these members:
 | `protocol`        | string  | `"bnd"`                                                         |
 | `version`         | integer | `1`                                                             |
 | `nostr.publicKey` | string  | 32-byte x-only secp256k1 key, lowercase hex, a valid point      |
-| `bch.network`     | string  | `"mainnet"`, `"testnet"` or `"chipnet"`                         |
+| `bch.network`     | string  | `"mainnet"` or `"chipnet"`                                      |
 | `bch.keyHash`     | string  | 20-byte HASH160 of the compressed BCH public key, lowercase hex |
 | `createdAt`       | integer | Unix time in seconds, greater than zero                         |
 | `previous`        | string  | Optional. ID of the binding this one replaces (32-byte hex)     |
@@ -53,8 +53,13 @@ Unknown members are an error, at any depth. A verifier MUST NOT ignore them.
 The BCH key is identified by its HASH160 and network, not by an address string.
 The plain `q…` form and the token-aware `z…` form of a P2PKH address name the
 same key hash, so a verifier accepts either. Only P2PKH is supported. P2SH
-addresses, including multisig, are rejected. Testnet and chipnet share the
-`bchtest` address prefix, so the `network` member is what tells them apart.
+addresses, including multisig, are rejected.
+
+Version 1 supports two networks: BCH mainnet and chipnet. Every BCH test
+network uses the `bchtest` address prefix, so an address alone cannot say which
+chain it belongs to. The `network` member says it. Other test networks, such as
+testnet3 and testnet4, are different chains with the same prefix and are not
+part of version 1.
 
 ### 3.1 Binding ID
 
