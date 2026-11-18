@@ -3,3 +3,6 @@ dist/
 .env
 *.tgz
 coverage/
+
+# Vite local env files
+*.local
