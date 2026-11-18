@@ -21,7 +21,8 @@
     "test": "vitest run",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "build": "npm run build --workspaces --if-present"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

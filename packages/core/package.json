@@ -1,0 +1,30 @@
+{
+  "name": "@cashlet-labs/bnd-core",
+  "version": "0.0.0",
+  "description": "BND-4 protocol core: binding records, proofs and verification",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cashlet-labs/bnd-core.git",
+    "directory": "packages/core"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
+}
