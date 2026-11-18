@@ -272,7 +272,175 @@ BCH key. Section 9 will require authorization from the keys being replaced.
 
 ## 8. Authentication
 
-TODO.
+A user logs in to an application by answering a one-time challenge with the
+keys their binding names. The application needs no identity provider: it checks
+signatures itself and asks relays only to confirm the binding is current.
+
+### 8.1 Levels
+
+| Level   | Who signs the challenge             | What it proves                   |
+| ------- | ----------------------------------- | -------------------------------- |
+| `nostr` | the Nostr key                       | current control of the Nostr key |
+| `dual`  | the Nostr key and the bound BCH key | current control of both keys     |
+
+The application chooses the level; the response MUST meet it exactly. A `nostr`
+response carries no BCH proof and a `dual` response carries exactly one. An
+application that allows both levels records the level in the session and
+refuses actions that need `dual` when the session is `nostr`, asking the user to
+log in again with both keys.
+
+### 8.2 Challenge
+
+```json
+{
+  "nonce": "<32 random bytes, lowercase hex>",
+  "audience": "<absolute http or https URL of the login endpoint>",
+  "level": "nostr | dual",
+  "issuedAt": 0,
+  "expiresAt": 0
+}
+```
+
+The challenge has exactly these members. The nonce comes from a secure random
+source. The application stores the challenge, accepts one response per
+challenge, discards it after five failed attempts, and lets it expire after
+five minutes by default. The audience has no fragment, whitespace or line break.
+
+### 8.3 Statement
+
+Both keys approve one statement, written as a CAIP-122 "Sign in with X" message
+so that wallets and users see a familiar layout:
+
+```text
+<domain> wants you to sign in with your Bitcoin Cash account:
+<plain CashAddr of the bound key>
+
+Sign in with BND at level <level>.
+
+URI: <audience>
+Version: 1
+Nonce: <nonce>
+Issued At: <issuedAt as RFC 3339, UTC, whole seconds>
+Expiration Time: <expiresAt as RFC 3339, UTC, whole seconds>
+Chain ID: <CAIP-2 chain ID of the binding's network>
+Resources:
+- nostr:<npub of the bound Nostr key>
+- bnd:binding/<binding ID>
+- bnd:level/<level>
+```
+
+Lines are separated by `\n` with no trailing newline. `<domain>` is the host of
+the audience, with its port when it has one. The `nostr:` resource is a NIP-21
+URI. The statement digest is the lowercase hex SHA-256 of the UTF-8 text.
+
+CAIP-122 leaves the signing algorithm to each chain, and none is defined for
+Bitcoin Cash. BND uses the two proof types from section 4.
+
+Chain IDs use the CAIP-2 `bip122` namespace: `bip122:` and the first 32 hex
+characters of a block hash found only on that chain.
+
+| Network | Chain ID                                  | Block                                  |
+| ------- | ----------------------------------------- | -------------------------------------- |
+| mainnet | `bip122:000000000000000000651ef99cb9fcbe` | 478559, the first Bitcoin Cash block   |
+| chipnet | `bip122:000000000000e0b99c152c6119f94eae` | 335882, checked on two chipnet servers |
+
+The mainnet value is the one the `bip122` namespace lists. Chipnet shares its
+first blocks with testnet4, so its ID names a recent chipnet block instead of
+its genesis. A chipnet reset changes the chipnet value.
+
+### 8.4 BCH proof of the statement
+
+- **Message proof:** the wallet signs the statement text with the rules of
+  section 4.1.
+- **Transaction proof:** as section 4.2, with three differences that keep a
+  login proof and a binding proof apart. The virtual outpoint hash is
+  `SHA-256("bnd/1/virtual-utxo-auth\n" || digest bytes)`, the OP_RETURN data is
+  `"bna1" || digest bytes`, and the wallet prompt is
+  `Sign in to <domain>. No funds move.`
+
+A proof made for a binding is never accepted for a login, and the reverse.
+
+### 8.5 Nostr event
+
+The Nostr key signs a NIP-98 event (kind `27235`) with empty content and exactly
+these tags, in this order:
+
+```text
+["u", "<audience>"]
+["method", "POST"]
+["challenge", "<nonce>"]
+["binding", "<binding ID>"]
+["statement", "<statement digest>"]
+```
+
+`challenge` is the tag NIP-42 uses for the same purpose. NIP-98's `payload`
+tag cannot be used, because the request body contains this event. The
+`statement` tag ties the Nostr signature to the same statement the BCH key
+approved. The event time must be within 60 seconds of the verifier's clock, as
+NIP-98 suggests, and no more than 60 seconds before the challenge was issued.
+
+A client SHOULD sign the BCH proof first and the Nostr event last, so the event
+time is fresh after a slow wallet. A browser client SHOULD refuse a challenge
+whose audience is not on the page's own origin, so one site cannot pass another
+site's challenge to the user.
+
+### 8.6 Login response and verification
+
+```text
+{ "binding": <binding event>, "event": <Nostr event>, "bchProof": <proof, dual only> }
+```
+
+The response has exactly these members. The verifier:
+
+1. Finds the challenge named by the event's `challenge` tag, unexpired and unused.
+2. Verifies the binding event as in section 7.
+3. Verifies the Nostr event: its signature, kind `27235`, author equal to the
+   bound Nostr key, time within the window, and tags and content equal to 8.5.
+4. For `dual`, verifies the BCH proof against the statement. For `nostr`,
+   refuses any BCH proof.
+5. Checks the binding is current (8.7).
+6. Consumes the challenge. If another request consumed it first, the login fails.
+
+Any failure in steps 2 to 5 counts as a failed attempt and leaves the challenge
+unused until its attempts run out. Step 6 is atomic, so one response logs in once.
+
+### 8.7 Current binding
+
+A login uses the user's current binding, which the verifier confirms on relays.
+It asks the relays it is configured with and the user's NIP-65 write relays
+(8.8), verifies every event it receives, and decides:
+
+| Relay answers                                               | Result                         |
+| ----------------------------------------------------------- | ------------------------------ |
+| fewer complete answers than the configured minimum          | reject: could not check        |
+| enough answers, the presented binding found on none of them | reject: not published          |
+| found, and no relay holds a newer valid binding for the key | accept                         |
+| a relay holds a newer valid binding for the key             | reject: a newer binding exists |
+
+The default minimum is 2 complete answers. "Newer" uses the rule in section 6:
+later `created_at`, or the lower event ID on a tie. Relays that still serve an
+older binding do not matter, because the presented one was found elsewhere.
+Relays cannot make this check pass with forged events, only fail.
+
+### 8.8 User relay lists
+
+The verifier reads the newest signed kind `10002` event (NIP-65) by the user
+from its configured relays and adds up to four `write` or unmarked relays.
+These URLs come from the user, so a server connecting to them could be steered
+to hosts only it can reach. A relay from a user's list is used only if:
+
+- it is `wss://`, with no credentials, query or fragment;
+- its host is a DNS name, not an IP address, `localhost`, or a `.local`,
+  `.internal` or `.home.arpa` name; and
+- on a server, every address the name resolves to is public, which excludes
+  private, loopback, link-local, shared, documentation, benchmarking, multicast
+  and reserved ranges.
+
+The name is resolved again when the connection opens, so a DNS server that
+changes its answer in between can still steer that one connection. Running the
+verifier without a route to internal networks removes this risk.
+
+Test vectors: `spec/vectors/auth.json`.
 
 ## 9. Key rotation and recovery
 
