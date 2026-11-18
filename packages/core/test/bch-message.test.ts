@@ -38,7 +38,7 @@ const bchKey = deriveBchKey(vectors.mnemonic);
 const first = vectors.cases[0]!;
 const record = parseBinding(first.record);
 
-/** Signing exactly as the Paytaca and Selene wallets do, using libauth primitives. */
+/** Signing the way wallets implement `bch_signMessage`, using libauth primitives. */
 function walletSign(privateKey: Uint8Array, message: string): string {
   const messageBin = utf8ToBin(message);
   const preImage = new Uint8Array([
