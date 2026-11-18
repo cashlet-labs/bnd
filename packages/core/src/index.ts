@@ -42,3 +42,6 @@ export {
   virtualOutpointHash,
 } from "./tx-proof.js";
 export type { TxProofRequest, TxProofSignature } from "./tx-proof.js";
+export { signTxProofRequest } from "./tx-proof.js";
+export { createKeySigner, parseBchProof, proveBchControl, verifyBchProof } from "./bch-proof.js";
+export type { BchProof, BchProofType, BchSigner } from "./bch-proof.js";

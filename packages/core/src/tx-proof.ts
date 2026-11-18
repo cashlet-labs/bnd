@@ -107,16 +107,18 @@ function compilerFor(signature: TxProofSignature) {
 }
 
 /**
- * Sign the proof transaction with a local private key. Wallet protocols return
- * the same kind of signed transaction. Returns the signed transaction as hex.
+ * Sign a proof request with a local private key. Wallet protocols return the
+ * same kind of signed transaction. Returns the signed transaction as hex.
  */
-export function signTxProof(
+export function signTxProofRequest(
   privateKey: Uint8Array,
-  record: BindingRecord,
+  request: TxProofRequest,
   options: { signature?: TxProofSignature } = {},
 ): string {
-  const request = buildTxProofRequest(record);
-  const input = request.transaction.inputs[0]!;
+  const input = request.transaction.inputs[0];
+  if (request.transaction.inputs.length !== 1 || input === undefined) {
+    throw new Error("a proof request has exactly one input");
+  }
   const result = generateTransaction({
     version: request.transaction.version,
     locktime: request.transaction.locktime,
@@ -136,9 +138,19 @@ export function signTxProof(
       },
     ],
   });
-  if (!result.success)
+  if (!result.success) {
     throw new Error(`could not build transaction proof: ${JSON.stringify(result)}`);
+  }
   return bytesToHex(encodeTransaction(result.transaction));
+}
+
+/** Build the proof request for a record and sign it with a local private key. */
+export function signTxProof(
+  privateKey: Uint8Array,
+  record: BindingRecord,
+  options: { signature?: TxProofSignature } = {},
+): string {
+  return signTxProofRequest(privateKey, buildTxProofRequest(record), options);
 }
 
 interface P2pkhUnlock {
