@@ -13,3 +13,29 @@ main {
   margin: 0 auto;
   padding: 1.5rem;
 }
+
+fieldset {
+  border: 1px solid color-mix(in srgb, currentColor 30%, transparent);
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+  padding: 0.75rem 1rem;
+}
+
+fieldset label {
+  display: block;
+  margin: 0.25rem 0;
+}
+
+.warning,
+.banner {
+  border: 1px solid #c05600;
+  border-radius: 0.5rem;
+  background: color-mix(in srgb, #c05600 12%, transparent);
+  padding: 0.75rem 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
