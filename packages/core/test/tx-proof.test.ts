@@ -259,3 +259,51 @@ describe("verifyTxProof: rejections", () => {
     });
   });
 });
+
+describe("verifyTxProof: proofs signed by real wallets", () => {
+  interface WalletVectors {
+    cases: { name: string; record: unknown; transaction: string; hashType: string }[];
+  }
+  const wallets = JSON.parse(
+    readFileSync(
+      new URL("../../../spec/vectors/bch-tx-proof-wallets.json", import.meta.url),
+      "utf8",
+    ),
+  ) as WalletVectors;
+
+  for (const vector of wallets.cases) {
+    const walletRecord = parseBinding(vector.record);
+
+    it(`accepts: ${vector.name}`, () => {
+      expect(verifyTxProof(walletRecord, vector.transaction)).toEqual({ ok: true });
+    });
+
+    it(`rebuilds the request the wallet was sent: ${vector.name}`, () => {
+      const request = buildTxProofRequest(walletRecord);
+      const signed = decode(vector.transaction);
+      expect(signed.inputs[0]!.outpointTransactionHash).toEqual(
+        request.transaction.inputs[0]!.outpointTransactionHash,
+      );
+      expect(signed.outputs).toEqual(request.transaction.outputs);
+    });
+
+    it(`rejects it for another binding: ${vector.name}`, () => {
+      const other = { ...walletRecord, createdAt: walletRecord.createdAt + 1 };
+      expect(verifyTxProof(other, vector.transaction).ok).toBe(false);
+    });
+
+    it(`rejects it with a changed key hash: ${vector.name}`, () => {
+      const other = { ...walletRecord, bch: { ...walletRecord.bch, keyHash: "00".repeat(20) } };
+      expect(verifyTxProof(other, vector.transaction).ok).toBe(false);
+    });
+
+    it(`rejects a flipped signature byte: ${vector.name}`, () => {
+      const tampered = mutate(vector.transaction, (tx) => {
+        const script = Uint8Array.from(tx.inputs[0]!.unlockingBytecode);
+        script[5] = script[5]! ^ 1;
+        tx.inputs[0]!.unlockingBytecode = script;
+      });
+      expect(verifyTxProof(walletRecord, tampered).ok).toBe(false);
+    });
+  }
+});
