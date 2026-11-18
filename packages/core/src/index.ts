@@ -26,3 +26,12 @@ export {
   parseBinding,
 } from "./binding.js";
 export type { BindingRecord, BuildBindingInput } from "./binding.js";
+export { base64ToBytes, bytesToBase64 } from "./bytes.js";
+export {
+  bchProofMessage,
+  bitcoinMessageHash,
+  recoverMessageKeyHash,
+  signBitcoinMessage,
+  verifyMessageProof,
+} from "./bch-message.js";
+export type { VerifyResult } from "./result.js";
