@@ -11,8 +11,8 @@ export default defineConfig({
   use: { baseURL: PREVIEW_URL, trace: "retain-on-failure" },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {
-    // Build once, then serve the built page as users get it.
-    command: "npx vite build && npx vite preview",
+    // The same processes `npm run demo` starts: local relay, verifier and built page.
+    command: "node ../../scripts/demo.mjs",
     url: PREVIEW_URL,
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
