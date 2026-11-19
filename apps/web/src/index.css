@@ -69,3 +69,27 @@ label textarea {
   background: white;
   border-radius: 0.5rem;
 }
+
+.facts {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+}
+
+.facts dt {
+  font-weight: 600;
+}
+
+.facts dd {
+  margin: 0;
+}
+
+.verified {
+  border-left: 4px solid #2e7d32;
+  padding-left: 0.75rem;
+}
+
+pre.wrap {
+  white-space: pre-wrap;
+  font-size: 0.85rem;
+}
