@@ -17,7 +17,7 @@ import { BindingPanel } from "../src/components/BindingPanel";
 import { DiscoverPanel } from "../src/components/DiscoverPanel";
 import { LoginPanel } from "../src/components/LoginPanel";
 import { RelaySettings } from "../src/components/RelaySettings";
-import { LOCAL_RELAY, selectedRelays, type RelayChoice } from "../src/relays";
+import { selectedRelays, SITE_RELAYS, type RelayChoice } from "../src/relays";
 import { createTestBchSigner, type ConnectedBchSigner } from "../src/signers/bch";
 import { createMemorySigner } from "../src/signers/nostr";
 import type { WizardConnectSession } from "../src/signers/wizardconnect";
@@ -39,7 +39,7 @@ async function realBinding() {
 
 describe("RelaySettings", () => {
   function Harness() {
-    const [choice, setChoice] = useState<RelayChoice>({ local: true, public: false });
+    const [choice, setChoice] = useState<RelayChoice>({ site: true, public: false });
     return (
       <>
         <RelaySettings choice={choice} onChange={setChoice} />
@@ -48,10 +48,12 @@ describe("RelaySettings", () => {
     );
   }
 
-  it("starts with the local relay only and makes public relays opt-in", async () => {
+  it("starts with the site's relays only and makes public relays opt-in", async () => {
     const user = userEvent.setup();
     render(<Harness />);
-    expect(screen.getByRole("status", { hidden: true }).textContent ?? "").toBe(LOCAL_RELAY);
+    expect(screen.getByRole("status", { hidden: true }).textContent ?? "").toBe(
+      SITE_RELAYS.join(" "),
+    );
     await user.click(screen.getByRole("checkbox", { name: /Public relays/ }));
     expect(screen.getByText(/visible to everyone/)).toBeTruthy();
     expect(document.querySelector("output")?.textContent).toContain("wss://");

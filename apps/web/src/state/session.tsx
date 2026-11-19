@@ -7,7 +7,7 @@ import { SessionContext, type Session } from "./session-context";
 
 export function SessionProvider({ children }: { children: ReactNode }) {
   const [network, setNetwork] = useState<BchNetwork>("chipnet");
-  const [relayChoice, setRelayChoice] = useState<RelayChoice>({ local: true, public: false });
+  const [relayChoice, setRelayChoice] = useState<RelayChoice>({ site: true, public: false });
   const [nostr, setNostrState] = useState<ConnectedNostrSigner | null>(null);
   const [bch, setBchState] = useState<ConnectedBchSigner | null>(null);
   const [binding, setBinding] = useState<VerifiedBinding | null>(null);

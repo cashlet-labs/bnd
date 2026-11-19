@@ -8,3 +8,10 @@ coverage/
 *.local
 playwright-report/
 test-results/
+
+# Deployment: the VPS scripts and their settings stay on this machine.
+deploy/deploy.env
+deploy/deploy.env.example
+deploy/scripts/*
+!deploy/scripts/test-deploy.sh
+vps-deploy/

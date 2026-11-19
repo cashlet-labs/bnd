@@ -54,7 +54,7 @@ const env = {
   BND_RELAYS: relayUrl,
   BND_MIN_RELAYS: "1",
   VERIFIER_URL: `http://127.0.0.1:${VERIFIER_PORT}`,
-  VITE_LOCAL_RELAY: relayUrl,
+  VITE_RELAYS: relayUrl,
 };
 
 function run(command, args, options = {}) {

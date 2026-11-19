@@ -375,6 +375,28 @@ describe("verifier: request handling", () => {
     expect(statuses).toEqual([200, 200, 200, 429]);
   });
 
+  it("ignores a client-sent address header unless told to trust one", async () => {
+    const { verifier } = await env({ challengesPerMinute: 2 });
+    const statuses = [];
+    for (let i = 0; i < 3; i++) {
+      const headers = { "X-Real-Ip": `203.0.113.${i}` };
+      statuses.push((await fetch(`${verifier.url}/challenge`, { headers })).status);
+    }
+    expect(statuses).toEqual([200, 200, 429]);
+  });
+
+  it("limits per address from a trusted proxy header", async () => {
+    const { verifier } = await env({ challengesPerMinute: 2, clientIpHeader: "X-Real-Ip" });
+    const ask = async (ip?: string) =>
+      (await fetch(`${verifier.url}/challenge`, ip ? { headers: { "x-real-ip": ip } } : {})).status;
+    expect([await ask("203.0.113.1"), await ask("203.0.113.1"), await ask("203.0.113.1")]).toEqual([
+      200, 200, 429,
+    ]);
+    expect(await ask("203.0.113.2")).toBe(200);
+    // Without the header, the connection's address is used.
+    expect([await ask(), await ask(), await ask()]).toEqual([200, 200, 429]);
+  });
+
   it("answers unknown routes and methods with 404", async () => {
     const { verifier } = await env();
     expect((await fetch(`${verifier.url}/health`)).status).toBe(404);

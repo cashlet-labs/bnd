@@ -3,13 +3,13 @@ import {
   connectBunker as defaultConnectBunker,
   connectNip07,
   createMemorySigner,
-  DEFAULT_NOSTR_CONNECT_RELAYS,
   findNip07Provider,
   startNostrConnect as defaultStartNostrConnect,
   type ConnectedNostrSigner,
   type Nip07Provider,
   type NostrConnectRequest,
 } from "../signers/nostr";
+import { NOSTR_CONNECT_RELAYS } from "../relays";
 import { QrCode } from "./QrCode";
 
 export interface NostrSignerPanelProps {
@@ -44,7 +44,7 @@ export function NostrSignerPanel({
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [bunkerLink, setBunkerLink] = useState("");
-  const [relays, setRelays] = useState(DEFAULT_NOSTR_CONNECT_RELAYS.join("\n"));
+  const [relays, setRelays] = useState(NOSTR_CONNECT_RELAYS.join("\n"));
   const [pending, setPending] = useState<NostrConnectRequest | null>(null);
   const [authUrl, setAuthUrl] = useState<string | null>(null);
   const pendingRef = useRef<NostrConnectRequest | null>(null);
