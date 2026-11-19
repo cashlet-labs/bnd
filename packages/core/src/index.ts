@@ -52,13 +52,25 @@ export {
   buildBindingEventTemplate,
   createBinding,
   createNostrKeySigner,
+  createRevocation,
+  createSuccessor,
+  historyAfter,
   parseBindingEvent,
-  pickCurrentBinding,
+  resolveIdentity,
   verifyBinding,
 } from "./binding-event.js";
 export type {
+  Approvers,
   BindingEnvelope,
+  BindingForm,
   CreateBindingOptions,
+  CreateRevocationOptions,
+  CreateSuccessorOptions,
+  HistoryStep,
+  VerifyBindingOptions,
+  IdentityKey,
+  IdentityState,
+  ParsedBinding,
   NostrSigner,
   ParsedBindingEvent,
   VerifiedBinding,
@@ -101,3 +113,13 @@ export type {
 } from "./auth.js";
 export { ChallengeStoreFullError, MemoryChallengeStore } from "./challenge-store.js";
 export type { ChallengeStore, MemoryChallengeStoreOptions } from "./challenge-store.js";
+export {
+  APPROVAL_D_TAG,
+  APPROVAL_EVENT_KIND,
+  approvalEventTemplate,
+  MAX_HISTORY,
+  SUCCESSOR_TAG,
+  successionStatement,
+  verifyApprovalSignature,
+} from "./succession.js";
+export type { ApprovalRole, Approvals } from "./succession.js";

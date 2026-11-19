@@ -1,5 +1,7 @@
 import {
   createBinding,
+  createRevocation,
+  createSuccessor,
   createKeySigner,
   createNostrKeySigner,
   deriveBchKey,
@@ -26,6 +28,20 @@ async function bind(createdAt: number, bch = bch0, key = nostr): Promise<Verifie
     bchKeyHash: bch.keyHash,
     network: "chipnet",
     proofType: "message",
+    createdAt,
+  });
+}
+
+/** Replace `previous` with a new BCH key, approved by both previous keys. */
+async function rotateBch(previous: VerifiedBinding, createdAt: number, bch = bch1) {
+  return createSuccessor({
+    previous: previous.event,
+    nostrSigner: createNostrKeySigner(nostr.privateKey),
+    bchSigner: createKeySigner(bch.privateKey),
+    bchKeyHash: bch.keyHash,
+    network: "chipnet",
+    proofType: "message",
+    approvers: { bch: { signer: createKeySigner(bch0.privateKey), proofType: "message" } },
     createdAt,
   });
 }
@@ -129,20 +145,17 @@ describe("checkCurrentBinding", () => {
   it("rejects when a relay holds a newer binding", async () => {
     const { relays, options } = world({ [A]: "relay", [B]: "relay" });
     const old = await bind(1_700_000_000);
-    const newer = await bind(1_700_000_100, bch1);
+    const newer = await rotateBch(old, 1_700_000_100);
     relays[A]!.seed(old.event);
     relays[B]!.seed(newer.event);
     const result = await checkCurrentBinding(old, { ...options, relays: [A, B] });
-    expect(result).toMatchObject({
-      ok: false,
-      reason: "a newer binding exists for this Nostr key",
-    });
+    expect(result).toMatchObject({ ok: false, reason: "a newer binding replaces this one" });
   });
 
   it("accepts when other relays still hold an older binding", async () => {
     const { relays, options } = world({ [A]: "relay", [B]: "relay" });
     const old = await bind(1_700_000_000);
-    const current = await bind(1_700_000_100, bch1);
+    const current = await rotateBch(old, 1_700_000_100);
     relays[A]!.seed(old.event);
     relays[B]!.seed(current.event);
     expect((await checkCurrentBinding(current, { ...options, relays: [A, B] })).ok).toBe(true);
@@ -167,16 +180,57 @@ describe("checkCurrentBinding", () => {
     expect((await checkCurrentBinding(mine, { ...options, relays: [A, B] })).ok).toBe(true);
   });
 
-  it("rejects a binding that loses a time tie to a lower event ID", async () => {
+  it("rejects both sides of a dispute: two first bindings for one key", async () => {
     const { relays, options } = world({ [A]: "relay", [B]: "relay" });
     const x = await bind(1_700_000_000, bch0);
-    const y = await bind(1_700_000_000, bch1);
-    const [winner, loser] = x.event.id < y.event.id ? [x, y] : [y, x];
-    relays[A]!.seed(loser.event);
-    relays[B]!.seed(winner.event);
-    expect(await checkCurrentBinding(loser, { ...options, relays: [A, B] })).toMatchObject({
+    const y = await bind(1_700_000_100, bch1);
+    relays[A]!.seed(x.event);
+    relays[B]!.seed(y.event);
+    const disputed = "conflicting bindings exist for this Nostr key; the identity is disputed";
+    for (const binding of [x, y]) {
+      expect(await checkCurrentBinding(binding, { ...options, relays: [A, B] })).toMatchObject({
+        ok: false,
+        reason: disputed,
+      });
+    }
+  });
+
+  it("finds a successor under a new Nostr key through its s tag", async () => {
+    const { relays, options } = world({ [A]: "relay", [B]: "relay" });
+    const old = await bind(1_700_000_000);
+    const moved = await createSuccessor({
+      previous: old.event,
+      nostrSigner: createNostrKeySigner(stranger.privateKey),
+      bchSigner: createKeySigner(bch0.privateKey),
+      bchKeyHash: bch0.keyHash,
+      network: "chipnet",
+      proofType: "message",
+      approvers: { nostr: createNostrKeySigner(nostr.privateKey) },
+      createdAt: 1_700_000_100,
+    });
+    relays[A]!.seed(old.event);
+    relays[B]!.seed(moved.event);
+    expect(await checkCurrentBinding(old, { ...options, relays: [A, B] })).toMatchObject({
       ok: false,
-      reason: "a newer binding exists for this Nostr key",
+      reason: "a newer binding replaces this one",
+    });
+    expect((await checkCurrentBinding(moved, { ...options, relays: [A, B] })).ok).toBe(true);
+  });
+
+  it("rejects a revoked identity", async () => {
+    const { relays, options } = world({ [A]: "relay", [B]: "relay" });
+    const old = await bind(1_700_000_000);
+    const revocation = await createRevocation({
+      previous: old.event,
+      signer: createNostrKeySigner(nostr.privateKey),
+      approvers: { bch: { signer: createKeySigner(bch0.privateKey), proofType: "message" } },
+      createdAt: 1_700_000_100,
+    });
+    relays[A]!.seed(old.event);
+    relays[B]!.seed(revocation.event);
+    expect(await checkCurrentBinding(old, { ...options, relays: [A, B] })).toMatchObject({
+      ok: false,
+      reason: "this identity has been revoked",
     });
   });
 
@@ -213,13 +267,13 @@ describe("checkCurrentBinding with NIP-65 relay lists", () => {
   it("finds a newer binding that only the user's relay holds", async () => {
     const { relays, options } = world({ [A]: "relay", [B]: "relay", [U]: "relay" });
     const old = await bind(1_700_000_000);
-    const newer = await bind(1_700_000_100, bch1);
+    const newer = await rotateBch(old, 1_700_000_100);
     relays[A]!.seed(old.event);
     relays[A]!.seed(relayList([["r", U, "write"]]));
     relays[U]!.seed(newer.event);
     expect(await checkCurrentBinding(old, { ...options, relays: [A, B] })).toMatchObject({
       ok: false,
-      reason: "a newer binding exists for this Nostr key",
+      reason: "a newer binding replaces this one",
     });
   });
 

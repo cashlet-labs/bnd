@@ -66,6 +66,12 @@ gone.
 The demo verifier checks logins against the local relay only. A binding published
 only to public relays cannot be used to log in to it.
 
+The verifier also refuses a binding that has been replaced, revoked or disputed
+(spec section 9), and remembers the binding each Nostr key last logged in with.
+A later login must use that binding or one that continues it, so a thief who
+replaces a binding on the relays cannot log in with the replacement. These pins
+are kept in memory and forgotten when the verifier restarts.
+
 ## Configuration
 
 `npm run demo` reads `.env` in the repository root if it exists (copy

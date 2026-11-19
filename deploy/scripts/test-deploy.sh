@@ -62,8 +62,13 @@ for _ in $(seq 1 31); do codes+="$(status /challenge -H 'X-Real-Ip: 198.51.100.1
 check "31st challenge from one address is refused" test "${codes##* 200 }" = "429 "
 check "another address still gets one" test "$(status /challenge -H 'X-Real-Ip: 198.51.100.2')" = 200
 
-# compose prints ":0" for a port that is not published.
-check "the verifier has no host port" test "$(compose port verifier 8787 2>/dev/null || true)" = ":0"
+# Docker lists a HostPort for every published port. Compose versions differ in
+# what `compose port` prints for an unpublished one, so ask Docker directly.
+ports() { docker inspect -f '{{json .NetworkSettings.Ports}}' "$(compose ps -q "$1")"; }
+verifier_ports=$(ports verifier)
+web_ports=$(ports web)
+check "the verifier has no host port" sh -c "! printf '%s' '$verifier_ports' | grep -q HostPort"
+check "the page is published on loopback only" sh -c "printf '%s' '$web_ports' | grep -q '\"HostIp\":\"127.0.0.1\",\"HostPort\":\"8088\"'"
 
 if [ "$failures" -gt 0 ]; then
   echo "$failures check(s) failed" >&2

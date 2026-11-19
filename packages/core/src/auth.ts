@@ -10,7 +10,12 @@ import {
 } from "./bch-proof.js";
 import { CHAIN_IDS, type BchNetwork } from "./bch.js";
 import { bindingAddress, bindingId, type BindingRecord } from "./binding.js";
-import { verifyBinding, type NostrSigner, type VerifiedBinding } from "./binding-event.js";
+import {
+  verifyBinding,
+  type NostrSigner,
+  type VerifiedBinding,
+  type VerifyBindingOptions,
+} from "./binding-event.js";
 import { bytesToHex, isHex } from "./bytes.js";
 import type { ChallengeStore } from "./challenge-store.js";
 import {
@@ -229,6 +234,7 @@ export async function createLoginResponse(
   const clock = options.now ?? (() => Math.floor(Date.now() / 1000));
   const verified = verifyBinding(options.binding);
   if (!verified.ok) throw new Error(`binding is invalid: ${verified.reason}`);
+  if (verified.form === "revocation") throw new Error("this identity has been revoked");
   if ((await options.nostrSigner.getPublicKey()) !== verified.nostrPublicKey) {
     throw new Error("the Nostr signer is not the key in the binding");
   }
@@ -291,11 +297,13 @@ export function checkLoginResponse(
   challenge: AuthChallenge,
   response: LoginResponse,
   now: number,
+  options: VerifyBindingOptions = {},
 ): VerifyResult & { binding?: VerifiedBinding } {
   if (now > challenge.expiresAt) return fail("challenge has expired");
 
-  const binding = verifyBinding(response.binding);
+  const binding = verifyBinding(response.binding, options);
   if (!binding.ok) return fail(`binding is invalid: ${binding.reason}`);
+  if (binding.form === "revocation") return fail("this identity has been revoked");
 
   const event = response.event;
   if (!verifyEventSignature(event)) return fail("login event signature is invalid");
@@ -337,6 +345,8 @@ export interface VerifyLoginOptions {
    * used up. A failure counts as a failed attempt.
    */
   isCurrent?: (binding: VerifiedBinding) => VerifyResult | Promise<VerifyResult>;
+  /** Bindings verified before, whose history need not be checked again. */
+  checkpoints?: ReadonlySet<string>;
 }
 
 function parseLoginResponse(value: unknown): LoginResponse | string {
@@ -391,7 +401,12 @@ export async function verifyLogin(
     return { ok: false, reason };
   };
 
-  const checked = checkLoginResponse(challenge, response, now);
+  const checked = checkLoginResponse(
+    challenge,
+    response,
+    now,
+    options.checkpoints === undefined ? {} : { checkpoints: options.checkpoints },
+  );
   if (!checked.ok || checked.binding === undefined) {
     return rejected(checked.ok ? "binding missing" : checked.reason);
   }

@@ -6,7 +6,9 @@ Anyone can discover the binding on Nostr relays and verify it without a
 central identity provider.
 
 Status: work in progress. The protocol specification is in
-[`spec/BND-1.md`](spec/BND-1.md), with test vectors in `spec/vectors/`.
+[`spec/BND-1.md`](spec/BND-1.md), with test vectors in `spec/vectors/`. Bindings can be
+replaced (rotating either key), recovered with an optional recovery key, and
+revoked; each change needs two of the three keys (section 9).
 
 ## Try it
 

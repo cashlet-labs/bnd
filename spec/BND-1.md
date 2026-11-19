@@ -1,6 +1,7 @@
 # BND-1: BCH–Nostr Identity Binding
 
-Status: draft. Sections marked TODO are filled in by later changes.
+Status: draft. The format may still change before version 1 is final; the
+`bnd-core` release notes say which draft each release implements.
 
 BND-1 binds one Bitcoin Cash P2PKH key to one Nostr key. Each key signs a
 statement about the other, so a verifier can confirm that one party controls
@@ -15,6 +16,9 @@ both. The keys are independent and no private key leaves its owner.
 | Binding event kind  | `30078` (NIP-78)             |
 | Binding `d` tag     | `bnd1`                       |
 | Key hash tag        | `b`                          |
+| Successor tag       | `s`                          |
+| Approval `d` tag    | `bnd1-approval`              |
+| History limit       | 32 steps                     |
 | Nostr key path      | `m/44'/1237'/<account>'/0/0` |
 | Canonical encoding  | JSON Canonicalization Scheme |
 
@@ -23,6 +27,7 @@ range 30000–39999). It needs no registration, and public relays accept it
 (see section 6). The fixed `d` tag keeps binding events apart from other
 applications' NIP-78 data and means a Nostr key has at most one live binding:
 a newer event with the same kind, key and `d` tag replaces the older one.
+Because relays replace it, a binding carries its own history (section 9.3).
 
 ## 2. Canonical encoding
 
@@ -47,8 +52,17 @@ one person. It is a JSON object with exactly these members:
 | `bch.keyHash`     | string  | 20-byte HASH160 of the compressed BCH public key, lowercase hex |
 | `createdAt`       | integer | Unix time in seconds, greater than zero                         |
 | `previous`        | string  | Optional. ID of the binding this one replaces (32-byte hex)     |
+| `recovery`        | object  | Optional. `{ "publicKey": <32-byte x-only key, hex> }` (9.4)    |
+| `revoked`         | boolean | Optional. `true` only: this record is a revocation (9.5)        |
 
 Unknown members are an error, at any depth. A verifier MUST NOT ignore them.
+
+A record without `previous` is a first binding (a root). A record with
+`previous` replaces the binding with that ID and is valid only as section 9
+allows. `revoked` requires `previous`, and a revocation names no recovery key.
+The recovery key MUST differ from the Nostr key, and its compressed forms
+(`02` or `03` followed by the key) MUST NOT hash to `bch.keyHash`: one key
+cannot count as two of the three approvals.
 
 The BCH key is identified by its HASH160 and network, not by an address string.
 The plain `q…` form and the token-aware `z…` form of a P2PKH address name the
@@ -202,7 +216,7 @@ Section 9 covers replacement.
 
 A binding is published as one Nostr event. The Nostr key's own signature on the
 event is the Nostr half of the binding, and the BCH proof in the content is the
-BCH half. The event has exactly this form:
+BCH half. A first binding has exactly this form:
 
 ```text
 kind:        30078
@@ -213,14 +227,27 @@ content:     canonical JSON of { "bchProof": <proof>, "record": <record> }
 id, sig:     NIP-01 event ID and BIP-340 signature
 ```
 
-The tags are exactly those two, in that order. The `b` tag holds the 20-byte BCH
+A successor and a revocation (section 9) differ in their content and tags:
+
+| Form       | Content members                              | Tags                                  |
+| ---------- | -------------------------------------------- | ------------------------------------- |
+| root       | `bchProof`, `record`                         | `d`, `b`                              |
+| successor  | `approvals`, `bchProof`, `history`, `record` | `d`, `b`, `["s","<record.previous>"]` |
+| revocation | `approvals`, `history`, `record`             | `d`, `b`, `["s","<record.previous>"]` |
+
+The form follows from the record: no `previous` is a root, `revoked` is a
+revocation, anything else with `previous` is a successor. A revocation is
+signed by the previous Nostr key or the previous recovery key (9.5); every
+other binding is signed by `record.nostr.publicKey`.
+
+The tags are exactly those listed, in that order. The `b` tag holds the 20-byte BCH
 key hash as lowercase hex. Relays index single-letter tags, so a `b` filter finds
 the Nostr identities that claim a BCH key. A claim without a valid BCH proof
 fails verification, so a false claim has no effect except to be ignored.
 
 The content is the canonical encoding from section 2, of an object with
-exactly the two members `bchProof` and `record`. Verifiers compare the event
-text to the canonical form, so one binding has one text form.
+exactly the members listed for its form. Verifiers compare the event text to
+the canonical form, so one binding has one text form.
 
 A Nostr signer receives an event template and returns the signed event. The
 interface matches NIP-07, so a browser extension or any signer that can sign
@@ -241,18 +268,25 @@ A Nostr key can also be found from a BCH key: `{ "kinds": [30078], "#b": ["<key 
 Results of the second query are claims, not facts, and each one MUST be
 verified.
 
+A key's successors are found by the binding ID they replace, whoever signed
+them: `{ "kinds": [30078], "#s": ["<binding id>"] }`. A client follows these
+from the newest bindings it has found until no new ones appear, so a binding
+that was replaced under a new Nostr key, or revoked, is seen even where relays
+still hold the old one.
+
 A client queries several relays, verifies every event, ignores the invalid ones,
-and takes the newest valid binding by `created_at`. When two events have the
-same time, the lower event ID wins, as on relays. Relays are untrusted: they can
-withhold events or serve old ones, so asking more than one relay is the only
-defence against a stale answer. A verifier never trusts what a relay says
+and resolves the identity as section 9.6 describes. Relays are untrusted: they
+can withhold events or serve old ones, so asking more than one relay is the
+only defence against a stale answer. A verifier never trusts what a relay says
 about validity.
 
 At the time of writing, a test event of this form was accepted and returned by
 `#d` and `#b` queries on public relays, including `nos.lol`, `relay.primal.net`,
 `offchain.pub`, `nostr.mom`, `relay.snort.social` and `relay.damus.io`.
 
-TODO: revocation and succession (sections 6 and 9).
+Bindings are not deleted. NIP-09 deletions of binding events do not revoke
+anything; revocation is a signed record (9.5). Relays that enforce succession
+(9.8) refuse deletions of bindings.
 
 ## 7. Verification
 
@@ -266,15 +300,17 @@ every step below passes, and reports the first failure:
 4. The event's author equals `record.nostr.publicKey`, its time equals
    `record.createdAt`, and its tags are exactly the two in section 5.
 5. The NIP-01 event ID matches the event and the BIP-340 signature is valid.
-6. The BCH proof is valid for the record under section 4.1 or 4.2.
+6. The BCH proof is valid for the record under section 4.1 or 4.2. A revocation
+   has none.
+7. For a successor or revocation, the history is valid and was approved by
+   two keys at every step (section 9).
 
 Both signatures are required. An event with a valid BCH proof and no valid Nostr
 signature is not a binding, and neither is the reverse. A verifier reports
 which proof type the BCH key gave.
 
-Newest-wins discovery (section 6) is safe only until succession rules exist. A
-holder of the Nostr key alone could publish a newer binding to a different
-BCH key. Section 9 will require authorization from the keys being replaced.
+Verification of one event says nothing about whether it is current. That needs
+the relays: section 9.6 for discovery, section 8.7 for logins.
 
 ## 8. Authentication
 
@@ -416,17 +452,22 @@ A login uses the user's current binding, which the verifier confirms on relays.
 It asks the relays it is configured with and the user's NIP-65 write relays
 (8.8), verifies every event it receives, and decides:
 
-| Relay answers                                               | Result                         |
-| ----------------------------------------------------------- | ------------------------------ |
-| fewer complete answers than the configured minimum          | reject: could not check        |
-| enough answers, the presented binding found on none of them | reject: not published          |
-| found, and no relay holds a newer valid binding for the key | accept                         |
-| a relay holds a newer valid binding for the key             | reject: a newer binding exists |
+It asks for the key's bindings (`authors` and `#d`) and for successors of the
+presented binding (`#s`), and decides:
 
-The default minimum is 2 complete answers. "Newer" uses the rule in section 6:
-later `created_at`, or the lower event ID on a tie. Relays that still serve an
-older binding do not matter, because the presented one was found elsewhere.
-Relays cannot make this check pass with forged events, only fail.
+| Relay answers                                               | Result                              |
+| ----------------------------------------------------------- | ----------------------------------- |
+| fewer complete answers than the configured minimum          | reject: could not check             |
+| enough answers, the presented binding found on none of them | reject: not published               |
+| a valid successor of the presented binding exists           | reject: a newer binding replaces it |
+| a valid revocation of it exists                             | reject: revoked                     |
+| a valid binding for the key on another chain exists         | reject: disputed                    |
+| found, and none of the above                                | accept                              |
+
+The default minimum is 2 complete answers. Relays that still serve an older
+binding do not matter: it is in the presented binding's history. Relays cannot
+make this check pass with forged events, only fail. A verifier SHOULD also
+apply its pins (9.7) before asking relays.
 
 ### 8.8 User relay lists
 
@@ -450,8 +491,174 @@ Test vectors: `spec/vectors/auth.json`.
 
 ## 9. Key rotation and recovery
 
-TODO.
+A binding can be replaced by a successor: to rotate the Nostr key, the BCH key
+or both, to add or change a recovery key, or to recover after losing a key. It
+can also be revoked. No single key can do either.
+
+### 9.1 Two of three
+
+A successor or revocation is valid only if at least two keys of the binding it
+replaces approved it. Those keys are the previous Nostr key, the previous BCH
+key, and the previous recovery key if the previous record named one. Without a
+recovery key, both the Nostr key and the BCH key must approve.
+
+A key approves in one of two ways:
+
+- **Implicitly**, by signing the new event (the previous Nostr or recovery key
+  as its author), or for the previous BCH key, when the new record keeps the
+  same BCH key and network, through the new binding's own BCH proof.
+- **Explicitly**, with an entry in `approvals` (9.2). An explicit approval that
+  is present MUST be valid, even if the key also approved implicitly.
+
+A successor MUST be newer than the binding it replaces: `createdAt` strictly
+greater. Nothing can follow a revocation.
+
+### 9.2 Approvals
+
+`approvals` is an object with any of the members `nostr`, `bch` and
+`recovery`; others are an error.
+
+The Nostr and recovery keys approve by signing an approval event, which is
+never published. Every field follows from the records, so only its BIP-340
+signature (64 bytes, lowercase hex) is carried:
+
+```text
+kind:        30078
+pubkey:      the approving key
+created_at:  the new record's createdAt
+tags:        [["d","bnd1-approval"], ["s","<new binding id>"]]
+content:     ""
+```
+
+Any NIP-07 or NIP-46 signer can sign it. A relay that stores bindings refuses
+it, because its `d` tag is not `bnd1`.
+
+The BCH key approves with a message or transaction proof (section 4) of the
+succession statement. The message text is:
+
+```text
+bnd/1/succession
+action: <replace|revoke>
+binding: <new binding id>
+replaces: <previous binding id>
+bch: <previous BCH address>
+created: <new createdAt>
+```
+
+A transaction proof commits to the new binding ID with the tag `bns1` and the
+outpoint domain `bnd/1/virtual-utxo-succession\n`. Binding proofs, logins and
+approvals use different texts, tags and domains, so none can be passed off as
+another. In particular, the previous BCH key's public binding proof is not an
+approval.
+
+### 9.3 History
+
+Relays keep only a key's newest binding, so a successor carries the bindings
+before it. `history` is a list of steps, oldest first, one per binding the new
+one descends from. Like a block header in SPV, a step holds only what is needed
+to check it:
+
+```json
+{ "record": <record>, "bchProof": <proof>, "approvals": <approvals>, "sig": "<64-byte hex>" }
+```
+
+The first step is a root and has no `approvals`. Steps are never revocations.
+Each step's record names the step before by binding ID, and the new record names
+the last step, so the history is a hash-linked chain.
+
+`sig` is the step's binding event signature by its record's Nostr key. A
+verifier rebuilds that event from the step and the steps before it (its content
+is the step's form of section 5, with `history` set to the earlier steps), then
+checks the signature, the BCH proof, and the step's approvals against the step
+before. A change to any step breaks the signatures of every later step.
+
+A history holds at most 32 steps. With transaction proofs at every step, the
+event is about 46 KB, under the 64 KB that relays commonly accept. After 32
+steps the owner starts again with a new Nostr key.
+
+A verifier MAY skip checking steps up to a binding it has fully verified
+before (a checkpoint, such as a pin in 9.7). It still checks every later step.
+
+### 9.4 Recovery key
+
+A record may name a recovery key: an x-only secp256k1 key used with BIP-340, the
+same kind as a Nostr key. It is meant to be kept offline. It counts as one of the
+three keys in 9.1, so it can stand in for a lost or stolen key. On its own it
+can do nothing.
+
+A recovery key derived from the same mnemonic as the other keys protects only
+against the loss or theft of one key, not of the mnemonic. A separate one, such
+as a paper key, protects against both.
+
+### 9.5 Revocation
+
+A revocation is a record with `revoked: true` and `previous`, naming the same
+Nostr key, BCH key and network as the binding it revokes. It has no BCH proof
+and needs two approvals. Its event is signed by the previous Nostr key or the
+previous recovery key, so it can be published when the Nostr key is stolen.
+
+After a revocation the identity has no current binding. Logins with it, or
+with any binding before it, are refused.
+
+### 9.6 Resolving an identity
+
+A client resolves an identity from all valid bindings it found that name the
+key, or that have a step naming it, in their record:
+
+1. A binding that appears in another binding's history is old and ignored.
+2. If one binding remains, it is the identity's head. If it is a revocation, the
+   identity is revoked; otherwise the head is its current binding. The head may
+   use different keys from the one asked about, when that key was rotated away.
+3. If more than one remains, the identity is **disputed**: two chains claim it.
+   A key was stolen, or the owner bound the same key twice. A disputed identity
+   MUST NOT be used until a successor approved by two keys settles it.
+
+A Nostr key's first binding is its only root. Every later binding for it must be
+a successor; a second root is a dispute, not a replacement.
+
+Anchoring on BCH (Phase 11) will add one rule: in a dispute, a chain whose
+bindings are anchored in BCH transactions wins over one that is not. Until
+then, disputes are not settled automatically.
+
+### 9.7 Pinning
+
+A verifier SHOULD remember, for each Nostr key, the newest binding it accepted,
+and refuse a later binding for the key that neither is that binding nor carries
+it in its history. A thief who wipes the real binding from relays then still
+cannot use the identity with this verifier.
+
+### 9.8 Relays that enforce succession
+
+A relay MAY enforce succession for the bindings it stores:
+
+- it accepts a binding for a Nostr key only if it holds none for the key, or the
+  new one carries the stored one in its history; and
+- it refuses deletions (NIP-09) of binding events.
+
+A thief holding only a Nostr key then cannot overwrite or delete the real
+binding on that relay. Verifiers SHOULD ask such relays first.
+
+Test vectors: `spec/vectors/succession.json`.
 
 ## 10. Security considerations
 
-TODO.
+| A key is…               | What a thief or the loss can do                                                                                                                                                                    |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Nostr key stolen        | Cannot take over: a successor needs a second key. Can publish a second root or a made-up history, which makes a dispute, and can wipe the real binding from relays that do not enforce succession. |
+| BCH key stolen          | Cannot move the identity. Can claim the BCH key from another Nostr key, which makes that BCH key disputed.                                                                                         |
+| Recovery key stolen     | Nothing on its own.                                                                                                                                                                                |
+| Two of the three stolen | Takeover. 2 of 3 is the limit of what the protocol can tell apart.                                                                                                                                 |
+| One key lost            | With a recovery key: replace it, approved by the other two. Without one: it cannot be replaced; start a new identity.                                                                              |
+
+Remaining limits:
+
+- A verifier that has no pin for an identity, and asks only relays from which
+  a thief holding the Nostr key wiped the real binding, cannot see the fork and
+  accepts the thief's chain. Pins (9.7), relays that enforce succession (9.8)
+  and, later, anchoring close this.
+- `createdAt` is chosen by the signer. A thief can backdate a root. Resolution
+  does not use time to pick between chains, so backdating gains nothing beyond
+  the dispute.
+- Relays can withhold events. Asking several relays, including ones that
+  enforce succession, is the defence; a verifier fails closed when too few
+  answer.

@@ -3,6 +3,7 @@ import {
   createKeySigner,
   createLoginResponse,
   createNostrKeySigner,
+  createSuccessor,
   deriveBchKey,
   deriveNostrKey,
   type AuthChallenge,
@@ -19,6 +20,7 @@ const MNEMONIC = "leader monkey parrot ring guide accident before fence cannon h
 const nostr = deriveNostrKey(MNEMONIC);
 const bch = deriveBchKey(MNEMONIC);
 const bch1 = deriveBchKey(MNEMONIC, 0, 1);
+const thiefBch = deriveBchKey(MNEMONIC, 0, 20);
 const nostrSigner = createNostrKeySigner(nostr.privateKey);
 const bchSigner = createKeySigner(bch.privateKey);
 
@@ -69,6 +71,20 @@ async function bind(createdAt: number, key = bch): Promise<VerifiedBinding> {
   });
 }
 
+/** Replace `previous` with the second BCH key, approved by both previous keys. */
+async function rotate(previous: VerifiedBinding, createdAt: number): Promise<VerifiedBinding> {
+  return createSuccessor({
+    previous: previous.event,
+    nostrSigner,
+    bchSigner: createKeySigner(bch1.privateKey),
+    bchKeyHash: bch1.keyHash,
+    network: "chipnet",
+    proofType: "message",
+    approvers: { bch: { signer: bchSigner, proofType: "message" } },
+    createdAt,
+  });
+}
+
 async function publish(binding: VerifiedBinding, relays: DevRelay[]): Promise<void> {
   const result = await publishBinding(binding.event, { relays: relays.map((r) => r.url) });
   if (!result.ok) throw new Error("publish failed");
@@ -83,14 +99,19 @@ async function getChallenge(base: string, level?: string): Promise<AuthChallenge
 async function login(
   base: string,
   binding: VerifiedBinding,
-  options: { level?: string; proofType?: BchProofType; headers?: Record<string, string> } = {},
+  options: {
+    level?: string;
+    proofType?: BchProofType;
+    headers?: Record<string, string>;
+    bchKey?: typeof bch;
+  } = {},
 ) {
   const challenge = await getChallenge(base, options.level);
   const body = await createLoginResponse({
     challenge,
     binding: binding.event,
     nostrSigner,
-    bchSigner,
+    bchSigner: options.bchKey ? createKeySigner(options.bchKey.privateKey) : bchSigner,
     ...(challenge.level === "dual" ? { proofType: options.proofType ?? "message" } : {}),
     expectedOrigin: base,
   });
@@ -158,17 +179,58 @@ describe("verifier: full login flow over real relays", () => {
     expect(logs[0]?.npub).toBeUndefined();
   });
 
-  it("refuses an old binding once a newer one is published", async () => {
+  it("refuses an old binding once a successor is published", async () => {
     const { verifier, relays } = await env();
     const now = Math.floor(Date.now() / 1000);
     const old = await bind(now - 120);
     await publish(old, [relays[0]!]);
-    await publish(await bind(now - 60, bch1), [relays[1]!]);
+    await publish(await rotate(old, now - 60), [relays[1]!]);
     const response = await login(verifier.url, old);
     expect(response.status).toBe(401);
     expect(((await response.json()) as { error: string }).error).toBe(
-      "binding is not current: a newer binding exists for this Nostr key",
+      "binding is not current: a newer binding replaces this one",
     );
+  });
+
+  describe("pinning", () => {
+    it("refuses a thief's binding that replaced the real one on every relay", async () => {
+      const { verifier, relays } = await env();
+      const now = Math.floor(Date.now() / 1000);
+      const real = await bind(now - 120);
+      await publish(real, relays);
+      expect((await login(verifier.url, real)).status).toBe(200);
+      // With the Nostr key alone, the thief publishes a newer first binding to
+      // their own BCH key. Relays keep the newest, so the real one is gone.
+      const fake = await bind(now - 60, thiefBch);
+      await publish(fake, relays);
+      const response = await login(verifier.url, fake, { bchKey: thiefBch });
+      expect(response.status).toBe(401);
+      expect(((await response.json()) as { error: string }).error).toBe(
+        "binding is not current: this binding does not continue the one this service accepted before for the same key",
+      );
+    });
+
+    it("without pins, the same attack succeeds: pins are what stop it", async () => {
+      const { verifier, relays } = await env({ pinStore: false });
+      const now = Math.floor(Date.now() / 1000);
+      const real = await bind(now - 120);
+      await publish(real, relays);
+      expect((await login(verifier.url, real)).status).toBe(200);
+      const fake = await bind(now - 60, thiefBch);
+      await publish(fake, relays);
+      expect((await login(verifier.url, fake, { bchKey: thiefBch })).status).toBe(200);
+    });
+
+    it("accepts a successor of the pinned binding", async () => {
+      const { verifier, relays } = await env();
+      const now = Math.floor(Date.now() / 1000);
+      const first = await bind(now - 120);
+      await publish(first, relays);
+      expect((await login(verifier.url, first)).status).toBe(200);
+      const next = await rotate(first, now - 60);
+      await publish(next, relays);
+      expect((await login(verifier.url, next, { bchKey: bch1 })).status).toBe(200);
+    });
   });
 
   it("refuses when too few relays answer", async () => {

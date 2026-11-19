@@ -1,0 +1,531 @@
+{
+  "description": "Succession vectors for BND-1 section 9. Valid events must verify with the stated form, history and approvals. Invalid events must fail with the stated reason. Resolution cases list event IDs from `events`; resolving them for the key must give the stated status and head(s). BIP-340 signatures use random auxiliary data, so the events are fixed here rather than reproducible.",
+  "mnemonic": "leader monkey parrot ring guide accident before fence cannon height naive bean",
+  "valid": [
+    {
+      "name": "rotate the BCH key",
+      "event": {
+        "id": "611d232fd3e9cf2c6ee4d7b298d1e3ef592938abf5b4d5265c0cde53036c346a",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"signature\":\"INGJLCo92UdiHofA5cXWqWnoLAMxB8QkTp0nn7mRen79ZRVLA5Tu265iQR01iVu04pEgc/NMr5Hpm4iFL64fTeU=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "ff3819b780770339195577ea44a38979b43c99557afa8acc5d0cd7022751e9b8d3dd30121c28710000dd7adce5a4b21071817aaef8ca168f3f8173a0583c6065"
+      },
+      "bindingId": "8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730",
+      "form": "successor",
+      "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "history": ["4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"],
+      "approvedBy": ["nostr", "bch"]
+    },
+    {
+      "name": "rotate the Nostr key",
+      "event": {
+        "id": "3e8ac590b6a513339008048cd45d9ebf943b06ae0c38d4075825b865c0b5aab8",
+        "pubkey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{\"nostr\":\"22ef300ac144b50f821f5f839fc5bc72174848a4bd71906d27ba524a45ff599a6b39e7ec57069d818ed82b36079e1a7d99047881f97592fc22b317fb0c787787\"},\"bchProof\":{\"signature\":\"ICJMloei9d+4vkFWLqY++2m4QD+RpXbSaeb3gEDcxvTyW85KH4yjPU+TWhcxgN8pNZswXuy7G0HqYYw7Aa6wNeY=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "1405141c677c59aa95b2bfe46cd665cadbeef0fe5f71736f41d0f80cb08363d7370158218ab919a9348e82dc1c2048d58f0e879beff02bf23c7f4102d7843449"
+      },
+      "bindingId": "11fb25e695c36e717532abf80a3590fedfcf3828149936aca2311cca119e8606",
+      "form": "successor",
+      "nostrPublicKey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+      "history": ["4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"],
+      "approvedBy": ["nostr", "bch"]
+    },
+    {
+      "name": "rotate the BCH key, approved by a transaction proof",
+      "event": {
+        "id": "29847c6f1722dba3775712f34fc3f0a069378e3c3b28e1aca7ca66160b383732",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"transaction\":\"02000000011278bebc295b062911536647f6bdfa2a1269fea67ea9ec1c51470eee70058ec50000000064412e9f974ac51b5540ab4078567c2cba647924ff7fb3c7cc8543348c123a317a61df3fa9d7014effc935d15234a714f2495dc5eaeb13ca131021113d685b6ad9d161210311d80ff3477934ba5147193e238e03b70fb6ac694ad7f68167b828bc29e58496ffffffff010000000000000000266a24626e73318eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb173000000000\",\"type\":\"tx\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "54fb8b6c744f60d4ebb4e14d5abd88f92e5827221b09db29577ea2992fa30a58932dea5a9f3dd15f9b45095df8c97e3e2069627b3937e48293c3cae4ecc4247e"
+      },
+      "bindingId": "8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730",
+      "form": "successor",
+      "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "history": ["4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"],
+      "approvedBy": ["nostr", "bch"]
+    },
+    {
+      "name": "recover from a lost Nostr key with the recovery key",
+      "event": {
+        "id": "10cbcf61a0e93bdc449b4b1226ceaf721c1aa6003f83b5a514b64100b31ebc5a",
+        "pubkey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"]
+        ],
+        "content": "{\"approvals\":{\"recovery\":\"ed426aa942dc7548547a16818702d5c8ff3e3b92aff0eccf2fd79bd1a6a8c44251cab69ce501383a785e775eb18e685c29876fb6e90e7e8cf0ca1fbfa4a60322\"},\"bchProof\":{\"signature\":\"H9Kg7oh+rM00EM/NzrH0O7GFNDQUP0Y+QiEdu4TrVIF/KV41pdNo2rt7C0G3/WxaSL7PtU582ZGM7Kx9lzZ7PQ8=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"6143401777cc09c59a0d6d5649de3432ce80b01082b020e591e247b05d718d145fb4d2ddf6cfbc0b888fe0b079767d23195c7ae675f505bca70d048c3c357281\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "abb5b8db41d4aef1ffc0d220d46d535f36a6855e90d7490f34052de123002cdd84fd9128f2d5cf4dad5c525ba3492f628e63190dd107a65a108b1fa036d4a8dd"
+      },
+      "bindingId": "2a0938841cf00ec3c9a6dcc0345b8203f5759266b5d9000afd69f1582afbdf61",
+      "form": "successor",
+      "nostrPublicKey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+      "history": ["5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"],
+      "approvedBy": ["bch", "recovery"]
+    },
+    {
+      "name": "two steps of history",
+      "event": {
+        "id": "fdf0ba3eb5886fde6e9887c465a17a3d95d23b9ce7948ccd2fbabd42cc241eba",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000200,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "a9bd60d8300db8f755ba2b3638c79a02f00e8e52"],
+          ["s", "8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"signature\":\"HxzNOz8WCIwe3fm5GvZyvwu2O+1n3qxyjUOubO+afUlBdu4sinqj1RVJvrHWJgD3G3y/4UQ4uOHrywT1mlbrseE=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPkdnVJdzX+Nq9cMPNv8cMwFaSukCoJZ5eJU+7J6usicCBnKy08SFqZgcqbS1P/rRemY8qgDuSga40tZdJ2i/IY=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"},{\"approvals\":{\"bch\":{\"signature\":\"INGJLCo92UdiHofA5cXWqWnoLAMxB8QkTp0nn7mRen79ZRVLA5Tu265iQR01iVu04pEgc/NMr5Hpm4iFL64fTeU=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1},\"sig\":\"ff3819b780770339195577ea44a38979b43c99557afa8acc5d0cd7022751e9b8d3dd30121c28710000dd7adce5a4b21071817aaef8ca168f3f8173a0583c6065\"}],\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700000200,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "d65c24622cda3d61404fc5a9e6f0e35ac45c3917a6ca1e7b037bc4cf789b8b7ab5b9a3d2394b7e22ea4ce68e9663cc1c2df5f000540070d51cab43b889374b96"
+      },
+      "bindingId": "a9136c08f71a17c7bd65076b958845adc886fed21905beab55747e9fbd558405",
+      "form": "successor",
+      "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "history": [
+        "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db",
+        "8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730"
+      ],
+      "approvedBy": ["nostr", "bch"]
+    },
+    {
+      "name": "revocation by the Nostr key",
+      "event": {
+        "id": "ecfa89cb29887435bbffdf91d01d1476e36808e2786822bbdbf76d8bdeb021fd",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"signature\":\"IPke0lyZGA9FJJyDNxCy/Nh5PNU0koqs4M12w8gwv6n1OkCTQNvNik6sOLAGhNZspFXM+px5mpbd1fOqNS4Adbk=\",\"type\":\"message\"}},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"revoked\":true,\"version\":1}}",
+        "sig": "29c8e5ca19bfba8a0e67df31996e0def3ab4f7146ef481e0f0a8d61594cf23b785845327d3db9cf6f21657cd69942269d30096446f205ae7067a3524f169e3f5"
+      },
+      "bindingId": "5b1236e3570644f1867d52eb594c047a057dce3da9ac0ea763fca2aafe6272ab",
+      "form": "revocation",
+      "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "history": ["4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"],
+      "approvedBy": ["nostr", "bch"]
+    },
+    {
+      "name": "revocation signed by the recovery key",
+      "event": {
+        "id": "c640635dd914661bd09969e63aa9ae69ec4010bf4fc06e76ad922540c4f4fee6",
+        "pubkey": "a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"signature\":\"IJXN6bQkqDqKsQ/6is510E1soTLrXu9w8nn+BqpJqBNTL4zj9Wluw4W/sDuJ76kgi2nD6wnAAI9YuqUrKkCkNR4=\",\"type\":\"message\"}},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"6143401777cc09c59a0d6d5649de3432ce80b01082b020e591e247b05d718d145fb4d2ddf6cfbc0b888fe0b079767d23195c7ae675f505bca70d048c3c357281\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"revoked\":true,\"version\":1}}",
+        "sig": "e2a8283112c2e83a34243649d3404fbeef1f1017802282ddfcf0dbaa292078991b01a18099fb062426a4776a83500d3eb18d74738c4380e071346e26a6aea1e7"
+      },
+      "bindingId": "513142dbfdec244d05da9ae7277f484f839658879d3d96f09565c1871b86e2d4",
+      "form": "revocation",
+      "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "history": ["5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"],
+      "approvedBy": ["bch", "recovery"]
+    }
+  ],
+  "invalid": [
+    {
+      "name": "stolen Nostr key alone rebinds to another BCH key",
+      "event": {
+        "id": "6a4467f00444a75febb2d764effa276cb9e618ae37e25f0acf2d576e5a3e29a9",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "d5c08c4094d72ab024035f287e86a1646046892d"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{},\"bchProof\":{\"signature\":\"IBK/qWBQBvaL7nC6U6DCiNHDKPW9NVPTNt4xipENDWruM+LXuam9fmPSNUCAUc2j2hViq8nMFwwnfFq12akQsWA=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"d5c08c4094d72ab024035f287e86a1646046892d\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "c764cbadea0aec0aaab7d887d1acc5e23ef84e02277312b0b6309cf657723306347309e4b94f307eb2b2987c8ab4c3a759f7e795923e5597429e0c57b6deabbb"
+      },
+      "reason": "needs approval from two keys of the previous binding, got only the nostr key"
+    },
+    {
+      "name": "stolen BCH key alone moves the identity to another Nostr key",
+      "event": {
+        "id": "5fc8e1093abeca1480c88389d1635255b8f587c49487c2105f325d662374de2f",
+        "pubkey": "9f129b0701ba39cb9199f50b088c1959ebb95ef821348b4ce643052e0c3402e4",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{},\"bchProof\":{\"signature\":\"IDNj5Br6OUBHmF0u5PTRfsquOibtP+Sgya+nLyNyDL7YGXcAZBdoeGoEhl+ChJ3KAG9YMnntZovLpUO9ZKOXhNQ=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"9f129b0701ba39cb9199f50b088c1959ebb95ef821348b4ce643052e0c3402e4\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "1caabf9c9aa842b4e298fa01ba0072a6f7c432bd9fdf3f52710b36961b965f08b2deceddc10f871ebaa3be1e05046bbc9fc0595eb5948d6e2350d7d069a727ed"
+      },
+      "reason": "needs approval from two keys of the previous binding, got only the bch key"
+    },
+    {
+      "name": "old binding proof replayed as the BCH approval",
+      "event": {
+        "id": "7b01475bb1c585fef8189b93e98e53b8900651f6615797162237acc0048d962c",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "d5c08c4094d72ab024035f287e86a1646046892d"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IBK/qWBQBvaL7nC6U6DCiNHDKPW9NVPTNt4xipENDWruM+LXuam9fmPSNUCAUc2j2hViq8nMFwwnfFq12akQsWA=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"d5c08c4094d72ab024035f287e86a1646046892d\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "5c76d5a6f95da4dae8895c301b3f01445031d5012b42282860fdee0a225b3193797dab0173a470ed934d962861cbd72c6e0d4bc8a9efb205cd38513db2991e2a"
+      },
+      "reason": "BCH key approval is invalid: message proof was not signed by the bound BCH key"
+    },
+    {
+      "name": "approval signature for another successor",
+      "event": {
+        "id": "5f82ba9f80b6418d796a0ce6212b40dc82cdaa83fc272cb71782c4b6df22bd9d",
+        "pubkey": "9f129b0701ba39cb9199f50b088c1959ebb95ef821348b4ce643052e0c3402e4",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{\"nostr\":\"22ef300ac144b50f821f5f839fc5bc72174848a4bd71906d27ba524a45ff599a6b39e7ec57069d818ed82b36079e1a7d99047881f97592fc22b317fb0c787787\"},\"bchProof\":{\"signature\":\"IDNj5Br6OUBHmF0u5PTRfsquOibtP+Sgya+nLyNyDL7YGXcAZBdoeGoEhl+ChJ3KAG9YMnntZovLpUO9ZKOXhNQ=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"9f129b0701ba39cb9199f50b088c1959ebb95ef821348b4ce643052e0c3402e4\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "10accec8269ee967dddc5c91ab411258de3ea4ce090a342a36e533663e143d59be7e428ad58de0bead9ae10b65caaa6ea423273ce49691979e0a804092177679"
+      },
+      "reason": "Nostr key approval is invalid: approval signature is invalid"
+    },
+    {
+      "name": "successor without its s tag",
+      "event": {
+        "id": "88e58a7cd49f6cc12165b731140ea3e44846519d10caf9aab1a8ae9fe7fe2a8a",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"signature\":\"INGJLCo92UdiHofA5cXWqWnoLAMxB8QkTp0nn7mRen79ZRVLA5Tu265iQR01iVu04pEgc/NMr5Hpm4iFL64fTeU=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "8b323c867373705313e9a457b258403044907ca33f8b43654f71cf94c2f5b525a54d84e9a0358d878c2f91f1b26b38a8644f1de20b9da2c67ee3c4bf31a80d08"
+      },
+      "reason": "event tags are not the required d, b and s tags"
+    },
+    {
+      "name": "successor not newer than the binding it replaces",
+      "event": {
+        "id": "49a637682dbc5abbf5684d3c81b8bb0ceae42e556986e4b4b90d259affc6f314",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000000,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{},\"bchProof\":{\"signature\":\"H6u9EqQQXeC8ZcfMVK3H4PfjyuKO6VB2Pwh28hSNA3JdEApmPNf6YWtIC0GPYrrm/gjmxa0jfLIJfS/Ab0PIAmQ=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "06f13175e858987ed29b745d056ccd1b1fb5d3b357eb39b1234d8a5f33b7f0114dc97525b9a486e6c2b1e93b4a0ba1c0b59cc64451035a6a1fbf950e518b338a"
+      },
+      "reason": "a binding must be newer than the one it replaces"
+    },
+    {
+      "name": "unknown approvals member",
+      "event": {
+        "id": "819a6d97c4904d48eafaa55c67f59cfb33df36f4466d28c6460c591b36b2049f",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{\"witness\":\"x\"},\"bchProof\":{\"signature\":\"H0rhF8CvjfNWoP0IziNons3Ikxa63NASCSUPQFINQjWSC9MYPQ+4s0GdLEwoPxune7XKxEZwTODCCR/ZZhyXktE=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "c14ecfa3f1278b21b596e3fa82cb12497bdfdf6b3332845b2ace4039a521f50c4457d0117475895561dcec94585c7042a3c027ea40eedbd4e27b5d1a41af2468"
+      },
+      "reason": "invalid binding content: approvals.witness is not allowed"
+    },
+    {
+      "name": "history step with a broken signature",
+      "event": {
+        "id": "1df9ad226ec3d807142e24dcf35f6384d904dc335fe657ecc6f5c7c0cb62bbda",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000200,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "a9bd60d8300db8f755ba2b3638c79a02f00e8e52"],
+          ["s", "8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730"]
+        ],
+        "content": "{\"approvals\":{\"bch\":{\"signature\":\"HxzNOz8WCIwe3fm5GvZyvwu2O+1n3qxyjUOubO+afUlBdu4sinqj1RVJvrHWJgD3G3y/4UQ4uOHrywT1mlbrseE=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPkdnVJdzX+Nq9cMPNv8cMwFaSukCoJZ5eJU+7J6usicCBnKy08SFqZgcqbS1P/rRemY8qgDuSga40tZdJ2i/IY=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000\"},{\"approvals\":{\"bch\":{\"signature\":\"INGJLCo92UdiHofA5cXWqWnoLAMxB8QkTp0nn7mRen79ZRVLA5Tu265iQR01iVu04pEgc/NMr5Hpm4iFL64fTeU=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1},\"sig\":\"ff3819b780770339195577ea44a38979b43c99557afa8acc5d0cd7022751e9b8d3dd30121c28710000dd7adce5a4b21071817aaef8ca168f3f8173a0583c6065\"}],\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700000200,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730\",\"protocol\":\"bnd\",\"version\":1}}",
+        "sig": "c48514a2c21beb5e87dd0135ea43753aa1e6558d1702fb02704b137b39babecd8aa1c90837d4eb33e67ea4347acdc24144cfbcf71288406ce2cf5182fce88e80"
+      },
+      "reason": "history step 1: Nostr signature is invalid"
+    },
+    {
+      "name": "revocation without a second approval",
+      "event": {
+        "id": "ff8c6560a5177594e3ea9e2ab198dd1564d7e37e95d825b82da4b7814fcab0ef",
+        "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+        "created_at": 1700000100,
+        "kind": 30078,
+        "tags": [
+          ["d", "bnd1"],
+          ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+          ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+        ],
+        "content": "{\"approvals\":{},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"revoked\":true,\"version\":1}}",
+        "sig": "72fbca094e5dac9e748edcb91f51f44102e9e59dba072f62e87722c67698359c1fa5dcbc1d1209f162d8f56475526f396c05560b3b919dfe3e292af5ba285fd0"
+      },
+      "reason": "needs approval from two keys of the previous binding, got only the nostr key"
+    }
+  ],
+  "events": {
+    "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9": {
+      "id": "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000000,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"]
+      ],
+      "content": "{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704"
+    },
+    "611d232fd3e9cf2c6ee4d7b298d1e3ef592938abf5b4d5265c0cde53036c346a": {
+      "id": "611d232fd3e9cf2c6ee4d7b298d1e3ef592938abf5b4d5265c0cde53036c346a",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+        ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"signature\":\"INGJLCo92UdiHofA5cXWqWnoLAMxB8QkTp0nn7mRen79ZRVLA5Tu265iQR01iVu04pEgc/NMr5Hpm4iFL64fTeU=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "ff3819b780770339195577ea44a38979b43c99557afa8acc5d0cd7022751e9b8d3dd30121c28710000dd7adce5a4b21071817aaef8ca168f3f8173a0583c6065"
+    },
+    "3e8ac590b6a513339008048cd45d9ebf943b06ae0c38d4075825b865c0b5aab8": {
+      "id": "3e8ac590b6a513339008048cd45d9ebf943b06ae0c38d4075825b865c0b5aab8",
+      "pubkey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+        ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+      ],
+      "content": "{\"approvals\":{\"nostr\":\"22ef300ac144b50f821f5f839fc5bc72174848a4bd71906d27ba524a45ff599a6b39e7ec57069d818ed82b36079e1a7d99047881f97592fc22b317fb0c787787\"},\"bchProof\":{\"signature\":\"ICJMloei9d+4vkFWLqY++2m4QD+RpXbSaeb3gEDcxvTyW85KH4yjPU+TWhcxgN8pNZswXuy7G0HqYYw7Aa6wNeY=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "1405141c677c59aa95b2bfe46cd665cadbeef0fe5f71736f41d0f80cb08363d7370158218ab919a9348e82dc1c2048d58f0e879beff02bf23c7f4102d7843449"
+    },
+    "29847c6f1722dba3775712f34fc3f0a069378e3c3b28e1aca7ca66160b383732": {
+      "id": "29847c6f1722dba3775712f34fc3f0a069378e3c3b28e1aca7ca66160b383732",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+        ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"transaction\":\"02000000011278bebc295b062911536647f6bdfa2a1269fea67ea9ec1c51470eee70058ec50000000064412e9f974ac51b5540ab4078567c2cba647924ff7fb3c7cc8543348c123a317a61df3fa9d7014effc935d15234a714f2495dc5eaeb13ca131021113d685b6ad9d161210311d80ff3477934ba5147193e238e03b70fb6ac694ad7f68167b828bc29e58496ffffffff010000000000000000266a24626e73318eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb173000000000\",\"type\":\"tx\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "54fb8b6c744f60d4ebb4e14d5abd88f92e5827221b09db29577ea2992fa30a58932dea5a9f3dd15f9b45095df8c97e3e2069627b3937e48293c3cae4ecc4247e"
+    },
+    "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5": {
+      "id": "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000000,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"]
+      ],
+      "content": "{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+      "sig": "6143401777cc09c59a0d6d5649de3432ce80b01082b020e591e247b05d718d145fb4d2ddf6cfbc0b888fe0b079767d23195c7ae675f505bca70d048c3c357281"
+    },
+    "10cbcf61a0e93bdc449b4b1226ceaf721c1aa6003f83b5a514b64100b31ebc5a": {
+      "id": "10cbcf61a0e93bdc449b4b1226ceaf721c1aa6003f83b5a514b64100b31ebc5a",
+      "pubkey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+        ["s", "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"]
+      ],
+      "content": "{\"approvals\":{\"recovery\":\"ed426aa942dc7548547a16818702d5c8ff3e3b92aff0eccf2fd79bd1a6a8c44251cab69ce501383a785e775eb18e685c29876fb6e90e7e8cf0ca1fbfa4a60322\"},\"bchProof\":{\"signature\":\"H9Kg7oh+rM00EM/NzrH0O7GFNDQUP0Y+QiEdu4TrVIF/KV41pdNo2rt7C0G3/WxaSL7PtU582ZGM7Kx9lzZ7PQ8=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"6143401777cc09c59a0d6d5649de3432ce80b01082b020e591e247b05d718d145fb4d2ddf6cfbc0b888fe0b079767d23195c7ae675f505bca70d048c3c357281\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "abb5b8db41d4aef1ffc0d220d46d535f36a6855e90d7490f34052de123002cdd84fd9128f2d5cf4dad5c525ba3492f628e63190dd107a65a108b1fa036d4a8dd"
+    },
+    "fdf0ba3eb5886fde6e9887c465a17a3d95d23b9ce7948ccd2fbabd42cc241eba": {
+      "id": "fdf0ba3eb5886fde6e9887c465a17a3d95d23b9ce7948ccd2fbabd42cc241eba",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000200,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "a9bd60d8300db8f755ba2b3638c79a02f00e8e52"],
+        ["s", "8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"signature\":\"HxzNOz8WCIwe3fm5GvZyvwu2O+1n3qxyjUOubO+afUlBdu4sinqj1RVJvrHWJgD3G3y/4UQ4uOHrywT1mlbrseE=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPkdnVJdzX+Nq9cMPNv8cMwFaSukCoJZ5eJU+7J6usicCBnKy08SFqZgcqbS1P/rRemY8qgDuSga40tZdJ2i/IY=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"},{\"approvals\":{\"bch\":{\"signature\":\"INGJLCo92UdiHofA5cXWqWnoLAMxB8QkTp0nn7mRen79ZRVLA5Tu265iQR01iVu04pEgc/NMr5Hpm4iFL64fTeU=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"INXo73e/J+dqc7V4f52DGgIrycVar29xaIF2XfG3wqaLKOOYtNA8GTKK7GzV/hqODKlug+JAk0vj2SwlXxniDZc=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"version\":1},\"sig\":\"ff3819b780770339195577ea44a38979b43c99557afa8acc5d0cd7022751e9b8d3dd30121c28710000dd7adce5a4b21071817aaef8ca168f3f8173a0583c6065\"}],\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700000200,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"8eead7ffad10e66a7dae1a5edf09aee0f7a4dbdbc40c6d53534dfa29a1bb1730\",\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "d65c24622cda3d61404fc5a9e6f0e35ac45c3917a6ca1e7b037bc4cf789b8b7ab5b9a3d2394b7e22ea4ce68e9663cc1c2df5f000540070d51cab43b889374b96"
+    },
+    "ecfa89cb29887435bbffdf91d01d1476e36808e2786822bbdbf76d8bdeb021fd": {
+      "id": "ecfa89cb29887435bbffdf91d01d1476e36808e2786822bbdbf76d8bdeb021fd",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+        ["s", "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"signature\":\"IPke0lyZGA9FJJyDNxCy/Nh5PNU0koqs4M12w8gwv6n1OkCTQNvNik6sOLAGhNZspFXM+px5mpbd1fOqNS4Adbk=\",\"type\":\"message\"}},\"history\":[{\"bchProof\":{\"signature\":\"IHRGIM7QOItVA6lhkjK2lR/BU8YhDVK9PP6T37XJP944IZtCwyf6Np91y7jXm00kH7wddkVBwwVg6ZVymlJsdYM=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"015f431368b733cb28e024e497000baceb1686df2214b83bdfd0c6f749457de0ca4b9f6b496e0e4bfa1b6b8bc7b44b539e8e124af8761c663ff87f2939d71704\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db\",\"protocol\":\"bnd\",\"revoked\":true,\"version\":1}}",
+      "sig": "29c8e5ca19bfba8a0e67df31996e0def3ab4f7146ef481e0f0a8d61594cf23b785845327d3db9cf6f21657cd69942269d30096446f205ae7067a3524f169e3f5"
+    },
+    "c640635dd914661bd09969e63aa9ae69ec4010bf4fc06e76ad922540c4f4fee6": {
+      "id": "c640635dd914661bd09969e63aa9ae69ec4010bf4fc06e76ad922540c4f4fee6",
+      "pubkey": "a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"],
+        ["s", "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"signature\":\"IJXN6bQkqDqKsQ/6is510E1soTLrXu9w8nn+BqpJqBNTL4zj9Wluw4W/sDuJ76kgi2nD6wnAAI9YuqUrKkCkNR4=\",\"type\":\"message\"}},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"6143401777cc09c59a0d6d5649de3432ce80b01082b020e591e247b05d718d145fb4d2ddf6cfbc0b888fe0b079767d23195c7ae675f505bca70d048c3c357281\"}],\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"revoked\":true,\"version\":1}}",
+      "sig": "e2a8283112c2e83a34243649d3404fbeef1f1017802282ddfcf0dbaa292078991b01a18099fb062426a4776a83500d3eb18d74738c4380e071346e26a6aea1e7"
+    },
+    "ca58bac19f5b7f8eaba553651a700f084710b75e077bf196c2556c8be30e0df7": {
+      "id": "ca58bac19f5b7f8eaba553651a700f084710b75e077bf196c2556c8be30e0df7",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000500,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "d5c08c4094d72ab024035f287e86a1646046892d"]
+      ],
+      "content": "{\"bchProof\":{\"signature\":\"IBLhdB7pYkKf2vFRMTbSXFLdVbXgjl3lJu/1l/CDglVMMHGKcEv9gWJmL+tNlquZiQ5gFXAyP/Mntn5z5MK4vL8=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"d5c08c4094d72ab024035f287e86a1646046892d\",\"network\":\"chipnet\"},\"createdAt\":1700000500,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "b4c940b27d5f7004a7869c2e44cfbbf2a296b981ebb926556382f278ed6327e4f83fdb61e5caf5390e956a9d6b80cc6169166738ffa19b3e0929bdcc9ea2c236"
+    },
+    "b2da3a5f40a1559ee0e6c0f1dd23851d19ce4903db6165748eadfd3c940da16d": {
+      "id": "b2da3a5f40a1559ee0e6c0f1dd23851d19ce4903db6165748eadfd3c940da16d",
+      "pubkey": "9f129b0701ba39cb9199f50b088c1959ebb95ef821348b4ce643052e0c3402e4",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"]
+      ],
+      "content": "{\"bchProof\":{\"signature\":\"IIifzOgGJQAVYrky1I/6xZRB5Ke946JfMstRsl47M4SkLYoQSqDG6Y90iIsIZPVfTQASvXQmezf1WRLcl8fFu1Y=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"9f129b0701ba39cb9199f50b088c1959ebb95ef821348b4ce643052e0c3402e4\"},\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "adc254a24b59f751d68356c059dfcca408a707395bd7160cec00dbaf1acc5cf70f5abb015782629e399bb8c48f732bc515c39ce41fb2983f56f61db764b106f2"
+    }
+  },
+  "resolution": [
+    {
+      "name": "a lagging relay still holds the first binding",
+      "events": [
+        "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9",
+        "fdf0ba3eb5886fde6e9887c465a17a3d95d23b9ce7948ccd2fbabd42cc241eba"
+      ],
+      "key": {
+        "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+      },
+      "status": "current",
+      "head": "a9136c08f71a17c7bd65076b958845adc886fed21905beab55747e9fbd558405"
+    },
+    {
+      "name": "the Nostr key was rotated away",
+      "events": [
+        "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9",
+        "3e8ac590b6a513339008048cd45d9ebf943b06ae0c38d4075825b865c0b5aab8"
+      ],
+      "key": {
+        "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+      },
+      "status": "current",
+      "head": "11fb25e695c36e717532abf80a3590fedfcf3828149936aca2311cca119e8606"
+    },
+    {
+      "name": "revoked",
+      "events": [
+        "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9",
+        "ecfa89cb29887435bbffdf91d01d1476e36808e2786822bbdbf76d8bdeb021fd"
+      ],
+      "key": {
+        "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+      },
+      "status": "revoked",
+      "head": "5b1236e3570644f1867d52eb594c047a057dce3da9ac0ea763fca2aafe6272ab"
+    },
+    {
+      "name": "a second root for the same Nostr key",
+      "events": [
+        "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9",
+        "ca58bac19f5b7f8eaba553651a700f084710b75e077bf196c2556c8be30e0df7"
+      ],
+      "key": {
+        "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+      },
+      "status": "disputed",
+      "heads": [
+        "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db",
+        "2e9be776f67995b67c4cd4dc887d6c5bb38232ccc8d90febab9ef2aba5792b6a"
+      ]
+    },
+    {
+      "name": "another Nostr key claims the BCH key",
+      "events": [
+        "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9",
+        "b2da3a5f40a1559ee0e6c0f1dd23851d19ce4903db6165748eadfd3c940da16d"
+      ],
+      "key": {
+        "bchKeyHash": "ec5d7e6bd9df6939c541334c665ee5dee911a724"
+      },
+      "status": "disputed",
+      "heads": [
+        "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db",
+        "78510b008ba7e03338bad9e8bf7e86d9582daa15ce230ef7e5fe53f67acd2d27"
+      ]
+    },
+    {
+      "name": "the same claim, asked by the owner's Nostr key",
+      "events": [
+        "6825b6f0da423b627fda4d3055541d3bcc2b2230791074dde7910cbf81b9cda9",
+        "b2da3a5f40a1559ee0e6c0f1dd23851d19ce4903db6165748eadfd3c940da16d"
+      ],
+      "key": {
+        "nostrPublicKey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+      },
+      "status": "current",
+      "head": "4dfb726015da9691e49824a751e7c199f8302398fe531defbe732afb2ae396db"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 import {
   canonicalize,
   createBinding,
+  createSuccessor,
   createKeySigner,
   createNostrKeySigner,
   deriveBchKey,
@@ -184,11 +185,21 @@ describe("discoverBinding against untrusted relays", () => {
   it("finds the newest binding when one relay serves a stale one", async () => {
     const { relays, options } = network();
     const old = await bind(nostr0, bch0, { createdAt: 1_700_000_000 });
-    const current = await bind(nostr0, bch1, { createdAt: 1_700_000_100 });
+    const current = await createSuccessor({
+      previous: old.event,
+      nostrSigner: createNostrKeySigner(nostr0.privateKey),
+      bchSigner: createKeySigner(bch1.privateKey),
+      bchKeyHash: bch1.keyHash,
+      network: "chipnet",
+      proofType: "message",
+      approvers: { bch: { signer: createKeySigner(bch0.privateKey), proofType: "message" } },
+      createdAt: 1_700_000_100,
+    });
     relays["wss://a.test"]!.seed(old.event);
     relays["wss://b.test"]!.seed(current.event);
     const found = await discoverBinding(nostr0.publicKey, options);
     expect(found.binding?.bindingId).toBe(current.bindingId);
+    expect(found.state.status).toBe("current");
   });
 
   it("returns the stale binding when no relay has the newer one", async () => {
@@ -296,17 +307,42 @@ describe("discoverByBchKeyHash", () => {
     expect(found.bindings.map((b) => b.nostrPublicKey)).toEqual([nostr0.publicKey]);
   });
 
-  it("lists several Nostr keys that each proved control, newest first", async () => {
+  it("reports a dispute when two Nostr keys claim one BCH key, oldest first", async () => {
     const { options } = network();
     const a = await bind(nostr0, bch0, { createdAt: 1_700_000_000 });
     const b = await bind(nostr1, bch0, { createdAt: 1_700_000_900, proofType: "tx" });
     await publishBinding(a.event, options);
     await publishBinding(b.event, options);
     const found = await discoverByBchKeyHash(bch0.keyHash, options);
+    expect(found.state.status).toBe("disputed");
     expect(found.bindings.map((x) => x.nostrPublicKey)).toEqual([
-      nostr1.publicKey,
       nostr0.publicKey,
+      nostr1.publicKey,
     ]);
+  });
+
+  it("follows a BCH key that was rotated away to its successor", async () => {
+    const { relays, options } = network();
+    const old = await bind(nostr0, bch0, { createdAt: 1_700_000_000 });
+    const rotated = await createSuccessor({
+      previous: old.event,
+      nostrSigner: createNostrKeySigner(nostr0.privateKey),
+      bchSigner: createKeySigner(bch1.privateKey),
+      bchKeyHash: bch1.keyHash,
+      network: "chipnet",
+      proofType: "message",
+      approvers: { bch: { signer: createKeySigner(bch0.privateKey), proofType: "message" } },
+      createdAt: 1_700_000_100,
+    });
+    // One relay is stale and still serves the old binding for the old BCH key.
+    relays["wss://a.test"]!.seed(old.event);
+    relays["wss://b.test"]!.seed(rotated.event);
+    const found = await discoverByBchKeyHash(bch0.keyHash, options);
+    expect(found.state).toMatchObject({
+      status: "current",
+      binding: { bindingId: rotated.bindingId },
+    });
+    expect(found.bindings).toEqual([]);
   });
 
   it("rejects an invalid key hash", async () => {

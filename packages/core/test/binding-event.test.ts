@@ -8,7 +8,7 @@ import {
   createBinding,
   createNostrKeySigner,
   parseBindingEvent,
-  pickCurrentBinding,
+  resolveIdentity,
   verifyBinding,
   type NostrSigner,
 } from "../src/binding-event.js";
@@ -26,9 +26,7 @@ const CREATED_AT = 1_700_000_000;
 const nostrSigner = createNostrKeySigner(nostrKey.privateKey);
 const bchSigner = createKeySigner(bchKey.privateKey);
 
-async function make(
-  options: { proofType?: "message" | "tx"; createdAt?: number; previous?: string } = {},
-) {
+async function make(options: { proofType?: "message" | "tx"; createdAt?: number } = {}) {
   return createBinding({
     nostrSigner,
     bchSigner,
@@ -36,7 +34,6 @@ async function make(
     network: "chipnet",
     proofType: options.proofType ?? "message",
     createdAt: options.createdAt ?? CREATED_AT,
-    ...(options.previous === undefined ? {} : { previous: options.previous }),
   });
 }
 
@@ -89,10 +86,18 @@ describe("createBinding", () => {
     expect(binding.bch.address).toMatch(/^bitcoincash:q/);
   });
 
-  it("records the predecessor when given", async () => {
-    const previous = "ab".repeat(32);
-    const binding = await make({ previous });
-    expect(binding.record.previous).toBe(previous);
+  it("refuses a predecessor ID without the predecessor and approvals", async () => {
+    const record = buildBinding({
+      nostrPublicKey: nostrKey.publicKey,
+      bchKeyHash: bchKey.keyHash,
+      network: "chipnet",
+      createdAt: CREATED_AT,
+      previous: "ab".repeat(32),
+    });
+    const proof = await proveBchControl(bchSigner, record, "message");
+    expect(() => buildBindingEventTemplate(record, proof)).toThrow(
+      "a binding with previous needs its history and approvals",
+    );
   });
 
   it("rejects a Nostr signer that changes the event time", async () => {
@@ -352,53 +357,60 @@ describe("parseBindingEvent: strict shape", () => {
   });
 });
 
-describe("pickCurrentBinding", () => {
-  it("returns null without events or valid bindings", () => {
-    expect(pickCurrentBinding([], nostrKey.publicKey)).toBeNull();
-    expect(pickCurrentBinding([{}, null, "x"], nostrKey.publicKey)).toBeNull();
+describe("resolveIdentity", () => {
+  it("finds nothing without events or valid bindings", () => {
+    expect(resolveIdentity([], { nostrPublicKey: nostrKey.publicKey })).toEqual({ status: "none" });
+    expect(resolveIdentity([{}, null, "x"], { nostrPublicKey: nostrKey.publicKey })).toEqual({
+      status: "none",
+    });
   });
 
-  it("picks the newest valid binding", async () => {
+  it("returns the one binding of a key, from any number of copies", async () => {
+    const binding = await make();
+    const state = resolveIdentity([binding.event, binding.event], {
+      nostrPublicKey: nostrKey.publicKey,
+    });
+    expect(state).toMatchObject({ status: "current", binding: { bindingId: binding.bindingId } });
+  });
+
+  it("treats two first bindings of one key as a dispute, not newest-wins", async () => {
     const older = await make({ createdAt: CREATED_AT });
     const newer = await make({ createdAt: CREATED_AT + 100, proofType: "tx" });
-    const picked = pickCurrentBinding([older.event, newer.event], nostrKey.publicKey);
-    expect(picked?.event.id).toBe(newer.event.id);
-    expect(pickCurrentBinding([newer.event, older.event], nostrKey.publicKey)?.event.id).toBe(
-      newer.event.id,
-    );
+    const state = resolveIdentity([newer.event, older.event], {
+      nostrPublicKey: nostrKey.publicKey,
+    });
+    expect(state.status).toBe("disputed");
+    if (state.status === "disputed") {
+      expect(state.bindings.map((b) => b.bindingId)).toEqual([older.bindingId, newer.bindingId]);
+    }
   });
 
-  it("ignores an invalid newer event", async () => {
+  it("ignores an invalid event", async () => {
     const valid = await make({ createdAt: CREATED_AT });
     const newer = await make({ createdAt: CREATED_AT + 100 });
     const broken = { ...newer.event, sig: "00".repeat(64) };
-    expect(pickCurrentBinding([valid.event, broken], nostrKey.publicKey)?.event.id).toBe(
-      valid.event.id,
-    );
+    expect(
+      resolveIdentity([valid.event, broken], { nostrPublicKey: nostrKey.publicKey }),
+    ).toMatchObject({ status: "current", binding: { bindingId: valid.bindingId } });
   });
 
-  it("ignores events by other authors", async () => {
+  it("ignores bindings that do not name the key", async () => {
     const mine = await make();
     const other = deriveNostrKey(MNEMONIC, 1);
     const theirs = await createBinding({
       nostrSigner: createNostrKeySigner(other.privateKey),
-      bchSigner,
-      bchKeyHash: bchKey.keyHash,
+      bchSigner: createKeySigner(otherBchKey.privateKey),
+      bchKeyHash: otherBchKey.keyHash,
       network: "chipnet",
       proofType: "message",
       createdAt: CREATED_AT + 500,
     });
-    expect(pickCurrentBinding([theirs.event, mine.event], nostrKey.publicKey)?.event.id).toBe(
-      mine.event.id,
-    );
+    expect(
+      resolveIdentity([theirs.event, mine.event], { nostrPublicKey: nostrKey.publicKey }),
+    ).toMatchObject({ status: "current", binding: { bindingId: mine.bindingId } });
   });
 
-  it("breaks a time tie with the lower event ID", async () => {
-    const a = await make({ proofType: "message" });
-    const b = await make({ proofType: "tx" });
-    const lower = a.event.id < b.event.id ? a : b;
-    expect(pickCurrentBinding([a.event, b.event], nostrKey.publicKey)?.event.id).toBe(
-      lower.event.id,
-    );
+  it("needs a key to resolve", () => {
+    expect(() => resolveIdentity([], {})).toThrow(TypeError);
   });
 });

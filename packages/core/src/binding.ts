@@ -1,6 +1,12 @@
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { sha256 } from "@noble/hashes/sha2.js";
-import { decodeBchAddress, encodeBchAddress, isBchNetwork, type BchNetwork } from "./bch.js";
+import {
+  decodeBchAddress,
+  encodeBchAddress,
+  isBchNetwork,
+  keyHashFromPublicKey,
+  type BchNetwork,
+} from "./bch.js";
 import { bytesEqual, bytesToHex, hexToBytes, isHex } from "./bytes.js";
 import { canonicalBytes } from "./canonical.js";
 
@@ -21,6 +27,13 @@ export interface BindingRecord {
   createdAt: number;
   /** ID of the binding this one replaces, if any. */
   previous?: string;
+  /**
+   * An extra key, kept offline, that can stand in for a lost or stolen key
+   * when this binding is replaced or revoked (section 9).
+   */
+  recovery?: { publicKey: string };
+  /** Present only on a revocation: the identity has no current binding after it. */
+  revoked?: true;
 }
 
 export class BindingError extends Error {
@@ -37,6 +50,10 @@ export interface BuildBindingInput {
   /** Unix seconds. Defaults to the current time. */
   createdAt?: number;
   previous?: string;
+  /** x-only public key of a recovery key, as lowercase hex. */
+  recoveryPublicKey?: string;
+  /** Make this record a revocation. Needs `previous`. */
+  revoked?: true;
 }
 
 function isValidXOnlyKey(hex: string): boolean {
@@ -60,6 +77,10 @@ export function buildBinding(input: BuildBindingInput): BindingRecord {
     bch: { network: input.network, keyHash },
     createdAt: input.createdAt ?? Math.floor(Date.now() / 1000),
     ...(input.previous === undefined ? {} : { previous: input.previous }),
+    ...(input.recoveryPublicKey === undefined
+      ? {}
+      : { recovery: { publicKey: input.recoveryPublicKey } }),
+    ...(input.revoked === undefined ? {} : { revoked: input.revoked }),
   };
   return parseBinding(record);
 }
@@ -93,6 +114,8 @@ export function parseBinding(value: unknown): BindingRecord {
     "bch",
     "createdAt",
     "previous",
+    "recovery",
+    "revoked",
   ]);
   if (top.protocol !== PROTOCOL_ID) throw new BindingError("binding.protocol must be 'bnd'");
   if (top.version !== PROTOCOL_VERSION) throw new BindingError("binding.version must be 1");
@@ -117,6 +140,38 @@ export function parseBinding(value: unknown): BindingRecord {
     throw new BindingError("binding.previous must be 32 bytes of lowercase hex");
   }
 
+  let recovery: { publicKey: string } | undefined;
+  if (top.recovery !== undefined) {
+    const value = expectObject(top.recovery, "binding.recovery", ["publicKey"]);
+    if (!isValidXOnlyKey(value.publicKey as string)) {
+      throw new BindingError(
+        "binding.recovery.publicKey must be a valid x-only key in lowercase hex",
+      );
+    }
+    recovery = { publicKey: value.publicKey as string };
+    // One key must not count as two of the three approvals (section 9).
+    if (recovery.publicKey === nostr.publicKey) {
+      throw new BindingError("the recovery key must differ from the Nostr key");
+    }
+    const keyHash = bch.keyHash as string;
+    for (const prefix of ["02", "03"]) {
+      if (
+        bytesToHex(keyHashFromPublicKey(hexToBytes(`${prefix}${recovery.publicKey}`))) === keyHash
+      ) {
+        throw new BindingError("the recovery key must differ from the BCH key");
+      }
+    }
+  }
+  if (top.revoked !== undefined) {
+    if (top.revoked !== true) throw new BindingError("binding.revoked must be true when present");
+    if (top.previous === undefined) {
+      throw new BindingError("binding.revoked needs binding.previous: it revokes that binding");
+    }
+    if (recovery !== undefined) {
+      throw new BindingError("a revocation cannot name a recovery key");
+    }
+  }
+
   return {
     protocol: PROTOCOL_ID,
     version: PROTOCOL_VERSION,
@@ -124,6 +179,8 @@ export function parseBinding(value: unknown): BindingRecord {
     bch: { network: bch.network, keyHash: bch.keyHash as string },
     createdAt: top.createdAt as number,
     ...(top.previous === undefined ? {} : { previous: top.previous as string }),
+    ...(recovery === undefined ? {} : { recovery }),
+    ...(top.revoked === undefined ? {} : { revoked: true as const }),
   };
 }
 

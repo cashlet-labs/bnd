@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { decodeBchAddress, npubEncode, type VerifiedBinding } from "@cashlet-labs/bnd-core";
+import {
+  decodeBchAddress,
+  npubEncode,
+  type IdentityState,
+  type VerifiedBinding,
+} from "@cashlet-labs/bnd-core";
 import {
   discoverBinding as defaultDiscoverBinding,
   discoverByBchKeyHash as defaultDiscoverByBchKeyHash,
@@ -18,6 +23,7 @@ export interface DiscoverPanelProps {
 }
 
 interface Found {
+  state: IdentityState;
   bindings: VerifiedBinding[];
   relays: RelayReport[];
   query: string;
@@ -53,6 +59,7 @@ export function DiscoverPanel({
       if (value.startsWith("npub1") || /^[0-9a-f]{64}$/.test(value)) {
         const result = await discoverBinding(value, { relays });
         setFound({
+          state: result.state,
           bindings: result.binding ? [result.binding] : [],
           relays: result.relays,
           query: value,
@@ -60,7 +67,12 @@ export function DiscoverPanel({
       } else {
         const { keyHash } = decodeBchAddress(value);
         const result = await discoverByBchKeyHash(keyHash, { relays });
-        setFound({ bindings: result.bindings, relays: result.relays, query: value });
+        setFound({
+          state: result.state,
+          bindings: result.state.status === "disputed" ? [] : result.bindings,
+          relays: result.relays,
+          query: value,
+        });
       }
     } catch (cause) {
       setError(message(cause));
@@ -101,7 +113,23 @@ export function DiscoverPanel({
 
       {found && (
         <div role="status">
-          {found.bindings.length === 0 ? (
+          {found.state.status === "disputed" ? (
+            <p className="warning">
+              Disputed: {found.state.bindings.length} bindings on different chains claim this
+              identity. A key may have been stolen. Do not rely on it until a replacement approved
+              by two of its keys settles it.
+            </p>
+          ) : found.state.status === "revoked" ? (
+            <p className="warning">
+              Revoked on {new Date(found.state.binding.record.createdAt * 1000).toISOString()}: this
+              identity has no current binding.
+            </p>
+          ) : found.bindings.length === 0 && found.state.status === "current" ? (
+            <p>
+              This BCH key was replaced. The identity now uses{" "}
+              <code className="wrap">{found.state.binding.bch.address}</code>.
+            </p>
+          ) : found.bindings.length === 0 ? (
             <p>No verified binding found for {found.query}.</p>
           ) : (
             found.bindings.map((binding) => (
@@ -113,7 +141,12 @@ export function DiscoverPanel({
                     made by the bound key
                   </li>
                   <li>Both keys signed the same record, which names the other key</li>
-                  <li>Newest valid binding for this key on the relays asked</li>
+                  <li>
+                    Current binding: no replacement, revocation or conflicting binding on the relays
+                    asked
+                    {binding.history.length > 0 &&
+                      `; replaces ${binding.history.length} earlier binding${binding.history.length === 1 ? "" : "s"}, each approved by two keys`}
+                  </li>
                 </ul>
                 <dl className="facts verified">
                   <dt>Verified</dt>
