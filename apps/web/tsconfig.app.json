@@ -20,7 +20,8 @@
     "noEmit": true,
     "paths": {
       "@cashlet-labs/bnd-core": ["../../packages/core/src/index.ts"],
-      "@cashlet-labs/bnd-nostr": ["../../packages/nostr/src/index.ts"]
+      "@cashlet-labs/bnd-nostr": ["../../packages/nostr/src/index.ts"],
+      "@cashlet-labs/bnd-nostr/testing": ["../../packages/nostr/src/testing.ts"]
     }
   },
   "include": ["src", "test"]
