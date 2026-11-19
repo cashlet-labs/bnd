@@ -11,7 +11,7 @@ function watchForErrors(page: Page): string[] {
 }
 
 async function createIdentity(page: Page) {
-  await page.goto("/");
+  await page.goto("/demo");
   await page.getByRole("button", { name: "Create a new key" }).click();
   await page.getByRole("button", { name: "Create a test key" }).click();
   await expect(page.getByText(/^bchtest:q/).first()).toBeVisible();
@@ -25,6 +25,7 @@ test("the built page is served with a strict security policy", async ({ page }) 
   // WebAssembly compilation only: libauth runs its secp256k1 code as WebAssembly.
   expect(csp).toContain("script-src 'self' 'wasm-unsafe-eval'");
   expect(csp).toContain("frame-ancestors 'none'");
+  expect(csp).toContain("font-src 'self'");
   expect(csp).not.toContain("unsafe-inline");
   expect(csp).not.toContain("'unsafe-eval'");
   expect(headers["referrer-policy"]).toBe("no-referrer");
@@ -83,4 +84,39 @@ test("the verifier refuses a binding that was never published", async ({ page })
   await expect(page.getByRole("alert")).toHaveText(
     "binding is not current: binding is not published on any relay that answered",
   );
+});
+
+test("keys survive moving between the demo and the verifier", async ({ page }) => {
+  await createIdentity(page);
+  const npub = await page
+    .getByText(/^npub1/)
+    .first()
+    .textContent();
+  await page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "Verify" })
+    .click();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Verify a BND identity");
+  await page.getByRole("navigation", { name: "Main" }).getByRole("link", { name: "Demo" }).click();
+  await expect(page.getByText(/^npub1/).first()).toHaveText(npub ?? "");
+});
+
+test("the verifier page finds and checks a binding published in the demo", async ({ page }) => {
+  await createIdentity(page);
+  await page.getByRole("button", { name: "Create binding" }).click();
+  await page.getByRole("button", { name: "Publish to relays" }).click();
+  await expect(page.getByText("Published to 1 of 1 relays.")).toBeVisible();
+  const address = await page
+    .getByText(/^bchtest:q/)
+    .first()
+    .textContent();
+  await page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "Verify" })
+    .click();
+  await page.getByLabel("npub or BCH address").fill(address ?? "");
+  await page.getByRole("button", { name: "Find and verify" }).click();
+  const checks = page.getByRole("list", { name: "Checks passed" });
+  await expect(checks).toBeVisible();
+  await expect(checks.getByRole("listitem")).toHaveCount(4);
 });
