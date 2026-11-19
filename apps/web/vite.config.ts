@@ -2,44 +2,18 @@ import { fileURLToPath } from "node:url";
 import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
+import { LOCAL_DEMO_RELAY, parseRelayList, securityHeaders } from "./security-headers.js";
 
 const root = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
 // The page and the verifier share one origin: these paths go to the verifier.
 const VERIFIER_ROUTES = ["/challenge", "/login", "/me", "/logout"];
 
-/**
- * Security headers for the built page. Scripts, styles, fonts and images come
- * only from the page itself (images also as data: for QR codes). Network access is
- * the page's own origin, the local demo relay, and secure WebSocket relays,
- * which users choose. Nothing may frame the page.
- */
-function securityHeaders(localRelay: string): Record<string, string> {
-  const csp = [
-    "default-src 'none'",
-    "script-src 'self' 'wasm-unsafe-eval'",
-    "style-src 'self'",
-    "img-src 'self' data:",
-    "font-src 'self'",
-    `connect-src 'self' ${localRelay} wss:`,
-    "base-uri 'none'",
-    "form-action 'none'",
-    "frame-ancestors 'none'",
-    "object-src 'none'",
-  ].join("; ");
-  return {
-    "Content-Security-Policy": csp,
-    "Referrer-Policy": "no-referrer",
-    "X-Content-Type-Options": "nosniff",
-    "Cross-Origin-Opener-Policy": "same-origin",
-  };
-}
-
 export default defineConfig(({ mode }) => {
   // `.env` lives at the repository root, next to `.env.example`.
   const env = { ...loadEnv(mode, root("../.."), ""), ...process.env };
   const verifier = env.VERIFIER_URL ?? `http://127.0.0.1:${env.PORT ?? "8787"}`;
-  const localRelay = env.VITE_LOCAL_RELAY ?? "ws://127.0.0.1:7777";
+  const siteRelays = parseRelayList(env.VITE_RELAYS, [LOCAL_DEMO_RELAY]);
   const proxy = Object.fromEntries(
     VERIFIER_ROUTES.map((route) => [route, { target: verifier, changeOrigin: false }]),
   );
@@ -71,7 +45,7 @@ export default defineConfig(({ mode }) => {
       port: 4173,
       strictPort: true,
       proxy,
-      headers: securityHeaders(localRelay),
+      headers: securityHeaders(siteRelays),
     },
   };
 });
