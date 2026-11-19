@@ -15,7 +15,8 @@ npm install
 npm run demo
 ```
 
-Then open <http://127.0.0.1:4173>. See [docs/demo.md](docs/demo.md) for the
+Then open <http://127.0.0.1:4173>. For development with hot reload, run
+`npm run dev` and open <http://127.0.0.1:5173>. See [docs/demo.md](docs/demo.md) for the
 walk-through, and [docs/wallet-connections.md](docs/wallet-connections.md) for
 how wallets connect.
 

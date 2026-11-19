@@ -5,6 +5,18 @@ identity and a Bitcoin Cash key, bind them, publish the binding to relays,
 discover and verify it as an independent application would, and log in to a
 demonstration service with it.
 
+The page has three routes:
+
+| Route     | Page                                                                 |
+| --------- | -------------------------------------------------------------------- |
+| `/`       | What BND is, with links to the demo and the verifier                 |
+| `/demo`   | The full walk-through below                                          |
+| `/verify` | Look up and verify a binding, as any application would, without keys |
+
+It is a single-page app, so keys held in memory stay while you move between
+routes; a reload clears them. The theme follows the system setting and can be
+switched in the header; only that choice is stored, under `cashlet-theme`.
+
 ## Requirements
 
 - Node.js 22 or later and npm.
@@ -63,8 +75,18 @@ is run on its own with `npm run dev:verifier`.
 
 ## Development server
 
-The development server reloads on changes but does not apply the page's security
-policy. Run the parts separately:
+```bash
+npm run dev
+```
+
+Open <http://127.0.0.1:5173>. This starts the same relay and verifier, and the
+Vite development server instead of the built page. It reloads on changes, skips
+the build and does not apply the page's security policy, so check security
+changes with `npm run demo`. The ports and the port check are the same, with
+5173 in place of 4173. `DEMO_RELAY_PORT` and `PORT` change the relay and verifier
+ports for both commands.
+
+To run the parts separately:
 
 ```bash
 npm run dev:relay
@@ -81,15 +103,25 @@ The built page is served with this policy:
 
 ```text
 default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self';
-img-src 'self' data:; connect-src 'self' ws://127.0.0.1:7777 wss:;
+img-src 'self' data:; font-src 'self'; connect-src 'self' ws://127.0.0.1:7777 wss:;
 base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'
 ```
 
 plus `Referrer-Policy: no-referrer`, `X-Content-Type-Options: nosniff` and
 `Cross-Origin-Opener-Policy: same-origin`.
 
-- `'wasm-unsafe-eval'` lets the page compile WebAssembly, which `@bitauth/libauth`
-  uses for its secp256k1 code. It does not allow JavaScript `eval`.
+- `'wasm-unsafe-eval'` lets the page compile WebAssembly. `@bitauth/libauth`
+  needs it: its secp256k1 and hash functions are C code compiled to WebAssembly,
+  and they load when the library is imported. The page uses libauth to read
+  CashAddresses and to check transaction proofs, including running them through
+  libauth's BCH script engine as a node would. The keyword allows only
+  WebAssembly; JavaScript `eval`, `new Function` and string timers stay blocked.
+  Using it requires running script on the page, which `script-src 'self'` already
+  limits to the page's own files, and WebAssembly runs in the same sandbox as
+  JavaScript with no extra access. Avoiding it would mean replacing libauth's
+  script engine with our own proof check, a larger risk than the keyword.
+- `font-src 'self'` allows the page's own fonts (DM Sans and Space Grotesk, under
+  the SIL Open Font License; see `apps/web/src/assets/fonts/`).
 - `wss:` allows secure WebSocket connections to any host, because users choose
   their own Nostr and NIP-46 relays, and WizardConnect uses its own relays.
 - `data:` images are the QR codes the page draws.
@@ -104,5 +136,7 @@ npm run test:e2e                 # browser tests against `npm run demo`
 
 The browser tests run the full flow in Chromium with in-page keys: bind with each
 proof type, publish, verify, log in, step-up, and a refused login for an
-unpublished binding. Real wallets were tested by hand; their proofs are kept as
+unpublished binding. They also check the routes, deep links, the theme switch,
+the fonts and the security policy, and save a screenshot of each page in both
+themes to `apps/web/test-results/screenshots/`. Real wallets were tested by hand; their proofs are kept as
 vectors in `spec/vectors/bch-tx-proof-wallets.json`.
