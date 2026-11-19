@@ -108,7 +108,9 @@ export function NostrSignerPanel({
   if (signer) {
     return (
       <section aria-labelledby="nostr-title">
-        <h2 id="nostr-title">1. Nostr identity</h2>
+        <h2 id="nostr-title">
+          <span className="step">1</span> Nostr identity
+        </h2>
         <p>
           Connected with a {KIND_LABEL[signer.kind]}:
           <br />
@@ -118,7 +120,7 @@ export function NostrSignerPanel({
           <p className="note">This key exists only in this page. Reloading the page loses it.</p>
         )}
         {authUrl && <ApprovalLink url={authUrl} />}
-        <button type="button" onClick={() => void disconnect()}>
+        <button type="button" className="btn-danger" onClick={() => void disconnect()}>
           {signer.kind === "memory" ? "Discard this key" : "Disconnect"}
         </button>
       </section>
@@ -127,13 +129,19 @@ export function NostrSignerPanel({
 
   return (
     <section aria-labelledby="nostr-title">
-      <h2 id="nostr-title">1. Nostr identity</h2>
+      <h2 id="nostr-title">
+        <span className="step">1</span> Nostr identity
+      </h2>
       <p>Choose how this page reaches your Nostr key. Your private key never leaves its signer.</p>
 
       <fieldset disabled={busy}>
         <legend>Browser extension (NIP-07)</legend>
         {nip07Provider ? (
-          <button type="button" onClick={() => void run(() => connectNip07(nip07Provider))}>
+          <button
+            type="button"
+            className="btn-primary"
+            onClick={() => void run(() => connectNip07(nip07Provider))}
+          >
             Use my browser extension
           </button>
         ) : (
@@ -192,7 +200,11 @@ export function NostrSignerPanel({
         <p className="note">
           Creates a key that lives only in this page. It is lost when the page reloads.
         </p>
-        <button type="button" onClick={() => void run(() => createMemorySigner())}>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={() => void run(() => createMemorySigner())}
+        >
           Create a new key
         </button>
       </fieldset>

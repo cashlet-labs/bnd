@@ -91,7 +91,9 @@ export function BchWalletPanel({
   if (wallet) {
     return (
       <section aria-labelledby="bch-title">
-        <h2 id="bch-title">2. Bitcoin Cash key</h2>
+        <h2 id="bch-title">
+          <span className="step">2</span> Bitcoin Cash key
+        </h2>
         <p>
           Connected: {wallet.label}
           <br />
@@ -104,7 +106,7 @@ export function BchWalletPanel({
         {wallet.kind === "test-key" && (
           <p className="note">This key exists only in this page and holds no funds.</p>
         )}
-        <button type="button" onClick={() => void disconnect()}>
+        <button type="button" className="btn-danger" onClick={() => void disconnect()}>
           {wallet.kind === "test-key" ? "Discard this key" : "Disconnect wallet"}
         </button>
       </section>
@@ -113,7 +115,9 @@ export function BchWalletPanel({
 
   return (
     <section aria-labelledby="bch-title">
-      <h2 id="bch-title">2. Bitcoin Cash key</h2>
+      <h2 id="bch-title">
+        <span className="step">2</span> Bitcoin Cash key
+      </h2>
 
       <fieldset>
         <legend>Wallet (WizardConnect)</legend>
@@ -142,7 +146,12 @@ export function BchWalletPanel({
             </button>
           </div>
         ) : (
-          <button type="button" disabled={index === ""} onClick={connectWallet}>
+          <button
+            type="button"
+            className="btn-primary"
+            disabled={index === ""}
+            onClick={connectWallet}
+          >
             Connect a wallet
           </button>
         )}

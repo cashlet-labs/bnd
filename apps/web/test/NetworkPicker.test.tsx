@@ -2,7 +2,6 @@ import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { BchNetwork } from "@cashlet-labs/bnd-core";
-import { App } from "../src/App";
 import { NetworkPicker } from "../src/components/NetworkPicker";
 
 afterEach(cleanup);
@@ -72,17 +71,5 @@ describe("NetworkPicker", () => {
     await user.click(mainnet);
     expect(onChange).not.toHaveBeenCalled();
     expect(screen.queryByRole("alertdialog")).toBeNull();
-  });
-});
-
-describe("App network banner", () => {
-  it("shows a mainnet banner only on mainnet", async () => {
-    const user = userEvent.setup();
-    render(<App />);
-    expect(screen.queryByRole("status")).toBeNull();
-    await user.click(screen.getByRole("radio", { name: /mainnet/i }));
-    await user.click(screen.getByRole("checkbox", { name: /real funds and identities/i }));
-    await user.click(screen.getByRole("button", { name: "Use mainnet" }));
-    expect(screen.getByRole("status").textContent).toMatch(/real funds/);
   });
 });

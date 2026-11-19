@@ -112,7 +112,9 @@ export function LoginPanel({
 
   return (
     <section aria-labelledby="login-title">
-      <h2 id="login-title">5. Log in to an application</h2>
+      <h2 id="login-title">
+        <span className="step">5</span> Log in to an application
+      </h2>
       <p>
         The demo verifier issues a one-time challenge. It checks your signatures itself and asks
         relays only whether this binding is your current one.
@@ -147,7 +149,12 @@ export function LoginPanel({
           {level === "dual" && !bch && (
             <p className="note">Connect the BCH key from step 2 to prove both keys.</p>
           )}
-          <button type="button" disabled={busy || !ready} onClick={() => void login()}>
+          <button
+            type="button"
+            className="btn-primary"
+            disabled={busy || !ready}
+            onClick={() => void login()}
+          >
             {busy ? "Signing in…" : "Log in"}
           </button>
         </>
@@ -179,7 +186,12 @@ export function LoginPanel({
             <button type="button" disabled={busy} onClick={() => void check(true)}>
               Try an action that needs both keys
             </button>
-            <button type="button" disabled={busy} onClick={() => void logout()}>
+            <button
+              type="button"
+              className="btn-danger"
+              disabled={busy}
+              onClick={() => void logout()}
+            >
               Log out
             </button>
           </div>

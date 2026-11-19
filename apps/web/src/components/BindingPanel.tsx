@@ -83,7 +83,9 @@ export function BindingPanel({
 
   return (
     <section aria-labelledby="binding-title">
-      <h2 id="binding-title">3. Bind and publish</h2>
+      <h2 id="binding-title">
+        <span className="step">3</span> Bind and publish
+      </h2>
       {!ready && <p className="note">Connect a Nostr identity and a Bitcoin Cash key first.</p>}
 
       {ready && !binding && (
@@ -107,7 +109,12 @@ export function BindingPanel({
             Your Nostr key and your BCH key will each sign a statement naming the other. Nothing is
             sent on chain.
           </p>
-          <button type="button" disabled={busy || !chosen} onClick={() => void create()}>
+          <button
+            type="button"
+            className="btn-primary"
+            disabled={busy || !chosen}
+            onClick={() => void create()}
+          >
             {busy ? "Waiting for signatures…" : "Create binding"}
           </button>
         </>
@@ -142,6 +149,7 @@ export function BindingPanel({
           <div className="actions">
             <button
               type="button"
+              className="btn-primary"
               disabled={busy || relays.length === 0}
               onClick={() => void publish()}
             >

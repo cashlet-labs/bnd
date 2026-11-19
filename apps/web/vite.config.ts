@@ -1,4 +1,5 @@
 import { fileURLToPath } from "node:url";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
 import react from "@vitejs/plugin-react";
 import { defineConfig, loadEnv } from "vite";
 
@@ -8,8 +9,8 @@ const root = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 const VERIFIER_ROUTES = ["/challenge", "/login", "/me", "/logout"];
 
 /**
- * Security headers for the built page. Scripts, styles and images come only
- * from the page itself (images also as data: for QR codes). Network access is
+ * Security headers for the built page. Scripts, styles, fonts and images come
+ * only from the page itself (images also as data: for QR codes). Network access is
  * the page's own origin, the local demo relay, and secure WebSocket relays,
  * which users choose. Nothing may frame the page.
  */
@@ -19,6 +20,7 @@ function securityHeaders(localRelay: string): Record<string, string> {
     "script-src 'self' 'wasm-unsafe-eval'",
     "style-src 'self'",
     "img-src 'self' data:",
+    "font-src 'self'",
     `connect-src 'self' ${localRelay} wss:`,
     "base-uri 'none'",
     "form-action 'none'",
@@ -43,7 +45,16 @@ export default defineConfig(({ mode }) => {
   );
   return {
     envDir: root("../.."),
-    plugins: [react()],
+    plugins: [
+      // File-based routes in src/routes; each route's page is loaded when first visited.
+      tanstackRouter({
+        target: "react",
+        autoCodeSplitting: true,
+        routesDirectory: root("./src/routes"),
+        generatedRouteTree: root("./src/routeTree.gen.ts"),
+      }),
+      react(),
+    ],
     resolve: {
       // Use package sources directly, as the tests do, so no build step is needed first.
       alias: {
