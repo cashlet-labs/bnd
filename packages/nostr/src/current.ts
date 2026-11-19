@@ -1,13 +1,13 @@
 import {
   BINDING_D_TAG,
   BINDING_EVENT_KIND,
-  pickCurrentBinding,
+  resolveIdentity,
+  SUCCESSOR_TAG,
   verifyBinding,
-  type NostrEvent,
   type VerifiedBinding,
 } from "@cashlet-labs/bnd-core";
-import { queryRelay, type QueryResult, type RelayOptions } from "./client.js";
-import { DEFAULT_RELAYS, type RelayReport } from "./discover.js";
+import type { RelayOptions } from "./client.js";
+import { collectBindings, DEFAULT_RELAYS, type RelayReport } from "./discover.js";
 import { discoverRelayList } from "./relay-list.js";
 import { normalizeRelayUrl } from "./relay-url.js";
 
@@ -30,11 +30,14 @@ export type CurrencyCheck =
   | { ok: false; reason: string; relays: RelayReport[]; userRelays: string[] };
 
 /**
- * Decide whether a verified binding is its key's current one, using relays:
+ * Decide whether a verified binding is its identity's current one, using relays:
  *
  * 1. At least `minComplete` relays must answer completely, or nothing is decided.
  * 2. The binding must be found on at least one answering relay, so it is public.
- * 3. No relay may hold a newer valid binding for the same key.
+ * 3. No relay may hold a successor or a revocation of it, which also catches a
+ *    Nostr key that was rotated away (section 9).
+ * 4. No relay may hold a binding for the same key on another chain; the
+ *    identity is then disputed.
  *
  * Relays are untrusted. Every event is verified locally and invalid ones are
  * ignored, so a relay can only make the check fail, never pass.
@@ -61,51 +64,38 @@ export async function checkCurrentBinding(
   }
   userRelays = [...new Set(userRelays)];
 
-  const filter = {
-    kinds: [BINDING_EVENT_KIND],
-    authors: [publicKey],
-    "#d": [BINDING_D_TAG],
-    limit: 10,
-  };
-  const results: QueryResult[] = await Promise.all(
-    [...configured, ...userRelays].map((url) => queryRelay(url, [filter], options)),
+  const { events, relays: reports } = await collectBindings(
+    [
+      { kinds: [BINDING_EVENT_KIND], authors: [publicKey], "#d": [BINDING_D_TAG], limit: 10 },
+      { kinds: [BINDING_EVENT_KIND], [`#${SUCCESSOR_TAG}`]: [binding.bindingId], limit: 10 },
+    ],
+    { nostrPublicKey: publicKey },
+    { ...options, relays: [...configured, ...userRelays] },
   );
 
-  const events = new Map<string, NostrEvent>();
-  const reports: RelayReport[] = [];
-  let found = false;
-  for (const result of results) {
-    let valid = 0;
-    for (const event of result.events) {
-      const verified = verifyBinding(event);
-      if (!verified.ok || verified.nostrPublicKey !== publicKey) continue;
-      valid += 1;
-      events.set(event.id, event);
-      if (event.id === binding.event.id) found = true;
-    }
-    reports.push({
-      url: result.url,
-      received: result.events.length,
-      valid,
-      complete: result.complete,
-      ...(result.error === undefined ? {} : { error: result.error }),
-    });
-  }
-
-  const complete = reports.filter((report) => report.complete).length;
   const fail = (reason: string): CurrencyCheck => ({
     ok: false,
     reason,
     relays: reports,
     userRelays,
   });
+  const complete = reports.filter((report) => report.complete).length;
   if (complete < minComplete) {
     return fail(`could not check: ${complete} of the required ${minComplete} relays answered`);
   }
+  const found = events.some((event) => {
+    const verified = verifyBinding(event);
+    return verified.ok && verified.bindingId === binding.bindingId;
+  });
   if (!found) return fail("binding is not published on any relay that answered");
-  const current = pickCurrentBinding([...events.values(), binding.event], publicKey);
-  if (current === null || current.event.id !== binding.event.id) {
-    return fail("a newer binding exists for this Nostr key");
+
+  const state = resolveIdentity([...events, binding.event], { nostrPublicKey: publicKey });
+  if (state.status === "revoked") return fail("this identity has been revoked");
+  if (state.status === "disputed") {
+    return fail("conflicting bindings exist for this Nostr key; the identity is disputed");
+  }
+  if (state.status !== "current" || state.binding.bindingId !== binding.bindingId) {
+    return fail("a newer binding replaces this one");
   }
   return { ok: true, relays: reports, userRelays };
 }

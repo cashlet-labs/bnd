@@ -229,6 +229,7 @@ export async function createLoginResponse(
   const clock = options.now ?? (() => Math.floor(Date.now() / 1000));
   const verified = verifyBinding(options.binding);
   if (!verified.ok) throw new Error(`binding is invalid: ${verified.reason}`);
+  if (verified.form === "revocation") throw new Error("this identity has been revoked");
   if ((await options.nostrSigner.getPublicKey()) !== verified.nostrPublicKey) {
     throw new Error("the Nostr signer is not the key in the binding");
   }
@@ -296,6 +297,7 @@ export function checkLoginResponse(
 
   const binding = verifyBinding(response.binding);
   if (!binding.ok) return fail(`binding is invalid: ${binding.reason}`);
+  if (binding.form === "revocation") return fail("this identity has been revoked");
 
   const event = response.event;
   if (!verifyEventSignature(event)) return fail("login event signature is invalid");

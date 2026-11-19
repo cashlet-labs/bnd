@@ -224,6 +224,7 @@ describe("DiscoverPanel", () => {
   it("finds and shows a verified binding for an npub", async () => {
     const { nostr, binding } = await realBinding();
     const discoverBinding = vi.fn(async (): Promise<DiscoveryResult> => ({
+      state: { status: "current", binding },
       binding,
       relays: [{ url: "ws://relay.test", received: 1, valid: 1, complete: true }],
     }));
@@ -246,6 +247,7 @@ describe("DiscoverPanel", () => {
     const { binding } = await realBinding();
     const discoverByBchKeyHash = vi.fn(
       async (_keyHash: Uint8Array | string): Promise<ReverseDiscoveryResult> => ({
+        state: { status: "current", binding },
         bindings: [binding],
         relays: [],
       }),
@@ -260,8 +262,51 @@ describe("DiscoverPanel", () => {
     expect(discoverByBchKeyHash.mock.calls[0]![0]).toBeInstanceOf(Uint8Array);
   });
 
+  it("warns about a disputed identity instead of showing a binding", async () => {
+    const { nostr, binding } = await realBinding();
+    const discoverBinding = vi.fn(async (): Promise<DiscoveryResult> => ({
+      state: { status: "disputed", bindings: [binding, binding] },
+      binding: null,
+      relays: [],
+    }));
+    const user = userEvent.setup();
+    render(
+      <DiscoverPanel
+        relays={["ws://relay.test"]}
+        suggestion={nostr.npub}
+        discoverBinding={discoverBinding}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Find and verify" }));
+    const status = await screen.findByRole("status");
+    expect(status.textContent).toContain("Disputed: 2 bindings on different chains");
+    expect(status.textContent).not.toContain("Both the Nostr key and the BCH key signed");
+  });
+
+  it("says when an identity was revoked", async () => {
+    const { nostr, binding } = await realBinding();
+    const discoverBinding = vi.fn(async (): Promise<DiscoveryResult> => ({
+      state: { status: "revoked", binding },
+      binding: null,
+      relays: [],
+    }));
+    const user = userEvent.setup();
+    render(
+      <DiscoverPanel
+        relays={["ws://relay.test"]}
+        suggestion={nostr.npub}
+        discoverBinding={discoverBinding}
+      />,
+    );
+    await user.click(screen.getByRole("button", { name: "Find and verify" }));
+    expect((await screen.findByRole("status")).textContent).toContain(
+      "this identity has no current binding",
+    );
+  });
+
   it("says when nothing was found and reports bad input", async () => {
     const discoverBinding = vi.fn(async (): Promise<DiscoveryResult> => ({
+      state: { status: "none" },
       binding: null,
       relays: [],
     }));

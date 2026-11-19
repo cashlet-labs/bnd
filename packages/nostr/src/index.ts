@@ -1,6 +1,7 @@
 export { publishToRelay, queryRelay } from "./client.js";
 export type { PublishResult, QueryResult, RelayOptions } from "./client.js";
 export {
+  collectBindings,
   DEFAULT_RELAYS,
   discoverBinding,
   discoverByBchKeyHash,

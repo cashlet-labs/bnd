@@ -3,6 +3,7 @@ import {
   createKeySigner,
   createLoginResponse,
   createNostrKeySigner,
+  createSuccessor,
   deriveBchKey,
   deriveNostrKey,
   type AuthChallenge,
@@ -69,6 +70,20 @@ async function bind(createdAt: number, key = bch): Promise<VerifiedBinding> {
   });
 }
 
+/** Replace `previous` with the second BCH key, approved by both previous keys. */
+async function rotate(previous: VerifiedBinding, createdAt: number): Promise<VerifiedBinding> {
+  return createSuccessor({
+    previous: previous.event,
+    nostrSigner,
+    bchSigner: createKeySigner(bch1.privateKey),
+    bchKeyHash: bch1.keyHash,
+    network: "chipnet",
+    proofType: "message",
+    approvers: { bch: { signer: bchSigner, proofType: "message" } },
+    createdAt,
+  });
+}
+
 async function publish(binding: VerifiedBinding, relays: DevRelay[]): Promise<void> {
   const result = await publishBinding(binding.event, { relays: relays.map((r) => r.url) });
   if (!result.ok) throw new Error("publish failed");
@@ -83,14 +98,19 @@ async function getChallenge(base: string, level?: string): Promise<AuthChallenge
 async function login(
   base: string,
   binding: VerifiedBinding,
-  options: { level?: string; proofType?: BchProofType; headers?: Record<string, string> } = {},
+  options: {
+    level?: string;
+    proofType?: BchProofType;
+    headers?: Record<string, string>;
+    bchKey?: typeof bch;
+  } = {},
 ) {
   const challenge = await getChallenge(base, options.level);
   const body = await createLoginResponse({
     challenge,
     binding: binding.event,
     nostrSigner,
-    bchSigner,
+    bchSigner: options.bchKey ? createKeySigner(options.bchKey.privateKey) : bchSigner,
     ...(challenge.level === "dual" ? { proofType: options.proofType ?? "message" } : {}),
     expectedOrigin: base,
   });
@@ -158,16 +178,16 @@ describe("verifier: full login flow over real relays", () => {
     expect(logs[0]?.npub).toBeUndefined();
   });
 
-  it("refuses an old binding once a newer one is published", async () => {
+  it("refuses an old binding once a successor is published", async () => {
     const { verifier, relays } = await env();
     const now = Math.floor(Date.now() / 1000);
     const old = await bind(now - 120);
     await publish(old, [relays[0]!]);
-    await publish(await bind(now - 60, bch1), [relays[1]!]);
+    await publish(await rotate(old, now - 60), [relays[1]!]);
     const response = await login(verifier.url, old);
     expect(response.status).toBe(401);
     expect(((await response.json()) as { error: string }).error).toBe(
-      "binding is not current: a newer binding exists for this Nostr key",
+      "binding is not current: a newer binding replaces this one",
     );
   });
 
