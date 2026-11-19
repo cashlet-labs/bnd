@@ -1,9 +1,12 @@
 import { useState } from "react";
 import type { BchNetwork } from "@cashlet-labs/bnd-core";
 import { NetworkPicker } from "./components/NetworkPicker";
+import { NostrSignerPanel } from "./components/NostrSignerPanel";
+import type { ConnectedNostrSigner } from "./signers/nostr";
 
 export function App() {
   const [network, setNetwork] = useState<BchNetwork>("chipnet");
+  const [nostr, setNostr] = useState<ConnectedNostrSigner | null>(null);
 
   return (
     <main>
@@ -15,6 +18,7 @@ export function App() {
         </p>
       )}
       <NetworkPicker network={network} onChange={setNetwork} />
+      <NostrSignerPanel signer={nostr} onChange={setNostr} />
     </main>
   );
 }

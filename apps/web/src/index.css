@@ -39,3 +39,33 @@ fieldset label {
   gap: 0.5rem;
   margin-top: 0.5rem;
 }
+
+section {
+  margin: 1.5rem 0;
+}
+
+label input[type="text"],
+label textarea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0.25rem 0 0.5rem;
+  font: inherit;
+}
+
+.note {
+  opacity: 0.8;
+}
+
+.error {
+  color: #c62828;
+}
+
+.wrap {
+  overflow-wrap: anywhere;
+}
+
+.qr {
+  background: white;
+  border-radius: 0.5rem;
+}
