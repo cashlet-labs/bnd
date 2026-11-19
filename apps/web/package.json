@@ -15,6 +15,7 @@
     "@cashlet-labs/bnd-core": "*",
     "@cashlet-labs/bnd-nostr": "*",
     "@noble/curves": "2.4.0",
+    "@tanstack/react-router": "1.170.46",
     "@wizardconnect/core": "0.2.11",
     "@wizardconnect/dapp": "0.2.8",
     "nostr-tools": "2.26.1",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@playwright/test": "1.65.1",
+    "@tanstack/router-plugin": "1.169.0",
     "@testing-library/dom": "10.4.2",
     "@testing-library/react": "16.3.3",
     "@testing-library/user-event": "14.6.12",
