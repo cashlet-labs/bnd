@@ -1,3 +1,4 @@
+import { createHmac, randomBytes } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
 import {
   ChallengeStoreFullError,
@@ -49,6 +50,14 @@ export interface VerifierOptions {
   sessionAbsoluteSeconds?: number;
   /** Challenges one client address may request per minute. Default 30. */
   challengesPerMinute?: number;
+  /**
+   * A request header that holds the client's address, set by a reverse proxy
+   * in front of this service (for example `x-real-ip` behind Traefik). Set it
+   * only when every request comes through a proxy that replaces the header;
+   * otherwise clients choose their own address. Default: the connection's
+   * address.
+   */
+  clientIpHeader?: string;
   /** Where login log lines go. `false` turns logging off. Default: one JSON line on stdout. */
   log?: ((entry: LoginLogEntry) => void) | false;
   /** Clock in Unix seconds. Tests replace it. */
@@ -95,6 +104,21 @@ async function readJson(request: IncomingMessage): Promise<unknown> {
   }
 }
 
+/**
+ * The rate-limit key for a request. Addresses are hashed with a key made at
+ * start-up and kept only in memory, so the limiter never holds an address.
+ */
+export function clientKeyFor(header: string | undefined): (request: IncomingMessage) => string {
+  const secret = randomBytes(32);
+  const name = header?.toLowerCase();
+  return (request) => {
+    const forwarded = name === undefined ? undefined : request.headers[name];
+    const fromProxy = (Array.isArray(forwarded) ? forwarded[0] : forwarded)?.trim();
+    const address = fromProxy || request.socket.remoteAddress || "unknown";
+    return createHmac("sha256", secret).update(address.slice(0, 64)).digest("base64url");
+  };
+}
+
 function shortNpub(npub: string): string {
   return `${npub.slice(0, 12)}…${npub.slice(-6)}`;
 }
@@ -139,6 +163,7 @@ export function createVerifierHandler(options: VerifierOptions) {
     });
   const absoluteSeconds = options.sessionAbsoluteSeconds ?? 28_800;
   const limiter = new RateLimiter(options.challengesPerMinute ?? 30, 60);
+  const clientKey = clientKeyFor(options.clientIpHeader);
   const https = base.protocol === "https:";
   // The __Host- prefix needs Secure, which plain http cannot set.
   const cookieName = https ? "__Host-bnd_session" : "bnd_session";
@@ -224,8 +249,8 @@ export function createVerifierHandler(options: VerifierOptions) {
     }
 
     if (method === "GET" && url.pathname === "/challenge") {
-      const client = request.socket.remoteAddress ?? "unknown";
-      if (!limiter.allow(client, now())) throw new HttpError(429, "too many challenges, slow down");
+      if (!limiter.allow(clientKey(request), now()))
+        throw new HttpError(429, "too many challenges, slow down");
       const requested = url.searchParams.get("level") ?? levels[0];
       if (!isAuthLevel(requested) || !levels.includes(requested)) {
         throw new HttpError(400, `level must be one of: ${levels.join(", ")}`);
