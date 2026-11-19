@@ -73,6 +73,11 @@ only to public relays cannot be used to log in to it.
 minimum of one answer; `BND_RELAYS` and `BND_MIN_RELAYS` apply when the verifier
 is run on its own with `npm run dev:verifier`.
 
+The page's own relays are the local demo relay unless `VITE_RELAYS` names
+others (comma-separated); `VITE_RELAYS_LABEL` sets what the page calls them. The
+page publishes to and reads from them by default, and offers the secure ones
+first to NIP-46 signer apps. Public relays stay opt-in.
+
 ## Development server
 
 ```bash
@@ -99,7 +104,8 @@ audience and the page refuses challenges for other sites.
 
 ## Page security
 
-The built page is served with this policy:
+The built page is served with this policy (the hosted demo uses the same
+headers; see [deploy.md](deploy.md)):
 
 ```text
 default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self';
@@ -108,7 +114,9 @@ base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'
 ```
 
 plus `Referrer-Policy: no-referrer`, `X-Content-Type-Options: nosniff` and
-`Cross-Origin-Opener-Policy: same-origin`.
+`Cross-Origin-Opener-Policy: same-origin`. The headers are defined once, in
+`apps/web/security-headers.ts`. A plain `ws://` site relay, such as the local
+demo relay above, is listed in `connect-src`; secure relays are covered by `wss:`.
 
 - `'wasm-unsafe-eval'` lets the page compile WebAssembly. `@bitauth/libauth`
   needs it: its secp256k1 and hash functions are C code compiled to WebAssembly,

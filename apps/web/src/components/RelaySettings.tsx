@@ -1,4 +1,4 @@
-import { LOCAL_RELAY, PUBLIC_RELAYS, type RelayChoice } from "../relays";
+import { PUBLIC_RELAYS, SITE_RELAYS, SITE_RELAYS_LABEL, type RelayChoice } from "../relays";
 
 export interface RelaySettingsProps {
   choice: RelayChoice;
@@ -13,10 +13,10 @@ export function RelaySettings({ choice, onChange }: RelaySettingsProps) {
       <label>
         <input
           type="checkbox"
-          checked={choice.local}
-          onChange={(event) => onChange({ ...choice, local: event.target.checked })}
+          checked={choice.site}
+          onChange={(event) => onChange({ ...choice, site: event.target.checked })}
         />{" "}
-        Local demo relay <code>{LOCAL_RELAY}</code>
+        {SITE_RELAYS_LABEL} <code>{SITE_RELAYS.join(", ")}</code>
       </label>
       <label>
         <input
@@ -32,7 +32,7 @@ export function RelaySettings({ choice, onChange }: RelaySettingsProps) {
           {PUBLIC_RELAYS.join(", ")}.
         </p>
       )}
-      {!choice.local && !choice.public && (
+      {!choice.site && !choice.public && (
         <p className="error" role="alert">
           Choose at least one relay.
         </p>
