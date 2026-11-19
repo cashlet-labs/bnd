@@ -11,6 +11,9 @@ import { afterEach, describe, expect, it } from "vitest";
 import { startDevRelay } from "../../dev-relay/src/server.js";
 import { startWizardConnect } from "../src/signers/wizardconnect";
 import { createFakeWizardWallet } from "./fake-wizard-wallet";
+import { useQuietWebSockets } from "./quiet-websocket";
+
+useQuietWebSockets();
 
 const MNEMONIC = "leader monkey parrot ring guide accident before fence cannon height naive bean";
 

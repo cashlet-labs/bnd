@@ -11,6 +11,9 @@ import {
   type ConnectedNostrSigner,
 } from "../src/signers/nostr";
 import { startFakeBunker } from "./fake-bunker";
+import { useQuietWebSockets } from "./quiet-websocket";
+
+useQuietWebSockets();
 
 const template: UnsignedEvent = {
   kind: 30078,
