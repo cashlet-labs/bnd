@@ -17,19 +17,24 @@
     "apps/*"
   ],
   "scripts": {
-    "typecheck": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json && tsc -p apps/web/tsconfig.app.json && tsc -p apps/web/tsconfig.node.json",
     "test": "vitest run",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "build": "npm run build --workspaces --if-present",
     "dev:relay": "tsx apps/dev-relay/src/cli.ts",
-    "dev:verifier": "tsx apps/verifier/src/cli.ts"
+    "dev:verifier": "tsx apps/verifier/src/cli.ts",
+    "test:e2e": "npm run test:e2e -w @cashlet-labs/web",
+    "demo": "node scripts/demo.mjs",
+    "dev": "node scripts/demo.mjs --dev"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "22.20.5",
     "eslint": "10.15.0",
+    "eslint-plugin-react-hooks": "7.1.1",
+    "eslint-plugin-react-refresh": "0.5.8",
     "prettier": "3.10.1",
     "tsx": "4.23.15",
     "typescript": "6.0.3",

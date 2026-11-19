@@ -1,0 +1,87 @@
+/*
+ * Cashlet design tokens. Dark is the Cashlet extension and landing palette. Light uses
+ * the same hues, darkened where needed so text and accents keep their contrast on white.
+ * Without a saved choice the page follows the system setting.
+ */
+:root,
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --radius: 15px;
+
+  --bg: #070b10;
+  --bg-raised: #0b1016;
+  --panel: #111923;
+  --panel2: #141f2a;
+  --input: #0d151d;
+  --line: #23313e;
+  --line-strong: #334450;
+  --text: #edf4f8;
+  --soft: #b7c5ce;
+  --muted: #8293a2;
+
+  --green: #39e6a0;
+  --green2: #10bf83;
+  --blue: #5c9dff;
+  --red: #f87171;
+  --amber: #fbbf24;
+
+  --primary-from: #44edab;
+  --primary-to: #14c987;
+  --primary-border: #42efab;
+  --primary-text: #04291e;
+  --primary-shadow: #1bd8911a;
+  --secondary-bg: #17232d;
+  --secondary-text: #c4d0d7;
+  --danger-bg: #7f1d1d;
+  --danger-border: #991b1b;
+  --danger-text: #fca5a5;
+
+  --tint-green: rgba(57, 230, 160, 0.1);
+  --tint-green-line: rgba(57, 230, 160, 0.25);
+  --tint-blue: rgba(92, 157, 255, 0.12);
+  --tint-amber: rgba(251, 191, 36, 0.12);
+  --tint-amber-line: rgba(251, 191, 36, 0.35);
+  --tint-red: rgba(248, 113, 113, 0.12);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f4f7f9;
+  --bg-raised: #ffffff;
+  --panel: #ffffff;
+  --panel2: #eef3f6;
+  --input: #ffffff;
+  --line: #d6e0e6;
+  --line-strong: #b9c7d0;
+  --text: #0b1016;
+  --soft: #33434f;
+  --muted: #5b6b78;
+
+  --green: #0a8f5f;
+  --green2: #07784f;
+  --blue: #2563c9;
+  --red: #c62828;
+  --amber: #a16207;
+
+  --primary-from: #44edab;
+  --primary-to: #14c987;
+  --primary-border: #12b67a;
+  --primary-text: #04291e;
+  --primary-shadow: #1bd8912e;
+  --secondary-bg: #eef3f6;
+  --secondary-text: #1f2d37;
+  --danger-bg: #fdecec;
+  --danger-border: #f3b4b4;
+  --danger-text: #a51d1d;
+
+  --tint-green: rgba(10, 143, 95, 0.09);
+  --tint-green-line: rgba(10, 143, 95, 0.3);
+  --tint-blue: rgba(37, 99, 201, 0.09);
+  --tint-amber: rgba(161, 98, 7, 0.1);
+  --tint-amber-line: rgba(161, 98, 7, 0.35);
+  --tint-red: rgba(198, 40, 40, 0.08);
+  --shadow: 0 18px 40px rgba(15, 30, 45, 0.12);
+}

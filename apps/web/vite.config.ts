@@ -1,0 +1,77 @@
+import { fileURLToPath } from "node:url";
+import { tanstackRouter } from "@tanstack/router-plugin/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig, loadEnv } from "vite";
+
+const root = (path: string) => fileURLToPath(new URL(path, import.meta.url));
+
+// The page and the verifier share one origin: these paths go to the verifier.
+const VERIFIER_ROUTES = ["/challenge", "/login", "/me", "/logout"];
+
+/**
+ * Security headers for the built page. Scripts, styles, fonts and images come
+ * only from the page itself (images also as data: for QR codes). Network access is
+ * the page's own origin, the local demo relay, and secure WebSocket relays,
+ * which users choose. Nothing may frame the page.
+ */
+function securityHeaders(localRelay: string): Record<string, string> {
+  const csp = [
+    "default-src 'none'",
+    "script-src 'self' 'wasm-unsafe-eval'",
+    "style-src 'self'",
+    "img-src 'self' data:",
+    "font-src 'self'",
+    `connect-src 'self' ${localRelay} wss:`,
+    "base-uri 'none'",
+    "form-action 'none'",
+    "frame-ancestors 'none'",
+    "object-src 'none'",
+  ].join("; ");
+  return {
+    "Content-Security-Policy": csp,
+    "Referrer-Policy": "no-referrer",
+    "X-Content-Type-Options": "nosniff",
+    "Cross-Origin-Opener-Policy": "same-origin",
+  };
+}
+
+export default defineConfig(({ mode }) => {
+  // `.env` lives at the repository root, next to `.env.example`.
+  const env = { ...loadEnv(mode, root("../.."), ""), ...process.env };
+  const verifier = env.VERIFIER_URL ?? `http://127.0.0.1:${env.PORT ?? "8787"}`;
+  const localRelay = env.VITE_LOCAL_RELAY ?? "ws://127.0.0.1:7777";
+  const proxy = Object.fromEntries(
+    VERIFIER_ROUTES.map((route) => [route, { target: verifier, changeOrigin: false }]),
+  );
+  return {
+    envDir: root("../.."),
+    plugins: [
+      // File-based routes in src/routes; each route's page is loaded when first visited.
+      tanstackRouter({
+        target: "react",
+        autoCodeSplitting: true,
+        routesDirectory: root("./src/routes"),
+        generatedRouteTree: root("./src/routeTree.gen.ts"),
+      }),
+      react(),
+    ],
+    resolve: {
+      // Use package sources directly, as the tests do, so no build step is needed first.
+      alias: {
+        "@cashlet-labs/bnd-core": root("../../packages/core/src/index.ts"),
+        "@cashlet-labs/bnd-nostr": root("../../packages/nostr/src/index.ts"),
+      },
+    },
+    build: { target: "es2022", sourcemap: true },
+    // The dev server needs inline scripts and its own socket for reloads, so the
+    // strict policy applies to the built page served by `vite preview`.
+    server: { host: "127.0.0.1", port: 5173, strictPort: true, proxy },
+    preview: {
+      host: "127.0.0.1",
+      port: 4173,
+      strictPort: true,
+      proxy,
+      headers: securityHeaders(localRelay),
+    },
+  };
+});

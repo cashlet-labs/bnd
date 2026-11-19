@@ -9,5 +9,13 @@
       "@cashlet-labs/bnd-nostr/testing": ["./packages/nostr/src/testing.ts"]
     }
   },
-  "include": ["packages/*/src", "packages/*/test", "apps/*/src", "test", "*.config.ts"]
+  "include": [
+    "packages/*/src",
+    "packages/*/test",
+    "apps/*/src",
+    "apps/*/test",
+    "test",
+    "*.config.ts"
+  ],
+  "exclude": ["apps/web"]
 }

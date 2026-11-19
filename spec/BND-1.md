@@ -175,6 +175,12 @@ that refuses to sign a transaction with an unknown input cannot produce this
 proof, and a user of that wallet can use the message proof instead if the
 wallet supports it.
 
+A client MUST ask the wallet not to broadcast a proof transaction, for example
+with `broadcast: false` in a WizardConnect or WalletConnect request. The
+transaction cannot confirm, so broadcasting it only fails, shows the user an
+error, and sends the proof to a third party for no purpose. Some wallets
+broadcast whatever they sign unless told not to.
+
 The hash type `0x61` includes the `UTXOS` flag, which makes the signature commit
 to every spent output as well as every output of the transaction. A proof with
 any other hash type is rejected, including the older `0x41` and any
