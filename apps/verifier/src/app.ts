@@ -15,6 +15,7 @@ import {
 import { checkCurrentBinding, type CurrencyCheckOptions } from "@cashlet-labs/bnd-nostr";
 import { resolvesToPublicAddresses } from "./address-guard.js";
 import { RateLimiter } from "./rate-limit.js";
+import { MemoryPinStore, type PinStore } from "./pin-store.js";
 import { MemorySessionStore, type Session, type SessionStore } from "./session-store.js";
 
 export interface LoginLogEntry {
@@ -44,6 +45,12 @@ export interface VerifierOptions {
   currency: CurrencyCheckOptions | false;
   challengeStore?: ChallengeStore;
   sessionStore?: SessionStore;
+  /**
+   * Remembers each Nostr key's accepted binding and refuses logins with one
+   * that does not continue it (section 9). Default: in memory. `false` turns
+   * pinning off.
+   */
+  pinStore?: PinStore | false;
   /** Seconds a session lives without use. Default 1800. */
   sessionIdleSeconds?: number;
   /** Seconds a session lives at most. Default 28800. */
@@ -173,18 +180,19 @@ export function createVerifierHandler(options: VerifierOptions) {
       : (options.log ?? ((entry: LoginLogEntry) => console.log(JSON.stringify(entry))));
 
   const currency = options.currency;
-  const isCurrent =
-    currency === false
-      ? undefined
-      : async (binding: VerifiedBinding): Promise<VerifyResult> => {
-          const result = await checkCurrentBinding(binding, {
-            ...currency,
-            allowUserRelay: async (url) =>
-              (await (currency.allowUserRelay?.(url) ?? true)) &&
-              (await resolvesToPublicAddresses(url)),
-          });
-          return result.ok ? { ok: true } : { ok: false, reason: result.reason };
-        };
+  const pins = options.pinStore === false ? undefined : (options.pinStore ?? new MemoryPinStore());
+  // Runs before the challenge is used up: the pin first (no network), then relays.
+  const isCurrent = async (binding: VerifiedBinding): Promise<VerifyResult> => {
+    const conflict = pins?.conflict(binding);
+    if (conflict) return { ok: false, reason: conflict };
+    if (currency === false) return { ok: true };
+    const result = await checkCurrentBinding(binding, {
+      ...currency,
+      allowUserRelay: async (url) =>
+        (await (currency.allowUserRelay?.(url) ?? true)) && (await resolvesToPublicAddresses(url)),
+    });
+    return result.ok ? { ok: true } : { ok: false, reason: result.reason };
+  };
 
   function setCookie(value: string, maxAge: number): string {
     return [
@@ -272,10 +280,12 @@ export function createVerifierHandler(options: VerifierOptions) {
       const body = await readJson(request);
       const result = await verifyLogin(challenges, body, {
         now: now(),
-        ...(isCurrent === undefined ? {} : { isCurrent }),
+        isCurrent,
+        ...(pins === undefined ? {} : { checkpoints: pins.checkpoints() }),
       });
       logLogin(result);
       if (!result.ok) return send(response, 401, { error: result.reason });
+      pins?.pin(result.binding);
       const previous = await currentSession(request);
       if (previous) await sessions.delete(previous[0]);
       const session: Session = {
