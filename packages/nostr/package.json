@@ -1,6 +1,6 @@
 {
   "name": "@cashlet-labs/bnd-nostr",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "BND relay client and discovery: publish, find and verify bindings on Nostr relays",
   "type": "module",
   "license": "MIT",
