@@ -1,0 +1,108 @@
+# Running the demo
+
+The demo is a web page that walks through the whole protocol: connect a Nostr
+identity and a Bitcoin Cash key, bind them, publish the binding to relays,
+discover and verify it as an independent application would, and log in to a
+demonstration service with it.
+
+## Requirements
+
+- Node.js 22 or later and npm.
+- For a real wallet: a BCH wallet that supports WizardConnect, set to chipnet.
+  See [wallet-connections.md](wallet-connections.md).
+
+## Start it
+
+```bash
+npm install
+npm run demo
+```
+
+Open <http://127.0.0.1:4173>. `npm run demo` builds the page and starts three
+processes on this machine only:
+
+| Process  | Address                 | Role                                                                        |
+| -------- | ----------------------- | --------------------------------------------------------------------------- |
+| Relay    | `ws://127.0.0.1:7777`   | A local Nostr relay that keeps events in memory                             |
+| Verifier | `http://127.0.0.1:8787` | The demonstration login service                                             |
+| Web page | `http://127.0.0.1:4173` | The built page; it forwards the verifier's routes, so both share one origin |
+
+If any of these ports is in use, the script says so and stops. It never stops
+other programs. Press Ctrl+C to stop the demo; everything it kept in memory is
+gone.
+
+## Walk-through
+
+1. **Network.** Chipnet is selected. Mainnet asks you to confirm that real funds
+   and a real public identity are at stake.
+2. **Nostr identity.** Use a NIP-07 browser extension, a NIP-46 remote signer
+   (paste a `bunker://` link, or scan the `nostrconnect://` code with a signer
+   app), or create a key that lives only in this page.
+3. **Bitcoin Cash key.** Connect a wallet with WizardConnect by scanning the code
+   or pasting the `wiz://` link into the wallet, or create a local test key
+   (chipnet only). The wallet is asked to sign a proof transaction that spends a
+   virtual output and is never broadcast.
+4. **Bind and publish.** Both keys sign. Publish to the local relay, and to public
+   relays if you turn them on. Anything sent to public relays is public and
+   cannot be reliably deleted.
+5. **Discover and verify.** Look up an npub or a BCH address. The page asks the
+   relays and verifies every event itself.
+6. **Log in.** The verifier issues a one-time challenge; the page signs it with
+   both keys or with the Nostr key only. "Try an action that needs both keys"
+   shows step-up: a Nostr-only session is refused.
+
+The demo verifier checks logins against the local relay only. A binding published
+only to public relays cannot be used to log in to it.
+
+## Configuration
+
+`npm run demo` reads `.env` in the repository root if it exists (copy
+`.env.example`). The demo always points its verifier at its own relay with a
+minimum of one answer; `BND_RELAYS` and `BND_MIN_RELAYS` apply when the verifier
+is run on its own with `npm run dev:verifier`.
+
+## Development server
+
+The development server reloads on changes but does not apply the page's security
+policy. Run the parts separately:
+
+```bash
+npm run dev:relay
+PUBLIC_URL=http://127.0.0.1:5173 BND_RELAYS=ws://127.0.0.1:7777 BND_MIN_RELAYS=1 npm run dev:verifier
+npm run dev -w @cashlet-labs/web
+```
+
+`PUBLIC_URL` must be the address of the page, because challenges name it as their
+audience and the page refuses challenges for other sites.
+
+## Page security
+
+The built page is served with this policy:
+
+```text
+default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self';
+img-src 'self' data:; connect-src 'self' ws://127.0.0.1:7777 wss:;
+base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'
+```
+
+plus `Referrer-Policy: no-referrer`, `X-Content-Type-Options: nosniff` and
+`Cross-Origin-Opener-Policy: same-origin`.
+
+- `'wasm-unsafe-eval'` lets the page compile WebAssembly, which `@bitauth/libauth`
+  uses for its secp256k1 code. It does not allow JavaScript `eval`.
+- `wss:` allows secure WebSocket connections to any host, because users choose
+  their own Nostr and NIP-46 relays, and WizardConnect uses its own relays.
+- `data:` images are the QR codes the page draws.
+
+## Tests
+
+```bash
+npm test                         # unit, component and integration tests
+npx playwright install chromium  # once, about 130 MB
+npm run test:e2e                 # browser tests against `npm run demo`
+```
+
+The browser tests run the full flow in Chromium with in-page keys: bind with each
+proof type, publish, verify, log in, step-up, and a refused login for an
+unpublished binding. Real wallets were tested by hand; their proofs are kept as
+vectors in `spec/vectors/bch-tx-proof-wallets.json`.
