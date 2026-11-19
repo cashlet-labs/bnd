@@ -1,0 +1,18 @@
+# Puts the page behind the VPS's Traefik (entrypoint websecure, Let's Encrypt,
+# external network web). Only the page joins that network; the verifier is
+# reachable only from the page. No host ports are opened.
+
+services:
+  web:
+    networks: [default, web]
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: web
+      traefik.http.routers.bnd-core.rule: Host(`${SITE_HOST}`)
+      traefik.http.routers.bnd-core.entrypoints: websecure
+      traefik.http.routers.bnd-core.tls.certresolver: letsencrypt
+      traefik.http.services.bnd-core.loadbalancer.server.port: "8080"
+
+networks:
+  web:
+    external: true
