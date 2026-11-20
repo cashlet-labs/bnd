@@ -1,5 +1,6 @@
 import { DiscoverPanel } from "../components/DiscoverPanel";
 import { PageHeader } from "../components/Layout";
+import { PayPanel } from "../components/PayPanel";
 import { RelaySettings } from "../components/RelaySettings";
 import { selectedRelays } from "../relays";
 import { useSession } from "../state/session-context";
@@ -17,6 +18,7 @@ export function VerifyPage() {
         <RelaySettings choice={session.relayChoice} onChange={session.setRelayChoice} />
       </div>
       <DiscoverPanel relays={relays} variant="standalone" />
+      <PayPanel relays={relays} />
     </div>
   );
 }

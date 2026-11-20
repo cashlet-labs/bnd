@@ -4,3 +4,5 @@ export { blockchainAccountIdOf, DID_CONTEXTS, didDocument, multikeyOf } from "./
 export type { DidDocument, VerificationMethod } from "./document.js";
 export { resolveDid, resolveDidFromEvents } from "./resolve.js";
 export type { DidResolutionResult, ResolutionError, ResolveDidOptions } from "./resolve.js";
+export { paymentUri, resolvePayee } from "./pay.js";
+export type { Payee, PayeeResult, PaymentUriOptions } from "./pay.js";

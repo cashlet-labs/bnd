@@ -81,6 +81,14 @@ change when keys rotate, with a link to resolve it at `/did/<did>`. The verifier
 answers that route with a DID Resolution Result, using the same relays it checks
 logins against.
 
+The verify page also has **Pay this identity**: enter an npub or a did:bnd, and
+the page finds the identity's current binding the way logins do (enough relays
+must answer; revoked or disputed identities are refused), then shows a
+`bitcoincash:` payment request (BIP21) with an optional amount and a QR code,
+and the token-aware `z…` form of the same address for CashTokens. No wallet
+standard for token payment requests exists yet, so the payer chooses the token
+in their own wallet. The page never sends anything itself.
+
 ### The recovery key
 
 A recovery key is a backup, so unlike the other keys in this page it has to be
