@@ -11,6 +11,7 @@ import {
   type RelayReport,
 } from "@cashlet-labs/bnd-nostr";
 import { ChainView } from "./ChainView";
+import { DidFact } from "./DidLink";
 
 export interface DiscoverPanelProps {
   relays: string[];
@@ -155,6 +156,7 @@ export function DiscoverPanel({
                 <dl className="facts verified">
                   <dt>Verified</dt>
                   <dd>Both the Nostr key and the BCH key signed this binding.</dd>
+                  <DidFact binding={binding} />
                   <dt>Nostr key</dt>
                   <dd>
                     <code className="wrap">{npubEncode(binding.nostrPublicKey)}</code>
