@@ -11,6 +11,12 @@ interface Subscription {
 export interface MemoryRelayOptions {
   /** Maximum events returned for one subscription when no limit is given. */
   defaultLimit?: number;
+  /**
+   * Decides each incoming event after its signature is checked, like a
+   * relay's write policy. Return a message to refuse the event, or null to
+   * accept it. It sees what the relay stores through `relay.query`.
+   */
+  writePolicy?: (event: NostrEvent, relay: MemoryRelay) => string | null;
 }
 
 function isReplaceable(kind: number): boolean {
@@ -48,12 +54,14 @@ export class MemoryRelay {
   private readonly byKey = new Map<string, string>();
   private readonly sessions = new Set<RelaySession>();
   private readonly defaultLimit: number;
+  private readonly writePolicy: MemoryRelayOptions["writePolicy"];
 
   /** Optional hook: return false to hide a stored event from queries. */
   hideFromQueries: ((event: NostrEvent) => boolean) | undefined;
 
   constructor(options: MemoryRelayOptions = {}) {
     this.defaultLimit = options.defaultLimit ?? 500;
+    this.writePolicy = options.writePolicy;
   }
 
   /** Open a connection. `send` receives each message the relay sends. */
@@ -82,6 +90,8 @@ export class MemoryRelay {
   accept(event: NostrEvent): { ok: boolean; message: string } {
     if (this.events.has(event.id))
       return { ok: true, message: "duplicate: already have this event" };
+    const refusal = this.writePolicy?.(event, this) ?? null;
+    if (refusal !== null) return { ok: false, message: refusal };
     if (isEphemeral(event.kind)) {
       this.broadcast(event);
       return { ok: true, message: "" };
@@ -99,7 +109,7 @@ export class MemoryRelay {
     return { ok: true, message: "" };
   }
 
-  /** @internal */
+  /** Stored events that match any of `filters`, newest first. */
   query(filters: Filter[]): NostrEvent[] {
     const limit = Math.min(
       ...filters.map((filter) => filter.limit ?? this.defaultLimit),

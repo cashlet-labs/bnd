@@ -37,11 +37,16 @@ interface Env {
 }
 
 async function env(
-  options: Partial<StartVerifierOptions> & { relayCount?: number; minComplete?: number } = {},
+  options: Partial<StartVerifierOptions> & {
+    relayCount?: number;
+    minComplete?: number;
+    /** Relays that store any valid event, as public relays do. Default false. */
+    plainRelays?: boolean;
+  } = {},
 ): Promise<Env> {
   const relays: DevRelay[] = [];
   for (let i = 0; i < (options.relayCount ?? 2); i++) {
-    const relay = await startDevRelay();
+    const relay = await startDevRelay({ enforceSuccession: !options.plainRelays });
     relays.push(relay);
     cleanup.push(() => relay.close());
   }
@@ -193,8 +198,10 @@ describe("verifier: full login flow over real relays", () => {
   });
 
   describe("pinning", () => {
+    // Relays that enforce succession refuse the thief's binding outright; these
+    // tests use plain relays, which accept it, to show what pins add.
     it("refuses a thief's binding that replaced the real one on every relay", async () => {
-      const { verifier, relays } = await env();
+      const { verifier, relays } = await env({ plainRelays: true });
       const now = Math.floor(Date.now() / 1000);
       const real = await bind(now - 120);
       await publish(real, relays);
@@ -211,7 +218,7 @@ describe("verifier: full login flow over real relays", () => {
     });
 
     it("without pins, the same attack succeeds: pins are what stop it", async () => {
-      const { verifier, relays } = await env({ pinStore: false });
+      const { verifier, relays } = await env({ pinStore: false, plainRelays: true });
       const now = Math.floor(Date.now() / 1000);
       const real = await bind(now - 120);
       await publish(real, relays);

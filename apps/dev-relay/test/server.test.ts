@@ -2,13 +2,16 @@ import {
   createBinding,
   createKeySigner,
   createNostrKeySigner,
+  createSuccessor,
   deriveBchKey,
   deriveNostrKey,
+  signEvent,
 } from "@cashlet-labs/bnd-core";
 import {
   discoverBinding,
   discoverByBchKeyHash,
   publishBinding,
+  publishToRelay,
   queryRelay,
 } from "@cashlet-labs/bnd-nostr";
 import { afterEach, describe, expect, it } from "vitest";
@@ -65,12 +68,97 @@ describe("dev relay over real WebSockets", () => {
     expect(found.bindings.map((b) => b.nostrPublicKey)).toEqual([nostr.publicKey]);
   });
 
-  it("keeps only the newest binding for a key", async () => {
-    const { url, relay } = await start();
-    await publishBinding((await bind(1_700_000_000)).event, { relays: [url] });
+  it("keeps only the newest binding for a key when enforcement is off", async () => {
+    const relay = await startDevRelay({ enforceSuccession: false });
+    running.push(relay);
+    await publishBinding((await bind(1_700_000_000)).event, { relays: [relay.url] });
     const newer = await bind(1_700_000_100);
-    await publishBinding(newer.event, { relays: [url] });
-    expect(relay.all()).toEqual([newer.event]);
+    await publishBinding(newer.event, { relays: [relay.url] });
+    expect(relay.relay.all()).toEqual([newer.event]);
+  });
+
+  describe("BND rules, as on the Cashlet relays", () => {
+    const thiefBch = deriveBchKey(MNEMONIC, 0, 20);
+
+    it("refuses a second first binding for a key that has one", async () => {
+      const { url, relay } = await start();
+      const real = await bind(1_700_000_000);
+      await publishBinding(real.event, { relays: [url] });
+      const fake = await createBinding({
+        nostrSigner: createNostrKeySigner(nostr.privateKey),
+        bchSigner: createKeySigner(thiefBch.privateKey),
+        bchKeyHash: thiefBch.keyHash,
+        network: "chipnet",
+        proofType: "message",
+        createdAt: 1_700_000_100,
+      });
+      const result = await publishToRelay(url, fake.event);
+      expect(result).toMatchObject({
+        ok: false,
+        message:
+          "blocked: this key already has a binding here; replace it with a successor approved by two of its keys",
+      });
+      expect(relay.all()).toEqual([real.event]);
+    });
+
+    it("replaces a binding with its successor, and refuses going back", async () => {
+      const { url, relay } = await start();
+      const first = await bind(1_700_000_000);
+      await publishBinding(first.event, { relays: [url] });
+      const bch1 = deriveBchKey(MNEMONIC, 0, 1);
+      const next = await createSuccessor({
+        previous: first.event,
+        nostrSigner: createNostrKeySigner(nostr.privateKey),
+        bchSigner: createKeySigner(bch1.privateKey),
+        bchKeyHash: bch1.keyHash,
+        network: "chipnet",
+        proofType: "message",
+        approvers: { bch: { signer: createKeySigner(bch.privateKey), proofType: "message" } },
+        createdAt: 1_700_000_100,
+      });
+      expect((await publishToRelay(url, next.event)).ok).toBe(true);
+      expect(relay.all()).toEqual([next.event]);
+      expect((await publishToRelay(url, first.event)).ok).toBe(false);
+    });
+
+    it("refuses an invalid binding and a deletion of a binding", async () => {
+      const { url, relay } = await start();
+      const binding = await bind(1_700_000_000);
+      const forged = signEvent(nostr.privateKey, {
+        kind: 30078,
+        created_at: binding.event.created_at,
+        tags: binding.event.tags,
+        content: binding.event.content.replace("chipnet", "mainnet"),
+      });
+      expect((await publishToRelay(url, forged)).message).toMatch(/^invalid: /);
+      await publishBinding(binding.event, { relays: [url] });
+      const deletion = signEvent(nostr.privateKey, {
+        kind: 5,
+        created_at: 1_700_000_100,
+        tags: [
+          ["a", `30078:${nostr.publicKey}:bnd1`],
+          ["k", "30078"],
+        ],
+        content: "",
+      });
+      expect(await publishToRelay(url, deletion)).toMatchObject({
+        ok: false,
+        message: "blocked: bindings cannot be deleted here; revoke the binding instead",
+      });
+      expect(relay.all()).toEqual([binding.event]);
+    });
+
+    it("still stores other events", async () => {
+      const { url, relay } = await start();
+      const note = signEvent(nostr.privateKey, {
+        kind: 1,
+        created_at: 1_700_000_000,
+        tags: [],
+        content: "hello",
+      });
+      expect((await publishToRelay(url, note)).ok).toBe(true);
+      expect(relay.all()).toEqual([note]);
+    });
   });
 
   it("rejects a forged event at the relay", async () => {
