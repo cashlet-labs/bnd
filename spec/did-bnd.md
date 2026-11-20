@@ -262,7 +262,7 @@ client.
 
 ## 10. Reference implementation and test vectors
 
-- Library: `@cashlet-labs/bnd-did` (`parseDid`, `didOf`, `didDocument`,
+- Library: `@cashlet-labs/bnd/did` (`parseDid`, `didOf`, `didDocument`,
   `resolveDid`, `resolveDidFromEvents`) and the `bnd-resolve` command.
 - Vectors: [`vectors/did.json`](vectors/did.json): resolution results for a
   first binding, BCH and Nostr key rotations, a thief's second first binding, a

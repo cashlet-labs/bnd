@@ -1,7 +1,7 @@
 # How the demo connects to BCH wallets
 
 The BND library does not depend on any wallet protocol. A BCH wallet takes part
-through the `BchSigner` interface in `@cashlet-labs/bnd-core`, which has two
+through the `BchSigner` interface in `@cashlet-labs/bnd`, which has two
 methods, one per proof type in the specification (section 4):
 
 - `signMessage(text)` for the message proof (Bitcoin Signed Message);

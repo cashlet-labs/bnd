@@ -15,7 +15,7 @@ chipnet key made for the report is enough.
 
 - The specification in `spec/`: any way to make a verifier accept a binding,
   successor, revocation, login or DID resolution that the rules should refuse.
-- The packages in `packages/`.
+- The library in `packages/bnd`.
 - The demo page, verifier and DID resolver in `apps/`, and the hosted demo at
   <https://bnd.septemlabs.com>.
 

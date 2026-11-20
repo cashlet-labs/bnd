@@ -154,8 +154,8 @@ The verifier asks several relays and fails when too few answer completely.
 In code:
 
 ```ts
-import { verifyBinding } from "@cashlet-labs/bnd-core";
-import { discoverBinding } from "@cashlet-labs/bnd-nostr";
+import { verifyBinding } from "@cashlet-labs/bnd";
+import { discoverBinding } from "@cashlet-labs/bnd/nostr";
 
 const local = verifyBinding(event); // one event, no network
 const found = await discoverBinding("npub1…", { relays }); // found.state.status

@@ -2,16 +2,21 @@
 
 This guide is for wallets, Nostr clients and applications that want to use BND
 bindings. The rules are in [spec/BND-1.md](../spec/BND-1.md); the examples use
-the TypeScript packages in this repository.
+the TypeScript library in this repository.
 
-Install the packages you need from npm (Node.js 22 or later, or a modern
-browser; ES modules only):
+Install it from npm (Node.js 22 or later, or a modern browser; ES modules only):
 
 ```bash
-npm install @cashlet-labs/bnd-core    # records, proofs, verification, login
-npm install @cashlet-labs/bnd-nostr   # publish, discover, current-binding check
-npm install @cashlet-labs/bnd-did     # did:bnd and pay by identity
+npm install @cashlet-labs/bnd
 ```
+
+It has three entry points; import only the ones you use:
+
+| Import                    | What it has                                   |
+| ------------------------- | --------------------------------------------- |
+| `@cashlet-labs/bnd`       | records, proofs, verification, login. No I/O. |
+| `@cashlet-labs/bnd/nostr` | publish, discover, the current-binding check  |
+| `@cashlet-labs/bnd/did`   | `did:bnd` resolution and pay by identity      |
 
 Any other language can implement the spec and check itself against
 `spec/vectors/`.
@@ -66,8 +71,8 @@ import {
   createNostrKeySigner,
   deriveBchKey,
   deriveNostrKey,
-} from "@cashlet-labs/bnd-core";
-import { publishBinding } from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd";
+import { publishBinding } from "@cashlet-labs/bnd/nostr";
 
 const nostr = deriveNostrKey(mnemonic);
 const bch = deriveBchKey(mnemonic);
@@ -91,7 +96,7 @@ demo does this over WizardConnect.
 Find a user's binding and show its address only if it verifies and is current:
 
 ```ts
-import { discoverBinding } from "@cashlet-labs/bnd-nostr";
+import { discoverBinding } from "@cashlet-labs/bnd/nostr";
 
 const found = await discoverBinding(npub, { relays });
 switch (found.state.status) {
@@ -133,8 +138,8 @@ application verifies the answer and checks that the binding is current.
 `apps/verifier` is a complete example; the essential calls are:
 
 ```ts
-import { issueChallenge, MemoryChallengeStore, verifyLogin } from "@cashlet-labs/bnd-core";
-import { checkCurrentBinding } from "@cashlet-labs/bnd-nostr";
+import { issueChallenge, MemoryChallengeStore, verifyLogin } from "@cashlet-labs/bnd";
+import { checkCurrentBinding } from "@cashlet-labs/bnd/nostr";
 
 const store = new MemoryChallengeStore();
 
@@ -157,7 +162,7 @@ if (result.ok) startSession(result.identity, result.level);
 In the browser:
 
 ```ts
-import { createLoginResponse } from "@cashlet-labs/bnd-core";
+import { createLoginResponse } from "@cashlet-labs/bnd";
 
 const response = await createLoginResponse({
   challenge,
@@ -185,7 +190,7 @@ Server notes:
 ## For applications: resolve a DID
 
 ```ts
-import { resolveDid } from "@cashlet-labs/bnd-did";
+import { resolveDid } from "@cashlet-labs/bnd/did";
 
 const result = await resolveDid("did:bnd:chipnet:<key>:<id>", { relays, minComplete: 2 });
 if ("error" in result.didResolutionMetadata) handle(result.didResolutionMetadata.error);
@@ -201,7 +206,7 @@ curl https://bnd.septemlabs.com/did/did:bnd:chipnet:<key>:<id>
 Or from the command line:
 
 ```bash
-npx -p @cashlet-labs/bnd-did bnd-resolve did:bnd:chipnet:<key>:<id> --relay wss://relay.septemlabs.com
+npx -p @cashlet-labs/bnd bnd-resolve did:bnd:chipnet:<key>:<id> --relay wss://relay.septemlabs.com
 ```
 
 Results and HTTP status codes are listed in
@@ -211,7 +216,7 @@ resolves from events you already hold, with no network.
 ## For applications: pay an identity
 
 ```ts
-import { paymentUri, resolvePayee } from "@cashlet-labs/bnd-did";
+import { paymentUri, resolvePayee } from "@cashlet-labs/bnd/did";
 
 const payee = await resolvePayee("npub1…", { relays }); // or a hex key or a did:bnd
 if (payee.ok) {
