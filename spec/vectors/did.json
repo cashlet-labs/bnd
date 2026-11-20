@@ -1,0 +1,536 @@
+{
+  "description": "did:bnd resolution vectors (spec/did-bnd.md). Each case lists event IDs from `events`; resolving `did` from exactly those events, with no relay services, must give `result`. BIP-340 signatures use random auxiliary data, so the events are fixed here rather than reproducible.",
+  "mnemonic": "leader monkey parrot ring guide accident before fence cannon height naive bean",
+  "events": {
+    "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5": {
+      "id": "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000000,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"]
+      ],
+      "content": "{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+      "sig": "09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6"
+    },
+    "56d449e0f895dcc4f1f99d12100c319ecadf903f9b15167e0aa876544256d1f9": {
+      "id": "56d449e0f895dcc4f1f99d12100c319ecadf903f9b15167e0aa876544256d1f9",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+        ["s", "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"signature\":\"IPUEcQdIwI5mzRyKrcUBP/QVFXYMBnwBWHWFM1RO5VWrJBTZPvbBWCGKWTdvW5X+DEMNmZbfCVQXbMdymzZv+fY=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPWM6zriL+toADKp4VwXiyfmLkwzDkH518+2oAQehIuiY55dRt4bKLZT23/TInAKVSqBg2LEzw/0148cs5fsygg=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+      "sig": "5549a31f0d284440ce73bf6859ba334f229f1cbff073fb574685b05d2153449cbff432e0da2b99f4809462a5bfdd0feb28daaf165de22bba9a1ae585f3a64982"
+    },
+    "c61e0e856f594722e08e1d8e2d8acd9c36c4e98890da4835586a1c660360bbd5": {
+      "id": "c61e0e856f594722e08e1d8e2d8acd9c36c4e98890da4835586a1c660360bbd5",
+      "pubkey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+      "created_at": 1700000200,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+        ["s", "cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0"]
+      ],
+      "content": "{\"approvals\":{\"nostr\":\"eb2e9529371dbca84eb12b839b8f47ac005da3f0be9df52195adf93934d9ad2c277be6eb6db37b44dd653925d51e2d5379cfc0dcd2bf5c5a2158fdbe3a846be6\"},\"bchProof\":{\"signature\":\"H3dBaoyuCSTMEsQoLo2lSv/tJ49tJXmoJz0gJSprXRUMED/4AY2RjfSUREme9oe7RVoJ5sAoXUvJv0uzg6Z/g70=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6\"},{\"approvals\":{\"bch\":{\"signature\":\"IPUEcQdIwI5mzRyKrcUBP/QVFXYMBnwBWHWFM1RO5VWrJBTZPvbBWCGKWTdvW5X+DEMNmZbfCVQXbMdymzZv+fY=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPWM6zriL+toADKp4VwXiyfmLkwzDkH518+2oAQehIuiY55dRt4bKLZT23/TInAKVSqBg2LEzw/0148cs5fsygg=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"5549a31f0d284440ce73bf6859ba334f229f1cbff073fb574685b05d2153449cbff432e0da2b99f4809462a5bfdd0feb28daaf165de22bba9a1ae585f3a64982\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000200,\"nostr\":{\"publicKey\":\"d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04\"},\"previous\":\"cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+      "sig": "1911c88c12236386f55cb0c44471113e6496416c834ba927588dfe387053162223a95687ac14a9ab4f8c0029cf73ecbae23b94dd0c7cd5e4a85493077fcf7eb5"
+    },
+    "f8e50783203fce8335209f69c5f6ae63c7a0181474405037c1c0a3ad6b410308": {
+      "id": "f8e50783203fce8335209f69c5f6ae63c7a0181474405037c1c0a3ad6b410308",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000300,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "a9bd60d8300db8f755ba2b3638c79a02f00e8e52"],
+        ["s", "cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"signature\":\"IEzzvOodPRrypUSth24vkgscG9zVyhnCpsI9r07yw7xVGOdxxKTUBOKHhNWrua3dFz7T7yiA1FmbxtWzvj9GvQU=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"H3lyGGOq8qHvxyLPms5PSbwaCTp8N2l/unTLkUn6RLZHdwejutTHDztQaYfD+KzxYOQIqpsjxNj6izvNAhTGqE0=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6\"},{\"approvals\":{\"bch\":{\"signature\":\"IPUEcQdIwI5mzRyKrcUBP/QVFXYMBnwBWHWFM1RO5VWrJBTZPvbBWCGKWTdvW5X+DEMNmZbfCVQXbMdymzZv+fY=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPWM6zriL+toADKp4VwXiyfmLkwzDkH518+2oAQehIuiY55dRt4bKLZT23/TInAKVSqBg2LEzw/0148cs5fsygg=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"5549a31f0d284440ce73bf6859ba334f229f1cbff073fb574685b05d2153449cbff432e0da2b99f4809462a5bfdd0feb28daaf165de22bba9a1ae585f3a64982\"}],\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700000300,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+      "sig": "1804486059e91719ea8b1a3b309d20451fd5dbd9c1dd13d59a0ef9fb7d0b18fd2d617e756a2a02f12bcd196ec5a298b022c6e7ca109e5fee8d511d369f48d5d6"
+    },
+    "c30e8e7ac980ce9e613c3f9245ff848e5b940bc032ace9d0f1ce42a8e1389a1d": {
+      "id": "c30e8e7ac980ce9e613c3f9245ff848e5b940bc032ace9d0f1ce42a8e1389a1d",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700001000,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "a9bd60d8300db8f755ba2b3638c79a02f00e8e52"]
+      ],
+      "content": "{\"bchProof\":{\"signature\":\"HzvNIj35iPSvi5G9jfEJszicviwOYg/PlYhloxPe3e98Oeudy/aXkEzDpR+PyPHmq8ZrOr28kHmNFNNI64alP5Y=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700001000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "2733926612e444aa5375846cc101fb7ca5ce17233b45194cae9bf133412ad97c76e80cd571c9095d31eef53b9b1de880b57d87699d7e37e7c9262c0a5b28b44d"
+    },
+    "7597e83df42e64485a005a5e2d38c943b9368d5fede0af4fc26509a90bbfa65c": {
+      "id": "7597e83df42e64485a005a5e2d38c943b9368d5fede0af4fc26509a90bbfa65c",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700001100,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "a9bd60d8300db8f755ba2b3638c79a02f00e8e52"],
+        ["s", "a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0"]
+      ],
+      "content": "{\"approvals\":{\"bch\":{\"signature\":\"ICtFOvIsh3TxwtPD8mtoIGk1BYq4Ot0o+F+lKb9b+8UCf+lj4qOTCmrUtKmD+6rlmZ18n+NuWRz5Tkjez3hp6FY=\",\"type\":\"message\"}},\"history\":[{\"bchProof\":{\"signature\":\"HzvNIj35iPSvi5G9jfEJszicviwOYg/PlYhloxPe3e98Oeudy/aXkEzDpR+PyPHmq8ZrOr28kHmNFNNI64alP5Y=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700001000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"2733926612e444aa5375846cc101fb7ca5ce17233b45194cae9bf133412ad97c76e80cd571c9095d31eef53b9b1de880b57d87699d7e37e7c9262c0a5b28b44d\"}],\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700001100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0\",\"protocol\":\"bnd\",\"revoked\":true,\"version\":1}}",
+      "sig": "fdb4e35bb4791029af024e2ab8ca3ee0798bf06bfd4de989f1e4b320d5caf607daadaa2b5de5d705d4f7f4fc395f2981af5a4ba75c1c7da8624314b47941952f"
+    },
+    "ca58bac19f5b7f8eaba553651a700f084710b75e077bf196c2556c8be30e0df7": {
+      "id": "ca58bac19f5b7f8eaba553651a700f084710b75e077bf196c2556c8be30e0df7",
+      "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "created_at": 1700000500,
+      "kind": 30078,
+      "tags": [
+        ["d", "bnd1"],
+        ["b", "d5c08c4094d72ab024035f287e86a1646046892d"]
+      ],
+      "content": "{\"bchProof\":{\"signature\":\"IBLhdB7pYkKf2vFRMTbSXFLdVbXgjl3lJu/1l/CDglVMMHGKcEv9gWJmL+tNlquZiQ5gFXAyP/Mntn5z5MK4vL8=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"d5c08c4094d72ab024035f287e86a1646046892d\",\"network\":\"chipnet\"},\"createdAt\":1700000500,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1}}",
+      "sig": "565f26d93c6d1f7f796fe3db577a9ab0801c0b1854e554aedc43d21c077bcbf6f1fe70417365e42143d6d39a22bc92453aa554234d1d9d900e51f0a291dbc76c"
+    }
+  },
+  "resolution": [
+    {
+      "name": "a first binding",
+      "did": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+      "events": ["471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5"],
+      "result": {
+        "didDocument": {
+          "@context": [
+            "https://www.w3.org/ns/did/v1",
+            "https://www.w3.org/ns/cid/v1",
+            "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
+          ],
+          "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+          "alsoKnownAs": [
+            "did:nostr:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+          ],
+          "verificationMethod": [
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe7010217162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+              "type": "EcdsaSecp256k1RecoveryMethod2020",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "blockchainAccountId": "bip122:000000000000e0b99c152c6119f94eae:qrk96lntm80kjww9gye5cej7uh0wjyd8ysjk2actkc"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe70102a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661"
+            }
+          ],
+          "authentication": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch"
+          ],
+          "assertionMethod": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr"
+          ],
+          "capabilityInvocation": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery"
+          ]
+        },
+        "didResolutionMetadata": {
+          "contentType": "application/did+ld+json"
+        },
+        "didDocumentMetadata": {
+          "created": "2023-11-14T22:13:20Z",
+          "versionId": "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+          "bnd": {
+            "bindingId": "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+            "history": [],
+            "approvedBy": [],
+            "event": {
+              "id": "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5",
+              "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+              "created_at": 1700000000,
+              "kind": 30078,
+              "tags": [
+                ["d", "bnd1"],
+                ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"]
+              ],
+              "content": "{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+              "sig": "09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "after rotating the BCH key",
+      "did": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+      "events": [
+        "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5",
+        "56d449e0f895dcc4f1f99d12100c319ecadf903f9b15167e0aa876544256d1f9"
+      ],
+      "result": {
+        "didDocument": {
+          "@context": [
+            "https://www.w3.org/ns/did/v1",
+            "https://www.w3.org/ns/cid/v1",
+            "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
+          ],
+          "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+          "alsoKnownAs": [
+            "did:nostr:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+          ],
+          "verificationMethod": [
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe7010217162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+              "type": "EcdsaSecp256k1RecoveryMethod2020",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "blockchainAccountId": "bip122:000000000000e0b99c152c6119f94eae:qp57z435f6c2tltf6uswwlwv6lnzaxh2js5c3gd8pz"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe70102a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661"
+            }
+          ],
+          "authentication": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch"
+          ],
+          "assertionMethod": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr"
+          ],
+          "capabilityInvocation": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery"
+          ]
+        },
+        "didResolutionMetadata": {
+          "contentType": "application/did+ld+json"
+        },
+        "didDocumentMetadata": {
+          "created": "2023-11-14T22:13:20Z",
+          "updated": "2023-11-14T22:15:00Z",
+          "versionId": "cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0",
+          "bnd": {
+            "bindingId": "cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0",
+            "history": ["5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"],
+            "approvedBy": ["nostr", "bch"],
+            "event": {
+              "id": "56d449e0f895dcc4f1f99d12100c319ecadf903f9b15167e0aa876544256d1f9",
+              "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+              "created_at": 1700000100,
+              "kind": 30078,
+              "tags": [
+                ["d", "bnd1"],
+                ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+                ["s", "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d"]
+              ],
+              "content": "{\"approvals\":{\"bch\":{\"signature\":\"IPUEcQdIwI5mzRyKrcUBP/QVFXYMBnwBWHWFM1RO5VWrJBTZPvbBWCGKWTdvW5X+DEMNmZbfCVQXbMdymzZv+fY=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPWM6zriL+toADKp4VwXiyfmLkwzDkH518+2oAQehIuiY55dRt4bKLZT23/TInAKVSqBg2LEzw/0148cs5fsygg=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+              "sig": "5549a31f0d284440ce73bf6859ba334f229f1cbff073fb574685b05d2153449cbff432e0da2b99f4809462a5bfdd0feb28daaf165de22bba9a1ae585f3a64982"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "after rotating the Nostr key, with a lagging relay holding the root",
+      "did": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+      "events": [
+        "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5",
+        "c61e0e856f594722e08e1d8e2d8acd9c36c4e98890da4835586a1c660360bbd5"
+      ],
+      "result": {
+        "didDocument": {
+          "@context": [
+            "https://www.w3.org/ns/did/v1",
+            "https://www.w3.org/ns/cid/v1",
+            "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
+          ],
+          "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+          "alsoKnownAs": [
+            "did:nostr:d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04"
+          ],
+          "verificationMethod": [
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe70102d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+              "type": "EcdsaSecp256k1RecoveryMethod2020",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "blockchainAccountId": "bip122:000000000000e0b99c152c6119f94eae:qp57z435f6c2tltf6uswwlwv6lnzaxh2js5c3gd8pz"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe70102a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661"
+            }
+          ],
+          "authentication": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch"
+          ],
+          "assertionMethod": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr"
+          ],
+          "capabilityInvocation": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery"
+          ]
+        },
+        "didResolutionMetadata": {
+          "contentType": "application/did+ld+json"
+        },
+        "didDocumentMetadata": {
+          "created": "2023-11-14T22:13:20Z",
+          "updated": "2023-11-14T22:16:40Z",
+          "versionId": "2e9fa255570f388ce7802146f22b28e6380a84d22512e717fdbfc54230fa4b57",
+          "bnd": {
+            "bindingId": "2e9fa255570f388ce7802146f22b28e6380a84d22512e717fdbfc54230fa4b57",
+            "history": [
+              "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0"
+            ],
+            "approvedBy": ["nostr", "bch"],
+            "event": {
+              "id": "c61e0e856f594722e08e1d8e2d8acd9c36c4e98890da4835586a1c660360bbd5",
+              "pubkey": "d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04",
+              "created_at": 1700000200,
+              "kind": 30078,
+              "tags": [
+                ["d", "bnd1"],
+                ["b", "69e156344eb0a5fd69d720e77dccd7e62e9aea94"],
+                ["s", "cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0"]
+              ],
+              "content": "{\"approvals\":{\"nostr\":\"eb2e9529371dbca84eb12b839b8f47ac005da3f0be9df52195adf93934d9ad2c277be6eb6db37b44dd653925d51e2d5379cfc0dcd2bf5c5a2158fdbe3a846be6\"},\"bchProof\":{\"signature\":\"H3dBaoyuCSTMEsQoLo2lSv/tJ49tJXmoJz0gJSprXRUMED/4AY2RjfSUREme9oe7RVoJ5sAoXUvJv0uzg6Z/g70=\",\"type\":\"message\"},\"history\":[{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6\"},{\"approvals\":{\"bch\":{\"signature\":\"IPUEcQdIwI5mzRyKrcUBP/QVFXYMBnwBWHWFM1RO5VWrJBTZPvbBWCGKWTdvW5X+DEMNmZbfCVQXbMdymzZv+fY=\",\"type\":\"message\"}},\"bchProof\":{\"signature\":\"IPWM6zriL+toADKp4VwXiyfmLkwzDkH518+2oAQehIuiY55dRt4bKLZT23/TInAKVSqBg2LEzw/0148cs5fsygg=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1},\"sig\":\"5549a31f0d284440ce73bf6859ba334f229f1cbff073fb574685b05d2153449cbff432e0da2b99f4809462a5bfdd0feb28daaf165de22bba9a1ae585f3a64982\"}],\"record\":{\"bch\":{\"keyHash\":\"69e156344eb0a5fd69d720e77dccd7e62e9aea94\",\"network\":\"chipnet\"},\"createdAt\":1700000200,\"nostr\":{\"publicKey\":\"d977a6cf0f831dc4720780b5f51460eaf6dca08e32d1f6e89b60344d63af4e04\"},\"previous\":\"cb977b4661dba83aa3ece9b4f87a5bbdcde703ccd1f6b79e4d344b0463d33dd0\",\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+              "sig": "1911c88c12236386f55cb0c44471113e6496416c834ba927588dfe387053162223a95687ac14a9ab4f8c0029cf73ecbae23b94dd0c7cd5e4a85493077fcf7eb5"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "a thief's second first binding for the root Nostr key is ignored",
+      "did": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+      "events": [
+        "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5",
+        "ca58bac19f5b7f8eaba553651a700f084710b75e077bf196c2556c8be30e0df7"
+      ],
+      "result": {
+        "didDocument": {
+          "@context": [
+            "https://www.w3.org/ns/did/v1",
+            "https://www.w3.org/ns/cid/v1",
+            "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
+          ],
+          "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+          "alsoKnownAs": [
+            "did:nostr:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+          ],
+          "verificationMethod": [
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe7010217162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+              "type": "EcdsaSecp256k1RecoveryMethod2020",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "blockchainAccountId": "bip122:000000000000e0b99c152c6119f94eae:qrk96lntm80kjww9gye5cej7uh0wjyd8ysjk2actkc"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+              "publicKeyMultibase": "fe70102a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661"
+            }
+          ],
+          "authentication": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch"
+          ],
+          "assertionMethod": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr"
+          ],
+          "capabilityInvocation": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#bch",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d#recovery"
+          ]
+        },
+        "didResolutionMetadata": {
+          "contentType": "application/did+ld+json"
+        },
+        "didDocumentMetadata": {
+          "created": "2023-11-14T22:13:20Z",
+          "versionId": "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+          "bnd": {
+            "bindingId": "5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+            "history": [],
+            "approvedBy": [],
+            "event": {
+              "id": "471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5",
+              "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+              "created_at": 1700000000,
+              "kind": 30078,
+              "tags": [
+                ["d", "bnd1"],
+                ["b", "ec5d7e6bd9df6939c541334c665ee5dee911a724"]
+              ],
+              "content": "{\"bchProof\":{\"signature\":\"HyiWSbfMhgjpm6vfmxs90C2A22ruCDRbHYxNI6kqdkQeWDs1sCbABnWsg1jmJrnPqmYwuMMZLaLIPlgCWa9b5Ec=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"ec5d7e6bd9df6939c541334c665ee5dee911a724\",\"network\":\"chipnet\"},\"createdAt\":1700000000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"recovery\":{\"publicKey\":\"a2a0b0eeb2f6e714d7b4d085daf1eb95b1857b48041689e812ab409b3afd6661\"},\"version\":1}}",
+              "sig": "09c5e5777e7726f21de4b8166ed79b286e43e298eff7ecaf46d572cffa7dfc39912b31a3ffdb4254c2a9770784796e0a810442d4f0a219600e8272c5d1510fe6"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "two successors of one binding: a fork",
+      "did": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+      "events": [
+        "c61e0e856f594722e08e1d8e2d8acd9c36c4e98890da4835586a1c660360bbd5",
+        "f8e50783203fce8335209f69c5f6ae63c7a0181474405037c1c0a3ad6b410308"
+      ],
+      "result": {
+        "didDocument": null,
+        "didResolutionMetadata": {
+          "error": "conflict",
+          "errorMessage": "2 bindings continue this identity on different branches; two of its keys must settle it"
+        },
+        "didDocumentMetadata": {}
+      }
+    },
+    {
+      "name": "a revoked identity is deactivated",
+      "did": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0",
+      "events": [
+        "c30e8e7ac980ce9e613c3f9245ff848e5b940bc032ace9d0f1ce42a8e1389a1d",
+        "7597e83df42e64485a005a5e2d38c943b9368d5fede0af4fc26509a90bbfa65c"
+      ],
+      "result": {
+        "didDocument": {
+          "@context": [
+            "https://www.w3.org/ns/did/v1",
+            "https://www.w3.org/ns/cid/v1",
+            "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
+          ],
+          "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0",
+          "alsoKnownAs": [
+            "did:nostr:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+          ],
+          "verificationMethod": [
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0#nostr",
+              "type": "Multikey",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0",
+              "publicKeyMultibase": "fe7010217162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917"
+            },
+            {
+              "id": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0#bch",
+              "type": "EcdsaSecp256k1RecoveryMethod2020",
+              "controller": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0",
+              "blockchainAccountId": "bip122:000000000000e0b99c152c6119f94eae:qz5m6cxcxqxm3a64hg4nvwx8ngp0qr5w2gks9drnr7"
+            }
+          ],
+          "authentication": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0#bch"
+          ],
+          "assertionMethod": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0#nostr"
+          ],
+          "capabilityInvocation": [
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0#nostr",
+            "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0#bch"
+          ]
+        },
+        "didResolutionMetadata": {
+          "contentType": "application/did+ld+json"
+        },
+        "didDocumentMetadata": {
+          "created": "2023-11-14T22:30:00Z",
+          "updated": "2023-11-14T22:31:40Z",
+          "deactivated": true,
+          "versionId": "dae3b02172cc81f62c2aa8b8963f11771bea6cb34bdef4ecef0f48bb272613ca",
+          "bnd": {
+            "bindingId": "dae3b02172cc81f62c2aa8b8963f11771bea6cb34bdef4ecef0f48bb272613ca",
+            "history": ["a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0"],
+            "approvedBy": ["nostr", "bch"],
+            "event": {
+              "id": "7597e83df42e64485a005a5e2d38c943b9368d5fede0af4fc26509a90bbfa65c",
+              "pubkey": "17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+              "created_at": 1700001100,
+              "kind": 30078,
+              "tags": [
+                ["d", "bnd1"],
+                ["b", "a9bd60d8300db8f755ba2b3638c79a02f00e8e52"],
+                ["s", "a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0"]
+              ],
+              "content": "{\"approvals\":{\"bch\":{\"signature\":\"ICtFOvIsh3TxwtPD8mtoIGk1BYq4Ot0o+F+lKb9b+8UCf+lj4qOTCmrUtKmD+6rlmZ18n+NuWRz5Tkjez3hp6FY=\",\"type\":\"message\"}},\"history\":[{\"bchProof\":{\"signature\":\"HzvNIj35iPSvi5G9jfEJszicviwOYg/PlYhloxPe3e98Oeudy/aXkEzDpR+PyPHmq8ZrOr28kHmNFNNI64alP5Y=\",\"type\":\"message\"},\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700001000,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"protocol\":\"bnd\",\"version\":1},\"sig\":\"2733926612e444aa5375846cc101fb7ca5ce17233b45194cae9bf133412ad97c76e80cd571c9095d31eef53b9b1de880b57d87699d7e37e7c9262c0a5b28b44d\"}],\"record\":{\"bch\":{\"keyHash\":\"a9bd60d8300db8f755ba2b3638c79a02f00e8e52\",\"network\":\"chipnet\"},\"createdAt\":1700001100,\"nostr\":{\"publicKey\":\"17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917\"},\"previous\":\"a16c0172873933039fb377b3e054b63952a15eb3738528f0fa0b2b92764cf1c0\",\"protocol\":\"bnd\",\"revoked\":true,\"version\":1}}",
+              "sig": "fdb4e35bb4791029af024e2ab8ca3ee0798bf06bfd4de989f1e4b320d5caf607daadaa2b5de5d705d4f7f4fc395f2981af5a4ba75c1c7da8624314b47941952f"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "an unknown root binding",
+      "did": "did:bnd:chipnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:0000000000000000000000000000000000000000000000000000000000000000",
+      "events": ["471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5"],
+      "result": {
+        "didDocument": null,
+        "didResolutionMetadata": {
+          "error": "notFound",
+          "errorMessage": "no valid binding for this DID was found"
+        },
+        "didDocumentMetadata": {}
+      }
+    },
+    {
+      "name": "the wrong network",
+      "did": "did:bnd:mainnet:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917:5b45327897e6e7fcb52abfeacf191abf0ea3eecee5fd8d854a1605f45c8cd94d",
+      "events": ["471bc39806dae98d4d54ca70064f96d3de47aef46c1edc8776983c7e14a554b5"],
+      "result": {
+        "didDocument": null,
+        "didResolutionMetadata": {
+          "error": "notFound",
+          "errorMessage": "no valid binding for this DID was found"
+        },
+        "didDocumentMetadata": {}
+      }
+    },
+    {
+      "name": "not a did:bnd",
+      "did": "did:nostr:17162c921dc4d2518f9a101db33695df1afb56ab82f5ff3e5da6eec3ca5cd917",
+      "events": [],
+      "result": {
+        "didDocument": null,
+        "didResolutionMetadata": {
+          "error": "invalidDid",
+          "errorMessage": "expected did:bnd:<network>:<nostr key>:<binding id>"
+        },
+        "didDocumentMetadata": {}
+      }
+    }
+  ]
+}

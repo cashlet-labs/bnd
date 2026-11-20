@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/cashlet-labs/bnd-core/blob/main/spec/schemas/did-bnd-document.schema.json",
+  "title": "did:bnd DID document",
+  "description": "The DID document a did:bnd resolver returns (spec/did-bnd.md section 5).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "@context",
+    "id",
+    "alsoKnownAs",
+    "verificationMethod",
+    "authentication",
+    "assertionMethod",
+    "capabilityInvocation"
+  ],
+  "$defs": {
+    "did": {
+      "type": "string",
+      "pattern": "^did:bnd:(mainnet|chipnet):[0-9a-f]{64}:[0-9a-f]{64}$"
+    },
+    "methodId": {
+      "type": "string",
+      "pattern": "^did:bnd:(mainnet|chipnet):[0-9a-f]{64}:[0-9a-f]{64}#(nostr|bch|recovery)$"
+    },
+    "multikey": { "type": "string", "pattern": "^fe70102[0-9a-f]{64}$" }
+  },
+  "properties": {
+    "@context": {
+      "const": [
+        "https://www.w3.org/ns/did/v1",
+        "https://www.w3.org/ns/cid/v1",
+        "https://w3id.org/security/suites/secp256k1recovery-2020/v2"
+      ]
+    },
+    "id": { "$ref": "#/$defs/did" },
+    "alsoKnownAs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "items": { "type": "string", "pattern": "^did:nostr:[0-9a-f]{64}$" }
+    },
+    "verificationMethod": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 3,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "controller", "publicKeyMultibase"],
+            "properties": {
+              "id": { "$ref": "#/$defs/methodId" },
+              "type": { "const": "Multikey" },
+              "controller": { "$ref": "#/$defs/did" },
+              "publicKeyMultibase": { "$ref": "#/$defs/multikey" }
+            }
+          },
+          {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "type", "controller", "blockchainAccountId"],
+            "properties": {
+              "id": { "$ref": "#/$defs/methodId" },
+              "type": { "const": "EcdsaSecp256k1RecoveryMethod2020" },
+              "controller": { "$ref": "#/$defs/did" },
+              "blockchainAccountId": {
+                "type": "string",
+                "pattern": "^bip122:(000000000000000000651ef99cb9fcbe|000000000000e0b99c152c6119f94eae):[qp][02-9ac-hj-np-z]{41}$"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "authentication": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/methodId" },
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "assertionMethod": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/methodId" },
+      "minItems": 1,
+      "maxItems": 1
+    },
+    "capabilityInvocation": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/methodId" },
+      "minItems": 2,
+      "maxItems": 3
+    },
+    "service": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "serviceEndpoint"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^did:bnd:.+#relay-[0-9]+$" },
+          "type": { "const": "Relay" },
+          "serviceEndpoint": { "type": "string", "pattern": "^wss?://" }
+        }
+      }
+    }
+  }
+}
