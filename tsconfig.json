@@ -4,10 +4,10 @@
     "noEmit": true,
     "rootDir": ".",
     "paths": {
-      "@cashlet-labs/bnd-core": ["./packages/core/src/index.ts"],
-      "@cashlet-labs/bnd-nostr": ["./packages/nostr/src/index.ts"],
-      "@cashlet-labs/bnd-nostr/testing": ["./packages/nostr/src/testing.ts"],
-      "@cashlet-labs/bnd-did": ["./packages/did/src/index.ts"]
+      "@cashlet-labs/bnd": ["./packages/bnd/src/core/index.ts"],
+      "@cashlet-labs/bnd/nostr": ["./packages/bnd/src/nostr/index.ts"],
+      "@cashlet-labs/bnd/did": ["./packages/bnd/src/did/index.ts"],
+      "@cashlet-labs/bnd/testing": ["./packages/bnd/src/nostr/testing.ts"]
     }
   },
   "include": [

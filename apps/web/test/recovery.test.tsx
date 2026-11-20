@@ -3,8 +3,8 @@ import {
   npubEncode,
   type CreateBindingOptions,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
-import type { PublishSummary } from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd";
+import type { PublishSummary } from "@cashlet-labs/bnd/nostr";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { decode } from "nostr-tools/nip19";

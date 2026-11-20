@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { BchNetwork } from "@cashlet-labs/bnd-core";
+import type { BchNetwork } from "@cashlet-labs/bnd";
 import { createTestBchSigner, type ConnectedBchSigner } from "../signers/bch";
 import {
   startWizardConnect as defaultStartWizardConnect,

@@ -4,12 +4,12 @@ import {
   npubEncode,
   type IdentityState,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import {
   discoverBinding as defaultDiscoverBinding,
   discoverByBchKeyHash as defaultDiscoverByBchKeyHash,
   type RelayReport,
-} from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd/nostr";
 import { ChainView } from "./ChainView";
 import { DidFact } from "./DidLink";
 

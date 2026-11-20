@@ -1,4 +1,4 @@
-import { createNostrKeySigner, npubEncode, type NostrSigner } from "@cashlet-labs/bnd-core";
+import { createNostrKeySigner, npubEncode, type NostrSigner } from "@cashlet-labs/bnd";
 import { BunkerSigner, createNostrConnectURI, parseBunkerInput } from "nostr-tools/nip46";
 import { generateSecretKey, getPublicKey } from "nostr-tools/pure";
 

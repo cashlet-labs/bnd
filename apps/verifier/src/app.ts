@@ -11,9 +11,9 @@ import {
   type LoginResult,
   type VerifiedBinding,
   type VerifyResult,
-} from "@cashlet-labs/bnd-core";
-import { resolveDid, type DidResolutionResult } from "@cashlet-labs/bnd-did";
-import { checkCurrentBinding, type CurrencyCheckOptions } from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd";
+import { resolveDid, type DidResolutionResult } from "@cashlet-labs/bnd/did";
+import { checkCurrentBinding, type CurrencyCheckOptions } from "@cashlet-labs/bnd/nostr";
 import { resolvesToPublicAddresses } from "./address-guard.js";
 import { RateLimiter } from "./rate-limit.js";
 import { MemoryPinStore, type PinStore } from "./pin-store.js";

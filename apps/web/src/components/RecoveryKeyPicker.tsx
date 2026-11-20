@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { BchNetwork } from "@cashlet-labs/bnd-core";
+import type { BchNetwork } from "@cashlet-labs/bnd";
 import { createRecoveryKey, type CreatedRecoveryKey } from "../signers/recovery";
 import { chosenRecoveryKey, type RecoveryChoice } from "../state/recovery-choice";
 

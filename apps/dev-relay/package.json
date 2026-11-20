@@ -9,7 +9,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@cashlet-labs/bnd-nostr": "*",
+    "@cashlet-labs/bnd": "*",
     "ws": "8.23.0"
   },
   "devDependencies": {

@@ -5,7 +5,7 @@ verify that one person controls both.
 
 [Specification](spec/BND-1.md) · [did:bnd](spec/did-bnd.md) ·
 [Live demo](https://bnd.septemlabs.com) · [Documentation](docs/README.md) ·
-[npm](https://www.npmjs.com/package/@cashlet-labs/bnd-core)
+[npm](https://www.npmjs.com/package/@cashlet-labs/bnd)
 
 Each key signs a statement naming the other, and the result is published as an
 ordinary Nostr event. Any application can find it on relays and verify it
@@ -19,11 +19,11 @@ Status: draft protocol (BND-1, did:bnd 0.1), release 0.4.0.
 ## Use it
 
 ```bash
-npm install @cashlet-labs/bnd-core @cashlet-labs/bnd-nostr
+npm install @cashlet-labs/bnd
 ```
 
 ```ts
-import { discoverBinding } from "@cashlet-labs/bnd-nostr";
+import { discoverBinding } from "@cashlet-labs/bnd/nostr";
 
 const found = await discoverBinding("npub1…", { relays: ["wss://relay.septemlabs.com"] });
 if (found.state.status === "current") pay(found.state.binding.bch.address); // verified

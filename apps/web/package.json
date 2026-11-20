@@ -12,9 +12,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@cashlet-labs/bnd-core": "*",
-    "@cashlet-labs/bnd-did": "*",
-    "@cashlet-labs/bnd-nostr": "*",
+    "@cashlet-labs/bnd": "*",
     "@noble/curves": "2.4.0",
     "@tanstack/react-router": "1.170.46",
     "@wizardconnect/core": "0.2.11",

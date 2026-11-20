@@ -6,14 +6,14 @@ import {
   deriveBchKey,
   deriveNostrKey,
   signEvent,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import {
   discoverBinding,
   discoverByBchKeyHash,
   publishBinding,
   publishToRelay,
   queryRelay,
-} from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd/nostr";
 import { afterEach, describe, expect, it } from "vitest";
 import { startDevRelay, type DevRelay } from "../src/server.js";
 
@@ -164,7 +164,7 @@ describe("dev relay over real WebSockets", () => {
   it("rejects a forged event at the relay", async () => {
     const { url, relay } = await start();
     const binding = await bind(1_700_000_000);
-    const { publishToRelay } = await import("@cashlet-labs/bnd-nostr");
+    const { publishToRelay } = await import("@cashlet-labs/bnd/nostr");
     const result = await publishToRelay(url, { ...binding.event, sig: "00".repeat(64) });
     expect(result.ok).toBe(false);
     expect(relay.all()).toEqual([]);

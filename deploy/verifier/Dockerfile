@@ -5,10 +5,8 @@ ARG NODE=node:22-alpine@sha256:1314fb30ec37592d5845e5a160d522c0e680972aa53454994
 
 FROM ${NODE} AS build
 WORKDIR /build
-COPY package.json package-lock.json tsconfig.base.json ./
-COPY packages/core/package.json packages/core/
-COPY packages/nostr/package.json packages/nostr/
-COPY packages/did/package.json packages/did/
+COPY package.json package-lock.json tsconfig.base.json tsconfig.json ./
+COPY packages/bnd/package.json packages/bnd/
 COPY apps/dev-relay/package.json apps/dev-relay/
 COPY apps/verifier/package.json apps/verifier/
 COPY apps/web/package.json apps/web/

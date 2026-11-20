@@ -6,7 +6,7 @@ import {
   type ApprovalRole,
   type BindingRecord,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 
 /** One binding in an identity's chain, for display. */
 export interface ChainStep {

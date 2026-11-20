@@ -5,7 +5,7 @@ import {
   type BchNetwork,
   type BchProofType,
   type BchSigner,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 
 export type BchSignerKind = "wizardconnect" | "test-key";

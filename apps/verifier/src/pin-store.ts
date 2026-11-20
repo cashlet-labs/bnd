@@ -1,4 +1,4 @@
-import type { VerifiedBinding } from "@cashlet-labs/bnd-core";
+import type { VerifiedBinding } from "@cashlet-labs/bnd";
 
 /**
  * Remembers the newest binding this service accepted for each Nostr key, like

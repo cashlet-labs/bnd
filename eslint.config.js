@@ -26,6 +26,40 @@ export default tseslint.config(
       eqeqeq: ["error", "always"],
     },
   },
+  // Layers of the bnd package: core has no network code and nostr has no DID
+  // code, so a verify-only user never runs either.
+  {
+    files: ["packages/bnd/src/core/**/*.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["../nostr/*", "../did/*", "@cashlet-labs/bnd/*"],
+              message: "core must not depend on nostr or did.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["packages/bnd/src/nostr/**/*.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["../did/*", "@cashlet-labs/bnd/*"],
+              message: "nostr must not depend on did.",
+            },
+          ],
+        },
+      ],
+    },
+  },
   {
     files: ["scripts/**/*.mjs", "deploy/**/*.mjs"],
     languageOptions: {

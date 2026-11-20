@@ -1,5 +1,5 @@
 // @vitest-environment node
-import { verifyEventSignature, type UnsignedEvent } from "@cashlet-labs/bnd-core";
+import { verifyEventSignature, type UnsignedEvent } from "@cashlet-labs/bnd";
 import { afterEach, describe, expect, it } from "vitest";
 import { startDevRelay, type DevRelay } from "../../dev-relay/src/server.js";
 import {

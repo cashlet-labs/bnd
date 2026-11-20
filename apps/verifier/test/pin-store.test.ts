@@ -6,7 +6,7 @@ import {
   deriveBchKey,
   deriveNostrKey,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import { describe, expect, it } from "vitest";
 import { MemoryPinStore } from "../src/pin-store.js";
 

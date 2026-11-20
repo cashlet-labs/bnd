@@ -1,9 +1,4 @@
-import {
-  createNostrKeySigner,
-  npubDecode,
-  npubEncode,
-  type NostrSigner,
-} from "@cashlet-labs/bnd-core";
+import { createNostrKeySigner, npubDecode, npubEncode, type NostrSigner } from "@cashlet-labs/bnd";
 import { decode, nsecEncode } from "nostr-tools/nip19";
 import { generateSecretKey, getPublicKey } from "nostr-tools/pure";
 

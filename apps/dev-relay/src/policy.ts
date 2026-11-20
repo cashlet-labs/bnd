@@ -3,8 +3,8 @@ import {
   BINDING_EVENT_KIND,
   verifyBinding,
   type NostrEvent,
-} from "@cashlet-labs/bnd-core";
-import type { MemoryRelay } from "@cashlet-labs/bnd-nostr/testing";
+} from "@cashlet-labs/bnd";
+import type { MemoryRelay } from "@cashlet-labs/bnd/testing";
 
 /** NIP-09 deletion. */
 const DELETION_KIND = 5;

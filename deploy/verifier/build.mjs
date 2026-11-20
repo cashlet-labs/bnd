@@ -13,12 +13,9 @@ await build({
   platform: "node",
   format: "esm",
   target: "node22",
-  // Use package sources, as the tests do, rather than built dist folders.
-  alias: {
-    "@cashlet-labs/bnd-core": "./packages/core/src/index.ts",
-    "@cashlet-labs/bnd-nostr": "./packages/nostr/src/index.ts",
-    "@cashlet-labs/bnd-did": "./packages/did/src/index.ts",
-  },
+  // Use package sources, as the tests do, rather than built dist folders: the
+  // root tsconfig maps each @cashlet-labs/bnd entry point to its source.
+  tsconfig: "tsconfig.json",
   // Some dependencies are CommonJS and call require() for Node built-ins.
   banner: {
     js: "import { createRequire } from 'node:module'; const require = createRequire(import.meta.url);",

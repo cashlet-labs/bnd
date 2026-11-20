@@ -1,7 +1,7 @@
 # Documentation
 
-BND is a protocol. The specification is the product; the packages are its
-reference implementation, and the demo page, verifier and relay are examples of
+BND is a protocol. The specification is the product; the `@cashlet-labs/bnd`
+package is its reference implementation, and the demo page, verifier and relay are examples of
 using it.
 
 ## Specification
@@ -27,13 +27,18 @@ using it.
 
 | Path             | What it is                                                                     | Docs                                              |
 | ---------------- | ------------------------------------------------------------------------------ | ------------------------------------------------- |
-| `packages/core`  | `@cashlet-labs/bnd-core`: records, proofs, events, succession, login. No I/O.  | [README](../packages/core/README.md)              |
-| `packages/nostr` | `@cashlet-labs/bnd-nostr`: publish, discover, check a binding is current.      | [README](../packages/nostr/README.md)             |
-| `packages/did`   | `@cashlet-labs/bnd-did`: `did:bnd` resolution, pay by identity, `bnd-resolve`. | [README](../packages/did/README.md)               |
+| `packages/bnd`   | `@cashlet-labs/bnd`, the library: one package with the entry points below.     | [README](../packages/bnd/README.md)               |
+| `src/core`       | `@cashlet-labs/bnd`: records, proofs, events, succession, login. No I/O.       |                                                   |
+| `src/nostr`      | `@cashlet-labs/bnd/nostr`: publish, discover, check a binding is current.      |                                                   |
+| `src/did`        | `@cashlet-labs/bnd/did`: `did:bnd` resolution, pay by identity, `bnd-resolve`. |                                                   |
 | `apps/web`       | Example: the demo page.                                                        | [Demo](demo.md), [wallets](wallet-connections.md) |
 | `apps/verifier`  | Example: a login service and public DID resolver.                              | [Demo](demo.md#configuration)                     |
 | `apps/dev-relay` | Example: an in-memory relay that enforces succession.                          | [Demo](demo.md)                                   |
 | `deploy/`        | Hosting the examples with Docker.                                              | [Deploy](deploy.md)                               |
+
+`core` never imports `nostr` or `did`, and `nostr` never imports `did`; a lint
+rule enforces it. An application that only verifies bindings bundles only the
+core code.
 
 ## Standards reused
 

@@ -1,4 +1,4 @@
-import type { AuthIdentity, AuthLevel, BchProofType } from "@cashlet-labs/bnd-core";
+import type { AuthIdentity, AuthLevel, BchProofType } from "@cashlet-labs/bnd";
 
 export interface Session {
   identity: AuthIdentity;

@@ -5,7 +5,7 @@ import {
   type BchNetwork,
   type BchSigner,
   type TxProofRequest,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import {
   initiateDappRelay,
   type DappRelayResult,
