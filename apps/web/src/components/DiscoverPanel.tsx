@@ -10,6 +10,7 @@ import {
   discoverByBchKeyHash as defaultDiscoverByBchKeyHash,
   type RelayReport,
 } from "@cashlet-labs/bnd-nostr";
+import { ChainView } from "./ChainView";
 
 export interface DiscoverPanelProps {
   relays: string[];
@@ -120,10 +121,13 @@ export function DiscoverPanel({
               by two of its keys settles it.
             </p>
           ) : found.state.status === "revoked" ? (
-            <p className="warning">
-              Revoked on {new Date(found.state.binding.record.createdAt * 1000).toISOString()}: this
-              identity has no current binding.
-            </p>
+            <>
+              <p className="warning">
+                Revoked on {new Date(found.state.binding.record.createdAt * 1000).toISOString()}:
+                this identity has no current binding.
+              </p>
+              <ChainView binding={found.state.binding} />
+            </>
           ) : found.bindings.length === 0 && found.state.status === "current" ? (
             <p>
               This BCH key was replaced. The identity now uses{" "}
@@ -163,7 +167,16 @@ export function DiscoverPanel({
                   <dd>{binding.proofType === "tx" ? "transaction" : "signed message"}</dd>
                   <dt>Created</dt>
                   <dd>{new Date(binding.record.createdAt * 1000).toISOString()}</dd>
+                  <dt>Recovery key</dt>
+                  <dd>
+                    {binding.record.recovery ? (
+                      <code className="wrap">{npubEncode(binding.record.recovery.publicKey)}</code>
+                    ) : (
+                      "none"
+                    )}
+                  </dd>
                 </dl>
+                <ChainView binding={binding} />
               </div>
             ))
           )}

@@ -398,6 +398,19 @@ p.verified {
   font-weight: 600;
 }
 
+/* An identity's chain of bindings, oldest first. */
+.chain {
+  margin: 0.5rem 0;
+  padding-left: 1.4rem;
+}
+.chain li {
+  margin: 0.5rem 0;
+  padding-left: 0.25rem;
+}
+.chain .facts {
+  margin-top: 0.4rem;
+}
+
 @media (max-width: 760px) {
   main section.hero {
     flex-direction: column;

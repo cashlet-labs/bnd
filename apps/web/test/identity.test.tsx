@@ -1,8 +1,14 @@
-import { createBinding, verifyBinding, type VerifiedBinding } from "@cashlet-labs/bnd-core";
+import {
+  createBinding,
+  npubEncode,
+  verifyBinding,
+  type VerifiedBinding,
+} from "@cashlet-labs/bnd-core";
 import type { PublishSummary, QueryResult } from "@cashlet-labs/bnd-nostr";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { chainSteps } from "../src/chain";
 import { IdentityPanel } from "../src/components/IdentityPanel";
 import { TakeoverPanel } from "../src/components/TakeoverPanel";
 import { createTestBchSigner, type ConnectedBchSigner } from "../src/signers/bch";
@@ -136,6 +142,43 @@ describe("changeIdentity", () => {
     await expect(
       changeIdentity("rotate-nostr", { binding, nostr, bch, recovery: null }),
     ).rejects.toThrow("choose the new Nostr key");
+  });
+});
+
+describe("chainSteps", () => {
+  it("describes each step, what it changed and who approved it", async () => {
+    const { nostr, bch, recovery, binding } = await identity(true);
+    const newBch = createTestBchSigner("chipnet");
+    const step1 = await changeIdentity("rotate-bch", { binding, nostr, bch, recovery, newBch });
+    const newNostr = createMemorySigner();
+    const step2 = await changeIdentity("recover-nostr", {
+      binding: step1.binding,
+      nostr,
+      bch: newBch,
+      recovery,
+      newNostr,
+    });
+    const steps = chainSteps(step2.binding);
+    expect(steps.map((s) => s.changes)).toEqual([
+      ["first binding"],
+      ["new BCH key"],
+      ["new Nostr key"],
+    ]);
+    expect(steps.map((s) => s.approvedBy)).toEqual([[], ["nostr", "bch"], ["bch", "recovery"]]);
+    expect(steps.map((s) => s.bindingId)).toEqual([
+      binding.bindingId,
+      step1.binding.bindingId,
+      step2.binding.bindingId,
+    ]);
+    expect(steps[2]!.npub).toBe(npubEncode(newNostr.publicKey));
+    expect(steps.every((s) => s.recovery === recovery!.npub)).toBe(true);
+  });
+
+  it("marks a revocation", async () => {
+    const { nostr, bch, binding } = await identity();
+    const revoked = await changeIdentity("revoke", { binding, nostr, bch, recovery: null });
+    const steps = chainSteps(revoked.binding);
+    expect(steps.at(-1)).toMatchObject({ revoked: true, changes: ["revoked the identity"] });
   });
 });
 
