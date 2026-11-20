@@ -43,7 +43,8 @@ export function DemoPage({ wizardRelays }: { wizardRelays?: string[] } = {}) {
         bch={session.bch}
         relays={relays}
         binding={session.binding}
-        onBinding={session.setBinding}
+        recovery={session.recovery}
+        onBinding={(binding, recovery) => session.setIdentity({ binding, recovery })}
       />
       <DiscoverPanel
         relays={relays}

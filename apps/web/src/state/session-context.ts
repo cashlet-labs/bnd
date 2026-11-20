@@ -3,6 +3,7 @@ import type { BchNetwork, VerifiedBinding } from "@cashlet-labs/bnd-core";
 import type { RelayChoice } from "../relays";
 import type { ConnectedBchSigner } from "../signers/bch";
 import type { ConnectedNostrSigner } from "../signers/nostr";
+import type { RecoveryKey } from "../signers/recovery";
 
 /**
  * What the visitor has connected in this tab. It lives in memory only and is kept
@@ -20,6 +21,19 @@ export interface Session {
   setBch: (signer: ConnectedBchSigner | null) => void;
   binding: VerifiedBinding | null;
   setBinding: (binding: VerifiedBinding | null) => void;
+  /** The binding's recovery key, if it names one (BND-1 section 9.4). */
+  recovery: RecoveryKey | null;
+  setRecovery: (key: RecoveryKey | null) => void;
+  /**
+   * Replace the keys and the binding together, after a rotation or recovery.
+   * Fields left out keep their value.
+   */
+  setIdentity: (identity: {
+    nostr?: ConnectedNostrSigner | null;
+    bch?: ConnectedBchSigner | null;
+    binding: VerifiedBinding | null;
+    recovery?: RecoveryKey | null;
+  }) => void;
 }
 
 export const SessionContext = createContext<Session | null>(null);
