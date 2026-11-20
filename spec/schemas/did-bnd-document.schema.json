@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/cashlet-labs/bnd-core/blob/main/spec/schemas/did-bnd-document.schema.json",
+  "$id": "https://github.com/cashlet-labs/bnd/blob/main/spec/schemas/did-bnd-document.schema.json",
   "title": "did:bnd DID document",
   "description": "The DID document a did:bnd resolver returns (spec/did-bnd.md section 5).",
   "type": "object",

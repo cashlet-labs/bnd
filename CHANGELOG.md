@@ -3,10 +3,17 @@
 Releases of this repository. Package versions are listed with each release.
 The protocol is a draft; each release names the draft it implements.
 
-## Unreleased
+## 0.4.0 (2026-11-20)
 
+Packages: `@cashlet-labs/bnd-core`, `@cashlet-labs/bnd-nostr` and
+`@cashlet-labs/bnd-did`, all 0.4.0, first published to npm. Draft: BND-1 with
+section 9, did:bnd 0.1. No protocol change.
+
+- The packages are published on npm, each with a README and the licence, and
+  ship their TypeScript sources so source maps work. They depend on each other
+  at `^0.4.0`.
 - Documentation: architecture primer, integration guide, threat model, NIP
-  draft, bounty checklist, security policy and contribution guide.
+  draft, documentation index, security policy and contribution guide.
 - The specification text is licensed under CC BY 4.0; code stays MIT.
 
 ## 0.3.0 (2026-11-20)

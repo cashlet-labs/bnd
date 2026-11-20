@@ -4,7 +4,7 @@ Status: draft. Version 0.1.
 
 Authors: Septem Labs (<hello@septemlabs.com>).
 
-Repository: <https://github.com/cashlet-labs/bnd-core>.
+Repository: <https://github.com/cashlet-labs/bnd>.
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY are to be interpreted
 as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in
@@ -222,7 +222,7 @@ the DID Resolution Result with content type
 `application/ld+json; profile="https://w3id.org/did-resolution"` and these
 statuses: 200 resolved, 410 deactivated, 400 `invalidDid`, 404 `notFound`, 409
 `conflict`, 503 `internalError`. The reference resolver serves this at
-<https://bnd-core.septemlabs.com/did/>, open to any origin and rate-limited per
+<https://bnd.septemlabs.com/did/>, open to any origin and rate-limited per
 client.
 
 ## 8. Security considerations

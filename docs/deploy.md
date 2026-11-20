@@ -107,4 +107,4 @@ Challenges name `https://<SITE_HOST>/login` as their audience, and session
 cookies belong to the host, so open challenges and sessions on the old name
 stop working. Users log in again.
 
-The hosted demo currently runs at `https://bnd-core.septemlabs.com`.
+The hosted demo currently runs at `https://bnd.septemlabs.com`.

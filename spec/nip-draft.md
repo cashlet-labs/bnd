@@ -119,6 +119,6 @@ signs.
 
 ## Reference
 
-- Specification and vectors: <https://github.com/cashlet-labs/bnd-core/tree/main/spec>
+- Specification and vectors: <https://github.com/cashlet-labs/bnd/tree/main/spec>
 - DID method built on it: [did:bnd](did-bnd.md)
-- Demo: <https://bnd-core.septemlabs.com>
+- Demo: <https://bnd.septemlabs.com>

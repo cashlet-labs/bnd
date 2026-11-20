@@ -17,7 +17,7 @@ chipnet key made for the report is enough.
   successor, revocation, login or DID resolution that the rules should refuse.
 - The packages in `packages/`.
 - The demo page, verifier and DID resolver in `apps/`, and the hosted demo at
-  <https://bnd-core.septemlabs.com>.
+  <https://bnd.septemlabs.com>.
 
 Out of scope: the limitations listed in [docs/threat-model.md](docs/threat-model.md),
 denial of service by volume against the hosted demo, and third-party wallets,

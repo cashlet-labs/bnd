@@ -4,16 +4,17 @@ This guide is for wallets, Nostr clients and applications that want to use BND
 bindings. The rules are in [spec/BND-1.md](../spec/BND-1.md); the examples use
 the TypeScript packages in this repository.
 
-The packages are not published to npm yet. Build them from the repository:
+Install the packages you need from npm (Node.js 22 or later, or a modern
+browser; ES modules only):
 
 ```bash
-git clone https://github.com/cashlet-labs/bnd-core.git
-cd bnd-core && npm install && npm run build
+npm install @cashlet-labs/bnd-core    # records, proofs, verification, login
+npm install @cashlet-labs/bnd-nostr   # publish, discover, current-binding check
+npm install @cashlet-labs/bnd-did     # did:bnd and pay by identity
 ```
 
-and depend on `packages/core`, `packages/nostr` and `packages/did` by path, or
-with `npm pack`. Any other language can implement the spec and check itself
-against `spec/vectors/`.
+Any other language can implement the spec and check itself against
+`spec/vectors/`.
 
 ## Replace an unsigned address with a binding
 
@@ -194,13 +195,13 @@ else use(result.didDocument);
 Or over HTTP, from any origin:
 
 ```bash
-curl https://bnd-core.septemlabs.com/did/did:bnd:chipnet:<key>:<id>
+curl https://bnd.septemlabs.com/did/did:bnd:chipnet:<key>:<id>
 ```
 
-Or from the command line, after `npm run build`:
+Or from the command line:
 
 ```bash
-node packages/did/dist/cli.js did:bnd:chipnet:<key>:<id> --relay wss://relay.septemlabs.com
+npx -p @cashlet-labs/bnd-did bnd-resolve did:bnd:chipnet:<key>:<id> --relay wss://relay.septemlabs.com
 ```
 
 Results and HTTP status codes are listed in
