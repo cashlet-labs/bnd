@@ -7,7 +7,8 @@ import { LOCAL_DEMO_RELAY, parseRelayList, securityHeaders } from "./security-he
 const root = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
 // The page and the verifier share one origin: these paths go to the verifier.
-const VERIFIER_ROUTES = ["/challenge", "/login", "/me", "/logout"];
+// /did/ is the public did:bnd resolver.
+const VERIFIER_ROUTES = ["/challenge", "/login", "/me", "/logout", "/did/"];
 
 export default defineConfig(({ mode }) => {
   // `.env` lives at the repository root, next to `.env.example`.

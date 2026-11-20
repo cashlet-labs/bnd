@@ -12,6 +12,7 @@ import {
   type VerifiedBinding,
   type VerifyResult,
 } from "@cashlet-labs/bnd-core";
+import { resolveDid, type DidResolutionResult } from "@cashlet-labs/bnd-did";
 import { checkCurrentBinding, type CurrencyCheckOptions } from "@cashlet-labs/bnd-nostr";
 import { resolvesToPublicAddresses } from "./address-guard.js";
 import { RateLimiter } from "./rate-limit.js";
@@ -57,6 +58,13 @@ export interface VerifierOptions {
   sessionAbsoluteSeconds?: number;
   /** Challenges one client address may request per minute. Default 30. */
   challengesPerMinute?: number;
+  /**
+   * Serve GET /did/<did:bnd:…>, a public did:bnd resolver using the same
+   * relays as the currency check. Default true when `currency` is set.
+   */
+  didResolver?: boolean;
+  /** DID resolutions one client address may request per minute. Default 30. */
+  resolutionsPerMinute?: number;
   /**
    * A request header that holds the client's address, set by a reverse proxy
    * in front of this service (for example `x-real-ip` behind Traefik). Set it
@@ -126,6 +134,22 @@ export function clientKeyFor(header: string | undefined): (request: IncomingMess
   };
 }
 
+/** HTTP status for a DID Resolution Result, as in the DID Resolution HTTP binding. */
+function statusOf(result: DidResolutionResult): number {
+  const metadata = result.didResolutionMetadata;
+  if (!("error" in metadata)) return result.didDocumentMetadata.deactivated ? 410 : 200;
+  switch (metadata.error) {
+    case "invalidDid":
+      return 400;
+    case "notFound":
+      return 404;
+    case "conflict":
+      return 409;
+    default:
+      return 503;
+  }
+}
+
 function shortNpub(npub: string): string {
   return `${npub.slice(0, 12)}…${npub.slice(-6)}`;
 }
@@ -171,6 +195,7 @@ export function createVerifierHandler(options: VerifierOptions) {
   const absoluteSeconds = options.sessionAbsoluteSeconds ?? 28_800;
   const limiter = new RateLimiter(options.challengesPerMinute ?? 30, 60);
   const clientKey = clientKeyFor(options.clientIpHeader);
+  const resolutions = new RateLimiter(options.resolutionsPerMinute ?? 30, 60);
   const https = base.protocol === "https:";
   // The __Host- prefix needs Secure, which plain http cannot set.
   const cookieName = https ? "__Host-bnd_session" : "bnd_session";
@@ -180,6 +205,7 @@ export function createVerifierHandler(options: VerifierOptions) {
       : (options.log ?? ((entry: LoginLogEntry) => console.log(JSON.stringify(entry))));
 
   const currency = options.currency;
+  const serveDids = options.didResolver ?? currency !== false;
   const pins = options.pinStore === false ? undefined : (options.pinStore ?? new MemoryPinStore());
   // Runs before the challenge is used up: the pin first (no network), then relays.
   const isCurrent = async (binding: VerifiedBinding): Promise<VerifyResult> => {
@@ -318,6 +344,31 @@ export function createVerifierHandler(options: VerifierOptions) {
       const current = await currentSession(request);
       if (current) await sessions.delete(current[0]);
       return send(response, 200, { ok: true }, { "set-cookie": setCookie("", 0) });
+    }
+
+    if (method === "GET" && url.pathname.startsWith("/did/") && serveDids) {
+      // Public and read-only: any site may call it, and it never uses cookies.
+      const cors = { "access-control-allow-origin": "*" };
+      if (!resolutions.allow(clientKey(request), now())) {
+        return send(response, 429, { error: "too many resolutions, slow down" }, cors);
+      }
+      let did = url.pathname.slice("/did/".length);
+      try {
+        did = decodeURIComponent(did);
+      } catch {
+        // A malformed escape is left as is, and resolves to invalidDid.
+      }
+      const result = await resolveDid(did, currency === false ? {} : currency);
+      const body: DidResolutionResult = {
+        didDocument: result.didDocument,
+        didResolutionMetadata: result.didResolutionMetadata,
+        didDocumentMetadata: result.didDocumentMetadata,
+      };
+      return send(response, statusOf(body), body, {
+        ...cors,
+        "content-type":
+          'application/ld+json; profile="https://w3id.org/did-resolution"; charset=utf-8',
+      });
     }
 
     throw new HttpError(404, "not found");
