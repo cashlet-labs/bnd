@@ -1,5 +1,6 @@
 import { MemoryRelay } from "@cashlet-labs/bnd-nostr/testing";
 import { WebSocketServer } from "ws";
+import { bndWritePolicy } from "./policy.js";
 
 export interface DevRelay {
   /** The WebSocket URL clients connect to, for example `ws://127.0.0.1:7777`. */
@@ -13,6 +14,12 @@ export interface DevRelayOptions {
   port?: number;
   /** Interface to bind. Defaults to loopback only. */
   host?: string;
+  /**
+   * Apply the Cashlet relays' rules for BND events: bindings must verify, a
+   * stored binding can only be replaced by its successor, and bindings
+   * cannot be deleted. Default true.
+   */
+  enforceSuccession?: boolean;
 }
 
 /**
@@ -20,7 +27,9 @@ export interface DevRelayOptions {
  * is meant for demos and tests on one machine, not for the public internet.
  */
 export async function startDevRelay(options: DevRelayOptions = {}): Promise<DevRelay> {
-  const relay = new MemoryRelay();
+  const relay = new MemoryRelay(
+    options.enforceSuccession === false ? {} : { writePolicy: bndWritePolicy },
+  );
   const host = options.host ?? "127.0.0.1";
   const server = new WebSocketServer({ port: options.port ?? 0, host, maxPayload: 262_144 });
   await new Promise<void>((resolve, reject) => {

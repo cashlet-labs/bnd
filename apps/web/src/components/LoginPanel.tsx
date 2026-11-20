@@ -113,7 +113,7 @@ export function LoginPanel({
   return (
     <section aria-labelledby="login-title">
       <h2 id="login-title">
-        <span className="step">5</span> Log in to an application
+        <span className="step">6</span> Log in to an application
       </h2>
       <p>
         The demo verifier issues a one-time challenge. It checks your signatures itself and asks

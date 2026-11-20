@@ -15,6 +15,10 @@ export interface BchWalletPanelProps {
   startWizardConnect?: typeof defaultStartWizardConnect;
   /** Relays for the WizardConnect handshake; tests point it at a local relay. */
   wizardRelays?: string[];
+  /** Heading, its step number (null for none) and its element ID, when reused. */
+  title?: string;
+  step?: string | null;
+  headingId?: string;
 }
 
 function message(error: unknown): string {
@@ -28,7 +32,15 @@ export function BchWalletPanel({
   onChange,
   startWizardConnect = defaultStartWizardConnect,
   wizardRelays,
+  title = "Bitcoin Cash key",
+  step = "2",
+  headingId = "bch-title",
 }: BchWalletPanelProps) {
+  const heading = (
+    <h2 id={headingId}>
+      {step !== null && <span className="step">{step}</span>} {title}
+    </h2>
+  );
   const [index, setIndex] = useState("0");
   const [pending, setPending] = useState<WizardConnectSession | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -90,10 +102,8 @@ export function BchWalletPanel({
 
   if (wallet) {
     return (
-      <section aria-labelledby="bch-title">
-        <h2 id="bch-title">
-          <span className="step">2</span> Bitcoin Cash key
-        </h2>
+      <section aria-labelledby={headingId}>
+        {heading}
         <p>
           Connected: {wallet.label}
           <br />
@@ -114,10 +124,8 @@ export function BchWalletPanel({
   }
 
   return (
-    <section aria-labelledby="bch-title">
-      <h2 id="bch-title">
-        <span className="step">2</span> Bitcoin Cash key
-      </h2>
+    <section aria-labelledby={headingId}>
+      {heading}
 
       <fieldset>
         <legend>Wallet (WizardConnect)</legend>

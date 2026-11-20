@@ -11,13 +11,18 @@ import {
 } from "@cashlet-labs/bnd-nostr";
 import type { ConnectedBchSigner } from "../signers/bch";
 import type { ConnectedNostrSigner } from "../signers/nostr";
+import type { RecoveryKey } from "../signers/recovery";
+import { chosenRecoveryKey, NO_RECOVERY, type RecoveryChoice } from "../state/recovery-choice";
+import { RecoveryKeyPicker } from "./RecoveryKeyPicker";
 
 export interface BindingPanelProps {
   nostr: ConnectedNostrSigner | null;
   bch: ConnectedBchSigner | null;
   relays: string[];
   binding: VerifiedBinding | null;
-  onBinding: (binding: VerifiedBinding | null) => void;
+  /** The binding's recovery key, shown once the binding exists. */
+  recovery?: RecoveryKey | null;
+  onBinding: (binding: VerifiedBinding | null, recovery: RecoveryKey | null) => void;
   /** Injected in tests. */
   createBinding?: typeof defaultCreateBinding;
   publishBinding?: typeof defaultPublishBinding;
@@ -33,6 +38,7 @@ export function BindingPanel({
   bch,
   relays,
   binding,
+  recovery = null,
   onBinding,
   createBinding = defaultCreateBinding,
   publishBinding = defaultPublishBinding,
@@ -41,26 +47,40 @@ export function BindingPanel({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [published, setPublished] = useState<PublishSummary | null>(null);
+  const [recoveryChoice, setRecoveryChoice] = useState<RecoveryChoice>(NO_RECOVERY);
+  const recoveryStatus = chosenRecoveryKey(recoveryChoice);
 
   const ready = nostr !== null && bch !== null;
   const available = bch?.proofTypes ?? [];
   const chosen = available.includes(proofType) ? proofType : available[0];
 
   async function create() {
-    if (!nostr || !bch || !chosen) return;
+    if (!nostr || !bch || !chosen || !recoveryStatus.ok) return;
+    const recoveryKey = recoveryStatus.key;
     setBusy(true);
     setError(null);
     setPublished(null);
     try {
+      const created = await createBinding({
+        nostrSigner: nostr.signer,
+        bchSigner: bch.signer,
+        bchKeyHash: bch.keyHash,
+        network: bch.network,
+        proofType: chosen,
+        ...(recoveryKey === null ? {} : { recoveryPublicKey: recoveryKey.publicKey }),
+      });
+      // Only the public key and the signer are kept; the nsec is not shown again.
       onBinding(
-        await createBinding({
-          nostrSigner: nostr.signer,
-          bchSigner: bch.signer,
-          bchKeyHash: bch.keyHash,
-          network: bch.network,
-          proofType: chosen,
-        }),
+        created,
+        recoveryKey === null
+          ? null
+          : {
+              publicKey: recoveryKey.publicKey,
+              npub: recoveryKey.npub,
+              ...(recoveryKey.signer ? { signer: recoveryKey.signer } : {}),
+            },
       );
+      setRecoveryChoice(NO_RECOVERY);
     } catch (cause) {
       setError(message(cause));
     } finally {
@@ -105,6 +125,12 @@ export function BindingPanel({
               </label>
             ))}
           </fieldset>
+          <RecoveryKeyPicker
+            network={bch.network}
+            choice={recoveryChoice}
+            onChange={setRecoveryChoice}
+            disabled={busy}
+          />
           <p>
             Your Nostr key and your BCH key will each sign a statement naming the other. Nothing is
             sent on chain.
@@ -112,7 +138,7 @@ export function BindingPanel({
           <button
             type="button"
             className="btn-primary"
-            disabled={busy || !chosen}
+            disabled={busy || !chosen || !recoveryStatus.ok}
             onClick={() => void create()}
           >
             {busy ? "Waiting for signatures…" : "Create binding"}
@@ -136,7 +162,21 @@ export function BindingPanel({
               <code className="wrap">{binding.bch.address}</code>
             </dd>
             <dt>BCH proof</dt>
-            <dd>{binding.proofType === "tx" ? "transaction" : "signed message"}</dd>
+            <dd>
+              {binding.proofType === null
+                ? "none (revoked)"
+                : binding.proofType === "tx"
+                  ? "transaction"
+                  : "signed message"}
+            </dd>
+            <dt>Recovery key</dt>
+            <dd>
+              {binding.record.recovery ? (
+                <code className="wrap">{recovery?.npub ?? binding.record.recovery.publicKey}</code>
+              ) : (
+                "none"
+              )}
+            </dd>
           </dl>
           <details>
             <summary>What the BCH key approved</summary>
@@ -160,7 +200,7 @@ export function BindingPanel({
               disabled={busy}
               onClick={() => {
                 setPublished(null);
-                onBinding(null);
+                onBinding(null, null);
               }}
             >
               Start over

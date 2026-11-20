@@ -26,6 +26,10 @@ export default defineConfig(({ mode }) => {
         autoCodeSplitting: true,
         routesDirectory: root("./src/routes"),
         generatedRouteTree: root("./src/routeTree.gen.ts"),
+        // Match the repository's Prettier style, so formatting the file by
+        // accident changes nothing.
+        quoteStyle: "double",
+        semicolons: true,
       }),
       react(),
     ],

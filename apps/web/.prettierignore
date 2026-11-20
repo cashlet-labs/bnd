@@ -1,0 +1,6 @@
+# Prettier reads .prettierignore only from the folder it runs in. This copy
+# covers runs started inside apps/web; the root file covers the rest.
+dist/
+playwright-report/
+test-results/
+src/routeTree.gen.ts

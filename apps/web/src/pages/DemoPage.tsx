@@ -1,11 +1,13 @@
 import { BchWalletPanel } from "../components/BchWalletPanel";
 import { BindingPanel } from "../components/BindingPanel";
 import { DiscoverPanel } from "../components/DiscoverPanel";
+import { IdentityPanel } from "../components/IdentityPanel";
 import { PageHeader } from "../components/Layout";
 import { LoginPanel } from "../components/LoginPanel";
 import { NetworkPicker } from "../components/NetworkPicker";
 import { NostrSignerPanel } from "../components/NostrSignerPanel";
 import { RelaySettings } from "../components/RelaySettings";
+import { TakeoverPanel } from "../components/TakeoverPanel";
 import { selectedRelays } from "../relays";
 import { useSession } from "../state/session-context";
 
@@ -43,13 +45,24 @@ export function DemoPage({ wizardRelays }: { wizardRelays?: string[] } = {}) {
         bch={session.bch}
         relays={relays}
         binding={session.binding}
-        onBinding={session.setBinding}
+        recovery={session.recovery}
+        onBinding={(binding, recovery) => session.setIdentity({ binding, recovery })}
       />
       <DiscoverPanel
         relays={relays}
         {...(session.nostr ? { suggestion: session.nostr.npub } : {})}
       />
+      <IdentityPanel
+        nostr={session.nostr}
+        bch={session.bch}
+        binding={session.binding}
+        recovery={session.recovery}
+        relays={relays}
+        onChange={(result) => session.setIdentity(result)}
+        {...(wizardRelays ? { wizardRelays } : {})}
+      />
       <LoginPanel nostr={session.nostr} bch={session.bch} binding={session.binding} />
+      <TakeoverPanel nostr={session.nostr} binding={session.binding} />
     </div>
   );
 }

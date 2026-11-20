@@ -54,14 +54,50 @@ gone.
    or pasting the `wiz://` link into the wallet, or create a local test key
    (chipnet only). The wallet is asked to sign a proof transaction that spends a
    virtual output and is never broadcast.
-4. **Bind and publish.** Both keys sign. Publish to the local relay, and to public
-   relays if you turn them on. Anything sent to public relays is public and
-   cannot be reliably deleted.
+4. **Bind and publish.** Both keys sign. Optionally add a recovery key (see
+   below). Publish to the site's relays, and to public relays if you turn them
+   on. Anything sent to public relays is public and cannot be reliably deleted.
 5. **Discover and verify.** Look up an npub or a BCH address. The page asks the
-   relays and verifies every event itself.
-6. **Log in.** The verifier issues a one-time challenge; the page signs it with
+   relays and verifies every event itself. It shows whether the identity is
+   current, replaced, revoked or disputed, and its chain of bindings: what each
+   step changed and which keys approved it.
+6. **Change the identity.** Rotate the BCH key or the Nostr key, recover from a
+   lost key with the recovery key, or revoke the identity. Each change needs two
+   of the binding's keys; the page says which before asking and shows which did
+   after. The new binding becomes the session's binding once a relay accepts it.
+7. **Log in.** The verifier issues a one-time challenge; the page signs it with
    both keys or with the Nostr key only. "Try an action that needs both keys"
-   shows step-up: a Nostr-only session is refused.
+   shows step-up: a Nostr-only session is refused. After a revocation, login is
+   refused.
+8. **Try a takeover.** The page plays an attacker who stole the Nostr key and
+   nothing else, and shows three independent defences refusing them: the
+   protocol (a replacement approved by one key does not verify), the site's
+   relays (a fake first binding cannot overwrite the real one) and the verifier
+   (the fake binding cannot log in). The fake binding is sent only to the site's
+   relays that already hold the real one, so nothing is stored.
+
+### The recovery key
+
+A recovery key is a backup, so unlike the other keys in this page it has to be
+seen to be useful: a backup that only ever lived in the tab is gone after a
+reload. The bind step offers:
+
+- **Create one in this page.** The page shows the key once as an `nsec`, with a
+  copy button and a warning, and the binding cannot be created until you confirm
+  you saved it. Afterwards only its public key, and the signer for this tab,
+  stay in memory. On mainnet the page suggests the next option instead.
+- **Use my own.** Enter the npub of a recovery key you keep elsewhere, such as
+  a paper key. The secret never touches the page.
+
+To recover, the page uses the recovery key created in this tab, or asks for its
+`nsec`. This is the one place the page accepts a secret key: it is held in
+memory, used to sign one approval, and never sent anywhere. Elsewhere the page
+still refuses to import keys.
+
+The local relay follows the same rules as the Cashlet relays: a binding must
+verify, a key's binding can only be replaced by a successor approved by two of
+its keys, and bindings cannot be deleted. `npm run dev:relay -- --no-enforce`
+starts it as a plain relay instead.
 
 The demo verifier checks logins against the local relay only. A binding published
 only to public relays cannot be used to log in to it.
