@@ -16,6 +16,25 @@ BND makes the link a pair of signatures: the BCH key signs a statement naming
 the Nostr key, and the Nostr key signs an event containing that statement. A
 verifier needs only the event and the public keys inside it.
 
+## The pieces
+
+```mermaid
+flowchart LR
+  subgraph User
+    W[BCH wallet] -->|BCH proof| A[Application]
+    N[Nostr signer] -->|signs the event| A
+  end
+  A -->|publish kind 30078| R[(Nostr relays)]
+  R -->|query by npub, BCH key or successor| V[Verifier / resolver]
+  R --> P[Any other app]
+  V -->|login session| A
+  V -->|DID document| P
+```
+
+The wallet and the signer hold the keys. Relays store events but are not
+trusted for anything except availability. Every application verifies what it
+reads by itself.
+
 ## Background in two paragraphs
 
 **For identity readers.** A Bitcoin Cash P2PKH address is the HASH160 of a

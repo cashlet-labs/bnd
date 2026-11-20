@@ -1,124 +1,55 @@
-# bnd-core
+# BND: Bitcoin Cash and Nostr identity binding
 
-BND binds a Bitcoin Cash key to a Nostr key so that anyone can check that one
-person controls both. Each key signs a statement naming the other. The binding
-is published as an ordinary Nostr event, found on any relay, and verified
-offline by whoever needs it. There is no identity provider, no account, no fee
-and no on-chain transaction, and no private key leaves its owner.
+An open protocol that binds a Bitcoin Cash key to a Nostr key, so anyone can
+verify that one person controls both.
 
-On top of the binding, BND adds:
+[Specification](spec/BND-1.md) · [did:bnd](spec/did-bnd.md) ·
+[Live demo](https://bnd-core.septemlabs.com) · [Documentation](docs/README.md) ·
+[npm](https://www.npmjs.com/package/@cashlet-labs/bnd-core)
 
-- **Login** with a one-time challenge signed by both keys, or by the Nostr key
-  alone, checked against relays to make sure the binding is still current.
-- **Key rotation, recovery and revocation.** A binding can be replaced; each
-  change needs two of three keys (Nostr, BCH and an optional offline recovery
-  key), and every binding carries its full signed history.
-- **A DID**, `did:bnd:<network>:<root Nostr key>:<root binding ID>`, that stays
-  the same when keys rotate, with a public resolver.
-- **Pay by identity:** turn an npub or a DID into a payment request for the
-  identity's current, verified BCH address, in BCH or CashTokens.
+Each key signs a statement naming the other, and the result is published as an
+ordinary Nostr event. Any application can find it on relays and verify it
+offline: no identity provider, account, fee or on-chain transaction. On top of
+the binding, BND-1 defines login with both keys, key rotation and recovery with
+two of three keys, a DID that survives rotation (`did:bnd`), and paying an
+identity at its current, verified address.
 
-Status: draft protocol, working reference implementation. Release 0.3.0.
+Status: draft protocol (BND-1, did:bnd 0.1), release 0.4.0.
 
-## Try it
-
-Hosted demo: <https://bnd-core.septemlabs.com> (chipnet by default). The public
-DID resolver is at `https://bnd-core.septemlabs.com/did/<did>`.
-
-Locally, with Node.js 22 or later:
+## Use it
 
 ```bash
-npm install
-npm run demo
+npm install @cashlet-labs/bnd-core @cashlet-labs/bnd-nostr
 ```
 
-Open <http://127.0.0.1:4173>. This starts a local relay, the demonstration
-login service and the page, on this machine only. [docs/demo.md](docs/demo.md)
-walks through it step by step.
+```ts
+import { discoverBinding } from "@cashlet-labs/bnd-nostr";
 
-## How it works
-
-```mermaid
-flowchart LR
-  subgraph User
-    W[BCH wallet] -->|BCH proof| A[Demo page or app]
-    N[Nostr signer] -->|signs the event| A
-  end
-  A -->|publish kind 30078| R[(Nostr relays)]
-  R -->|query by npub, BCH key or successor| V[Verifier / resolver]
-  R --> P[Any other app]
-  V -->|login session| A
-  V -->|DID document| P
+const found = await discoverBinding("npub1…", { relays: ["wss://relay.septemlabs.com"] });
+if (found.state.status === "current") pay(found.state.binding.bch.address); // verified
 ```
 
-1. The wallet signs a BCH proof over the binding record: a Bitcoin Signed
-   Message, or a transaction that spends a virtual output and can never be
-   broadcast.
-2. The Nostr key signs a kind `30078` event carrying the record and that proof.
-3. The event goes to relays. Anyone finds it by Nostr key, by BCH key hash, or
-   as the successor of an older binding.
-4. A verifier checks both signatures and the history locally. Relays are
-   untrusted: they can withhold events but cannot forge them.
+The [integration guide](docs/integration.md) covers wallets, Nostr clients,
+login, DIDs and payments. Other languages can implement the spec against the
+[test vectors](spec/vectors/).
 
-[docs/architecture.md](docs/architecture.md) explains the design for readers
-who know Bitcoin Cash or identity systems but not both, with sequence diagrams
-and a step-by-step verification.
+## See it
 
-## Packages
-
-| Path             | Package                   | What it does                                                        |
-| ---------------- | ------------------------- | ------------------------------------------------------------------- |
-| `packages/core`  | `@cashlet-labs/bnd-core`  | Records, proofs, binding events, succession, login. No network.     |
-| `packages/nostr` | `@cashlet-labs/bnd-nostr` | Publish to and discover from relays; check a binding is current.    |
-| `packages/did`   | `@cashlet-labs/bnd-did`   | `did:bnd` documents and resolution, pay by identity, `bnd-resolve`. |
-| `apps/web`       | (private)                 | The demo page.                                                      |
-| `apps/verifier`  | (private)                 | Demonstration login service and public DID resolver.                |
-| `apps/dev-relay` | (private)                 | In-memory relay that enforces succession, for the demo and tests.   |
-
-The packages are not on npm yet; build them from this repository
-(`npm run build`). [docs/integration.md](docs/integration.md) shows how wallets,
-Nostr clients and applications use them.
-
-## Documentation
-
-| Document                                                 | For                                                           |
-| -------------------------------------------------------- | ------------------------------------------------------------- |
-| [spec/BND-1.md](spec/BND-1.md)                           | The protocol: records, proofs, events, login, rotation.       |
-| [spec/did-bnd.md](spec/did-bnd.md)                       | The `did:bnd` DID method.                                     |
-| [spec/nip-draft.md](spec/nip-draft.md)                   | BND written up as a NIP for Nostr developers.                 |
-| [spec/vectors/](spec/vectors/)                           | Test vectors for every part of the spec.                      |
-| [docs/architecture.md](docs/architecture.md)             | How BND works, with diagrams and a verification walk-through. |
-| [docs/integration.md](docs/integration.md)               | Adding BND to a wallet, a Nostr client or an application.     |
-| [docs/threat-model.md](docs/threat-model.md)             | What BND defends against, and what it does not.               |
-| [docs/demo.md](docs/demo.md)                             | Running and using the demo.                                   |
-| [docs/wallet-connections.md](docs/wallet-connections.md) | How the demo talks to BCH wallets.                            |
-| [docs/deploy.md](docs/deploy.md)                         | Hosting the demo with Docker.                                 |
-| [docs/did-rubric.md](docs/did-rubric.md)                 | `did:bnd` evaluated against the W3C DID Method Rubric.        |
-| [docs/bounty-checklist.md](docs/bounty-checklist.md)     | Where each bounty requirement is met.                         |
-| [CHANGELOG.md](CHANGELOG.md)                             | Releases.                                                     |
-
-## Standards reused
-
-Nostr NIP-01, 06, 07, 09, 19, 21, 46, 65, 78 and 98; Bitcoin Signed Message;
-BIP-340, BIP39, BIP44 and BIP21; CashAddr and CashTokens token-aware addresses;
-RFC 8785 (JSON canonicalization); CAIP-2, CAIP-10 and CAIP-122; W3C DID Core,
-DID Resolution and Controlled Identifiers (Multikey).
-
-## Development
+The [live demo](https://bnd-core.septemlabs.com) is an example application:
+bind a wallet to a Nostr key, verify it, log in, rotate and recover keys, watch
+a takeover fail, resolve the DID and pay the identity. To run it locally:
 
 ```bash
-npm run dev          # page with hot reload on http://127.0.0.1:5173
-npm run typecheck
-npm run lint
-npm run format:check
-npm test
-npm run test:e2e     # browser tests (Playwright)
+npm install && npm run demo   # then open http://127.0.0.1:4173
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). Report security problems as described in
-[SECURITY.md](SECURITY.md).
+## Learn more
+
+- [How it works](docs/architecture.md), with diagrams
+- [Threat model](docs/threat-model.md)
+- [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Changelog](CHANGELOG.md)
 
 ## Licence
 
-Code: MIT, see [LICENSE](LICENSE). Specification text in `spec/`: CC BY 4.0, see
-[spec/LICENSE.md](spec/LICENSE.md).
+Code under [MIT](LICENSE). Specification text under
+[CC BY 4.0](spec/LICENSE.md).

@@ -4,7 +4,7 @@ Evaluator: Septem Labs (<hello@septemlabs.com>), authors of the method, so this
 is a self-assessment and carries that bias.
 Date: 2026-11-20.
 Method version: [did:bnd 0.1](../spec/did-bnd.md), reference implementation
-`@cashlet-labs/bnd-did` 0.3.0.
+`@cashlet-labs/bnd-did` 0.4.0.
 Rubric: [W3C DID Method Rubric](https://www.w3.org/TR/did-rubric/). The Rubric
 asks evaluators to frame a use and answer only the criteria that matter for it;
 criteria are named as in its section 3. Answers are in plain words rather than
