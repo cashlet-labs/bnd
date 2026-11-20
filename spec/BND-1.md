@@ -1,7 +1,7 @@
 # BND-1: BCH–Nostr Identity Binding
 
 Status: draft. The format may still change before version 1 is final; the
-`bnd-core` release notes say which draft each release implements.
+[changelog](../CHANGELOG.md) says which draft each release implements.
 
 BND-1 binds one Bitcoin Cash P2PKH key to one Nostr key. Each key signs a
 statement about the other, so a verifier can confirm that one party controls

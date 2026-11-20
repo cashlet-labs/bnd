@@ -1,5 +1,5 @@
 {
-  "name": "bnd-core",
+  "name": "bnd",
   "version": "0.0.0",
   "private": true,
   "description": "BND: cryptographic binding of Bitcoin Cash and Nostr identities",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cashlet-labs/bnd-core.git"
+    "url": "git+https://github.com/cashlet-labs/bnd.git"
   },
   "engines": {
     "node": ">=22"

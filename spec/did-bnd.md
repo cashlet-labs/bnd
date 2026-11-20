@@ -4,7 +4,7 @@ Status: draft. Version 0.1.
 
 Authors: Septem Labs (<hello@septemlabs.com>).
 
-Repository: <https://github.com/cashlet-labs/bnd-core>.
+Repository: <https://github.com/cashlet-labs/bnd>.
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY are to be interpreted
 as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in
