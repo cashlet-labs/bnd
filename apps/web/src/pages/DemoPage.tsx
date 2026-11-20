@@ -1,6 +1,7 @@
 import { BchWalletPanel } from "../components/BchWalletPanel";
 import { BindingPanel } from "../components/BindingPanel";
 import { DiscoverPanel } from "../components/DiscoverPanel";
+import { IdentityPanel } from "../components/IdentityPanel";
 import { PageHeader } from "../components/Layout";
 import { LoginPanel } from "../components/LoginPanel";
 import { NetworkPicker } from "../components/NetworkPicker";
@@ -49,6 +50,15 @@ export function DemoPage({ wizardRelays }: { wizardRelays?: string[] } = {}) {
       <DiscoverPanel
         relays={relays}
         {...(session.nostr ? { suggestion: session.nostr.npub } : {})}
+      />
+      <IdentityPanel
+        nostr={session.nostr}
+        bch={session.bch}
+        binding={session.binding}
+        recovery={session.recovery}
+        relays={relays}
+        onChange={(result) => session.setIdentity(result)}
+        {...(wizardRelays ? { wizardRelays } : {})}
       />
       <LoginPanel nostr={session.nostr} bch={session.bch} binding={session.binding} />
     </div>
