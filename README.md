@@ -10,6 +10,11 @@ Status: work in progress. The protocol specification is in
 replaced (rotating either key), recovered with an optional recovery key, and
 revoked; each change needs two of the three keys (section 9).
 
+Each identity also has a DID, `did:bnd:<network>:<nostr key>:<binding id>`,
+which stays the same when keys rotate ([`spec/did-bnd.md`](spec/did-bnd.md),
+library `@cashlet-labs/bnd-did`). The hosted demo resolves them at
+`https://bnd-core.septemlabs.com/did/<did>`.
+
 ## Try it
 
 ```bash

@@ -55,6 +55,8 @@ challenge=$(curl -s "$base/challenge")
 check "challenges come from the verifier" sh -c "echo '$challenge' | grep -q '\"audience\":\"http://127.0.0.1:8088/login\"'"
 check "a cross-site login is refused" test "$(status /login -X POST -H 'Origin: https://evil.example' -H 'Content-Type: application/json' -d '{}')" = 403
 check "unknown verifier routes are not proxied" test "$(status /health)" = 200
+check "the DID resolver is proxied" test "$(status /did/did:example:1)" = 400
+check "the DID resolver allows any site" test "$(header /did/did:example:1 access-control-allow-origin)" = "*"
 
 # The verifier limits challenges per address from X-Real-Ip (30 a minute).
 codes=""

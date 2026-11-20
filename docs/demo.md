@@ -76,6 +76,11 @@ gone.
    (the fake binding cannot log in). The fake binding is sent only to the site's
    relays that already hold the real one, so nothing is stored.
 
+The bind and verify steps also show the identity's `did:bnd`, which does not
+change when keys rotate, with a link to resolve it at `/did/<did>`. The verifier
+answers that route with a DID Resolution Result, using the same relays it checks
+logins against.
+
 ### The recovery key
 
 A recovery key is a backup, so unlike the other keys in this page it has to be

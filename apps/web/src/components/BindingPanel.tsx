@@ -13,6 +13,7 @@ import type { ConnectedBchSigner } from "../signers/bch";
 import type { ConnectedNostrSigner } from "../signers/nostr";
 import type { RecoveryKey } from "../signers/recovery";
 import { chosenRecoveryKey, NO_RECOVERY, type RecoveryChoice } from "../state/recovery-choice";
+import { DidFact } from "./DidLink";
 import { RecoveryKeyPicker } from "./RecoveryKeyPicker";
 
 export interface BindingPanelProps {
@@ -149,6 +150,7 @@ export function BindingPanel({
       {binding && (
         <>
           <dl className="facts">
+            <DidFact binding={binding} />
             <dt>Binding ID</dt>
             <dd>
               <code className="wrap">{binding.bindingId}</code>

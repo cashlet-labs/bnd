@@ -3,6 +3,7 @@ import {
   createKeySigner,
   createLoginResponse,
   createNostrKeySigner,
+  createRevocation,
   createSuccessor,
   deriveBchKey,
   deriveNostrKey,
@@ -10,6 +11,7 @@ import {
   type BchProofType,
   type VerifiedBinding,
 } from "@cashlet-labs/bnd-core";
+import { didOf } from "@cashlet-labs/bnd-did";
 import { publishBinding } from "@cashlet-labs/bnd-nostr";
 import { afterEach, describe, expect, it } from "vitest";
 import { startDevRelay, type DevRelay } from "../../dev-relay/src/server.js";
@@ -195,6 +197,60 @@ describe("verifier: full login flow over real relays", () => {
     expect(((await response.json()) as { error: string }).error).toBe(
       "binding is not current: a newer binding replaces this one",
     );
+  });
+
+  describe("DID resolver", () => {
+    it("resolves a did:bnd to its current document, for any site", async () => {
+      const { verifier, relays } = await env();
+      const now = Math.floor(Date.now() / 1000);
+      const first = await bind(now - 120);
+      await publish(first, relays);
+      const next = await rotate(first, now - 60);
+      await publish(next, relays);
+      const did = didOf(first);
+      const response = await fetch(`${verifier.url}/did/${encodeURIComponent(did)}`);
+      expect(response.status).toBe(200);
+      expect(response.headers.get("access-control-allow-origin")).toBe("*");
+      expect(response.headers.get("content-type")).toContain("application/ld+json");
+      const body = (await response.json()) as {
+        didDocument: { id: string };
+        didDocumentMetadata: { versionId: string; bnd: { history: string[] } };
+      };
+      expect(body.didDocument.id).toBe(did);
+      expect(body.didDocumentMetadata.versionId).toBe(next.bindingId);
+      expect(body.didDocumentMetadata.bnd.history).toEqual([first.bindingId]);
+      expect(Object.keys(body)).toEqual([
+        "didDocument",
+        "didResolutionMetadata",
+        "didDocumentMetadata",
+      ]);
+    });
+
+    it("answers 410 for a revoked DID, and 400 and 404 for bad or unknown ones", async () => {
+      const { verifier, relays } = await env();
+      const now = Math.floor(Date.now() / 1000);
+      const first = await bind(now - 120);
+      await publish(first, relays);
+      const revocation = await createRevocation({
+        previous: first.event,
+        signer: nostrSigner,
+        approvers: { bch: { signer: bchSigner, proofType: "message" } },
+        createdAt: now - 60,
+      });
+      await publishBinding(revocation.event, { relays: relays.map((r) => r.url) });
+      const status = async (path: string) => (await fetch(`${verifier.url}${path}`)).status;
+      expect(await status(`/did/${didOf(first)}`)).toBe(410);
+      expect(await status("/did/did:example:123")).toBe(400);
+      expect(await status("/did/%E0%A4%A")).toBe(400);
+      expect(await status(`/did/did:bnd:chipnet:${nostr.publicKey}:${"0".repeat(64)}`)).toBe(404);
+    });
+
+    it("rate-limits resolutions per client", async () => {
+      const { verifier } = await env({ resolutionsPerMinute: 2 });
+      const statuses = [];
+      for (let i = 0; i < 3; i++) statuses.push((await fetch(`${verifier.url}/did/x`)).status);
+      expect(statuses).toEqual([400, 400, 429]);
+    });
   });
 
   describe("pinning", () => {

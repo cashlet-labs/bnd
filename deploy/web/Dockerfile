@@ -9,6 +9,7 @@ WORKDIR /build
 COPY package.json package-lock.json tsconfig.base.json ./
 COPY packages/core/package.json packages/core/
 COPY packages/nostr/package.json packages/nostr/
+COPY packages/did/package.json packages/did/
 COPY apps/dev-relay/package.json apps/dev-relay/
 COPY apps/verifier/package.json apps/verifier/
 COPY apps/web/package.json apps/web/
