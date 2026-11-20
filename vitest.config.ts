@@ -9,6 +9,7 @@ const alias = {
   "@cashlet-labs/bnd-core": src("./packages/core/src/index.ts"),
   "@cashlet-labs/bnd-nostr/testing": src("./packages/nostr/src/testing.ts"),
   "@cashlet-labs/bnd-nostr": src("./packages/nostr/src/index.ts"),
+  "@cashlet-labs/bnd-did": src("./packages/did/src/index.ts"),
 };
 
 export default defineConfig({

@@ -17,6 +17,7 @@ await build({
   alias: {
     "@cashlet-labs/bnd-core": "./packages/core/src/index.ts",
     "@cashlet-labs/bnd-nostr": "./packages/nostr/src/index.ts",
+    "@cashlet-labs/bnd-did": "./packages/did/src/index.ts",
   },
   // Some dependencies are CommonJS and call require() for Node built-ins.
   banner: {

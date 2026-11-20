@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@cashlet-labs/bnd-core": "*",
+    "@cashlet-labs/bnd-did": "*",
     "@cashlet-labs/bnd-nostr": "*"
   }
 }

@@ -1,0 +1,37 @@
+{
+  "name": "@cashlet-labs/bnd-did",
+  "version": "0.3.0",
+  "description": "The did:bnd method: DIDs for BND identities that stay the same across key rotations",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cashlet-labs/bnd-core.git",
+    "directory": "packages/did"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "bnd-resolve": "./dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@cashlet-labs/bnd-core": "*",
+    "@cashlet-labs/bnd-nostr": "*"
+  }
+}

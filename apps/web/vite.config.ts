@@ -38,6 +38,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         "@cashlet-labs/bnd-core": root("../../packages/core/src/index.ts"),
         "@cashlet-labs/bnd-nostr": root("../../packages/nostr/src/index.ts"),
+        "@cashlet-labs/bnd-did": root("../../packages/did/src/index.ts"),
       },
     },
     build: { target: "es2022", sourcemap: true },
