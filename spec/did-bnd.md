@@ -6,6 +6,12 @@ Authors: Septem Labs (<hello@septemlabs.com>).
 
 Repository: <https://github.com/cashlet-labs/bnd>.
 
+Copyright © 2026 Septem Labs. This specification is licensed under the
+[Creative Commons Attribution 4.0 International licence (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode).
+Anyone may implement the method without permission from, or payment to, the
+authors. Details are in [LICENSE.md](LICENSE.md); the reference implementation
+is licensed under MIT ([LICENSE](../LICENSE)).
+
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY are to be interpreted
 as described in BCP 14 (RFC 2119, RFC 8174) when, and only when, they appear in
 capitals.

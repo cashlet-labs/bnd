@@ -3,6 +3,14 @@
 Status: draft. The format may still change before version 1 is final; the
 [changelog](../CHANGELOG.md) says which draft each release implements.
 
+Authors: Septem Labs (<hello@septemlabs.com>).
+
+Copyright © 2026 Septem Labs. This specification is licensed under the
+[Creative Commons Attribution 4.0 International licence (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode).
+Anyone may implement the protocol without permission from, or payment to, the
+authors. Details are in [LICENSE.md](LICENSE.md); the reference implementation
+is licensed under MIT ([LICENSE](../LICENSE)).
+
 BND-1 binds one Bitcoin Cash P2PKH key to one Nostr key. Each key signs a
 statement about the other, so a verifier can confirm that one party controls
 both. The keys are independent and no private key leaves its owner.
