@@ -1,12 +1,26 @@
 {
   "name": "@cashlet-labs/bnd-core",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "BND-1 protocol core: binding records, proofs and verification",
+  "keywords": [
+    "bitcoin-cash",
+    "bch",
+    "nostr",
+    "identity",
+    "binding",
+    "bip340",
+    "cashaddr"
+  ],
   "type": "module",
   "license": "MIT",
+  "author": "Septem Labs <hello@septemlabs.com>",
+  "homepage": "https://github.com/cashlet-labs/bnd/tree/main/packages/core#readme",
+  "bugs": {
+    "url": "https://github.com/cashlet-labs/bnd/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cashlet-labs/bnd-core.git",
+    "url": "git+https://github.com/cashlet-labs/bnd.git",
     "directory": "packages/core"
   },
   "engines": {
@@ -14,7 +28,8 @@
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -25,7 +40,8 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@bitauth/libauth": "3.0.0",
@@ -37,5 +53,8 @@
   },
   "devDependencies": {
     "nostr-tools": "2.26.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

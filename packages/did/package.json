@@ -1,12 +1,27 @@
 {
   "name": "@cashlet-labs/bnd-did",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "The did:bnd method: DIDs for BND identities that stay the same across key rotations",
+  "keywords": [
+    "did",
+    "did-method",
+    "did:bnd",
+    "bitcoin-cash",
+    "bch",
+    "nostr",
+    "identity",
+    "bip21"
+  ],
   "type": "module",
   "license": "MIT",
+  "author": "Septem Labs <hello@septemlabs.com>",
+  "homepage": "https://github.com/cashlet-labs/bnd/tree/main/packages/did#readme",
+  "bugs": {
+    "url": "https://github.com/cashlet-labs/bnd/issues"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cashlet-labs/bnd-core.git",
+    "url": "git+https://github.com/cashlet-labs/bnd.git",
     "directory": "packages/did"
   },
   "engines": {
@@ -14,7 +29,8 @@
   },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -28,10 +44,14 @@
     }
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@cashlet-labs/bnd-core": "*",
-    "@cashlet-labs/bnd-nostr": "*"
+    "@cashlet-labs/bnd-core": "^0.4.0",
+    "@cashlet-labs/bnd-nostr": "^0.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
