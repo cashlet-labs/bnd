@@ -195,7 +195,7 @@ else use(result.didDocument);
 Or over HTTP, from any origin:
 
 ```bash
-curl https://bnd-core.septemlabs.com/did/did:bnd:chipnet:<key>:<id>
+curl https://bnd.septemlabs.com/did/did:bnd:chipnet:<key>:<id>
 ```
 
 Or from the command line:

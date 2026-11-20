@@ -4,7 +4,7 @@ An open protocol that binds a Bitcoin Cash key to a Nostr key, so anyone can
 verify that one person controls both.
 
 [Specification](spec/BND-1.md) · [did:bnd](spec/did-bnd.md) ·
-[Live demo](https://bnd-core.septemlabs.com) · [Documentation](docs/README.md) ·
+[Live demo](https://bnd.septemlabs.com) · [Documentation](docs/README.md) ·
 [npm](https://www.npmjs.com/package/@cashlet-labs/bnd-core)
 
 Each key signs a statement naming the other, and the result is published as an
@@ -35,7 +35,7 @@ login, DIDs and payments. Other languages can implement the spec against the
 
 ## See it
 
-The [live demo](https://bnd-core.septemlabs.com) is an example application:
+The [live demo](https://bnd.septemlabs.com) is an example application:
 bind a wallet to a Nostr key, verify it, log in, rotate and recover keys, watch
 a takeover fail, resolve the DID and pay the identity. To run it locally:
 

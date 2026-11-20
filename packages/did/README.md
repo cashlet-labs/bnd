@@ -53,7 +53,7 @@ npx -p @cashlet-labs/bnd-did bnd-resolve did:bnd:chipnet:<key>:<id> --relay wss:
 ```
 
 Prints the DID Resolution Result as JSON and exits 1 when resolution fails. A
-public HTTP resolver runs at `https://bnd-core.septemlabs.com/did/<did>`.
+public HTTP resolver runs at `https://bnd.septemlabs.com/did/<did>`.
 
 ## Documentation
 

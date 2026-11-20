@@ -70,7 +70,7 @@ For DIDs and payments, use
 - [Specification (BND-1)](https://github.com/cashlet-labs/bnd/blob/main/spec/BND-1.md)
 - [Integration guide](https://github.com/cashlet-labs/bnd/blob/main/docs/integration.md)
 - [Threat model](https://github.com/cashlet-labs/bnd/blob/main/docs/threat-model.md)
-- [Demo](https://bnd-core.septemlabs.com)
+- [Demo](https://bnd.septemlabs.com)
 
 The protocol is a draft and may change before version 1.
 
