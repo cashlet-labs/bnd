@@ -4,7 +4,7 @@ import {
   publishBinding as defaultPublishBinding,
   type PublishSummary,
 } from "@cashlet-labs/bnd-nostr";
-import { createTestBchSigner, type ConnectedBchSigner } from "../signers/bch";
+import type { ConnectedBchSigner } from "../signers/bch";
 import {
   connectNip07,
   createMemorySigner,
@@ -231,11 +231,6 @@ export function IdentityPanel({
               headingId="new-bch-title"
               {...(wizardRelays ? { wizardRelays } : {})}
             />
-          )}
-          {changesBch && !newBch && binding.bch.network === "chipnet" && (
-            <button type="button" onClick={() => setNewBch(createTestBchSigner("chipnet"))}>
-              Use a new test key
-            </button>
           )}
 
           {action === "revoke" && (

@@ -211,7 +211,7 @@ describe("IdentityPanel", () => {
     const start = await identity();
     const { onChange, publish } = setup(start);
     const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: "Use a new test key" }));
+    await user.click(screen.getByRole("button", { name: "Create a test key" }));
     await user.click(screen.getByRole("button", { name: "Rotate the BCH key" }));
     const status = await screen.findByRole("status");
     expect(status.textContent).toContain("Replaced and published to 1 of 1 relays.");
@@ -269,7 +269,7 @@ describe("IdentityPanel", () => {
       />,
     );
     const user = userEvent.setup();
-    await user.click(screen.getByRole("button", { name: "Use a new test key" }));
+    await user.click(screen.getByRole("button", { name: "Create a test key" }));
     await user.click(screen.getByRole("button", { name: "Rotate the BCH key" }));
     expect((await screen.findByRole("alert")).textContent).toContain("blocked: nope");
     expect(onChange).not.toHaveBeenCalled();
