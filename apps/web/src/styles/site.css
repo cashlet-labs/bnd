@@ -377,6 +377,27 @@ main section h2 {
   font-weight: 700;
 }
 
+.checks li.held,
+.checks li.failed {
+  display: block;
+}
+.checks li.held::before,
+.checks li.failed::before {
+  margin-right: 8px;
+}
+.checks li.failed {
+  color: var(--red);
+}
+.checks li.failed::before {
+  content: "✗";
+  color: var(--red);
+}
+
+p.verified {
+  color: var(--green);
+  font-weight: 600;
+}
+
 @media (max-width: 760px) {
   main section.hero {
     flex-direction: column;

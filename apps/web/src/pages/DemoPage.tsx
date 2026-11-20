@@ -7,6 +7,7 @@ import { LoginPanel } from "../components/LoginPanel";
 import { NetworkPicker } from "../components/NetworkPicker";
 import { NostrSignerPanel } from "../components/NostrSignerPanel";
 import { RelaySettings } from "../components/RelaySettings";
+import { TakeoverPanel } from "../components/TakeoverPanel";
 import { selectedRelays } from "../relays";
 import { useSession } from "../state/session-context";
 
@@ -61,6 +62,7 @@ export function DemoPage({ wizardRelays }: { wizardRelays?: string[] } = {}) {
         {...(wizardRelays ? { wizardRelays } : {})}
       />
       <LoginPanel nostr={session.nostr} bch={session.bch} binding={session.binding} />
+      <TakeoverPanel nostr={session.nostr} binding={session.binding} />
     </div>
   );
 }

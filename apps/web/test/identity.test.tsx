@@ -1,9 +1,10 @@
 import { createBinding, verifyBinding, type VerifiedBinding } from "@cashlet-labs/bnd-core";
-import type { PublishSummary } from "@cashlet-labs/bnd-nostr";
+import type { PublishSummary, QueryResult } from "@cashlet-labs/bnd-nostr";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { IdentityPanel } from "../src/components/IdentityPanel";
+import { TakeoverPanel } from "../src/components/TakeoverPanel";
 import { createTestBchSigner, type ConnectedBchSigner } from "../src/signers/bch";
 import { createMemorySigner, type ConnectedNostrSigner } from "../src/signers/nostr";
 import { createRecoveryKey, type RecoveryKey } from "../src/signers/recovery";
@@ -239,5 +240,98 @@ describe("IdentityPanel", () => {
       screen.getByText("This identity is revoked. Nothing can follow a revocation."),
     ).toBeTruthy();
     expect(screen.queryByRole("button", { name: "Revoke" })).toBeNull();
+  });
+});
+
+describe("TakeoverPanel", () => {
+  it("shows all three defences refusing an attacker with only the Nostr key", async () => {
+    const start = await identity();
+    const published: unknown[] = [];
+    const queryRelay = vi.fn(async (url: string): Promise<QueryResult> => ({
+      url,
+      events: [start.binding.event],
+      complete: true,
+      notices: [],
+    }));
+    const publishToRelay = vi.fn(async (url: string, event: unknown) => {
+      published.push(event);
+      return { url, ok: false, message: "blocked: this key already has a binding here" };
+    });
+    const fetchFn = vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input).startsWith("/challenge")) {
+        const now = Math.floor(Date.now() / 1000);
+        return new Response(
+          JSON.stringify({
+            nonce: "ab".repeat(32),
+            audience: "http://app.test/login",
+            level: "dual",
+            issuedAt: now,
+            expiresAt: now + 300,
+          }),
+        );
+      }
+      return new Response(JSON.stringify({ error: "binding is not current: not published" }), {
+        status: 401,
+      });
+    });
+    render(
+      <TakeoverPanel
+        nostr={start.nostr}
+        binding={start.binding}
+        fetchFn={fetchFn as typeof fetch}
+        origin="http://app.test"
+        publishToRelay={publishToRelay}
+        queryRelay={queryRelay}
+        siteRelays={["wss://relay.test"]}
+      />,
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Try a takeover" }));
+    const status = await screen.findByRole("status");
+    const defences = screen.getByRole("list", { name: "Defences" }).querySelectorAll("li");
+    expect([...defences].map((li) => li.className)).toEqual(["held", "held", "held"]);
+    expect(defences[0]!.textContent).toContain(
+      "needs approval from two keys of the previous binding, got only the nostr key",
+    );
+    expect(status.textContent).toContain("the attacker could not move your identity");
+    // Only the relay that holds the real binding was sent the fake one.
+    expect(publishToRelay).toHaveBeenCalledTimes(1);
+    expect(verifyBinding(published[0]).ok).toBe(true);
+  });
+
+  it("skips the relay attempt when no site relay holds the real binding", async () => {
+    const start = await identity();
+    const publishToRelay = vi.fn();
+    const fetchFn = vi.fn(async (input: RequestInfo | URL) => {
+      if (String(input).startsWith("/challenge")) {
+        const now = Math.floor(Date.now() / 1000);
+        return new Response(
+          JSON.stringify({
+            nonce: "cd".repeat(32),
+            audience: "http://app.test/login",
+            level: "dual",
+            issuedAt: now,
+            expiresAt: now + 300,
+          }),
+        );
+      }
+      return new Response(JSON.stringify({ error: "refused" }), { status: 401 });
+    });
+    render(
+      <TakeoverPanel
+        nostr={start.nostr}
+        binding={start.binding}
+        fetchFn={fetchFn as typeof fetch}
+        origin="http://app.test"
+        publishToRelay={publishToRelay}
+        queryRelay={async (url) => ({ url, events: [], complete: true, notices: [] })}
+        siteRelays={["wss://relay.test"]}
+      />,
+    );
+    const user = userEvent.setup();
+    await user.click(screen.getByRole("button", { name: "Try a takeover" }));
+    await screen.findByRole("status");
+    expect(publishToRelay).not.toHaveBeenCalled();
+    expect(screen.getByText(/Skipped/)).toBeTruthy();
   });
 });
