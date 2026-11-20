@@ -1,10 +1,5 @@
-import {
-  createBinding,
-  npubEncode,
-  verifyBinding,
-  type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
-import type { PublishSummary, QueryResult } from "@cashlet-labs/bnd-nostr";
+import { createBinding, npubEncode, verifyBinding, type VerifiedBinding } from "@cashlet-labs/bnd";
+import type { PublishSummary, QueryResult } from "@cashlet-labs/bnd/nostr";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";

@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { BchNetwork } from "@cashlet-labs/bnd-core";
+import type { BchNetwork } from "@cashlet-labs/bnd";
 import { NetworkPicker } from "../src/components/NetworkPicker";
 
 afterEach(cleanup);

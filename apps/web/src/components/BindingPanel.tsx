@@ -4,11 +4,11 @@ import {
   createBinding as defaultCreateBinding,
   type BchProofType,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import {
   publishBinding as defaultPublishBinding,
   type PublishSummary,
-} from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd/nostr";
 import type { ConnectedBchSigner } from "../signers/bch";
 import type { ConnectedNostrSigner } from "../signers/nostr";
 import type { RecoveryKey } from "../signers/recovery";

@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from "react";
-import type { BchNetwork, VerifiedBinding } from "@cashlet-labs/bnd-core";
+import type { BchNetwork, VerifiedBinding } from "@cashlet-labs/bnd";
 import type { RelayChoice } from "../relays";
 import type { ConnectedBchSigner } from "../signers/bch";
 import type { ConnectedNostrSigner } from "../signers/nostr";

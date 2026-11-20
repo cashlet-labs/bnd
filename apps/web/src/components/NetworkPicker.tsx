@@ -1,5 +1,5 @@
 import { useId, useState } from "react";
-import type { BchNetwork } from "@cashlet-labs/bnd-core";
+import type { BchNetwork } from "@cashlet-labs/bnd";
 
 export interface NetworkPickerProps {
   network: BchNetwork;

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { npubEncode } from "@cashlet-labs/bnd-core";
-import { paymentUri, resolvePayee as defaultResolvePayee, type Payee } from "@cashlet-labs/bnd-did";
+import { npubEncode } from "@cashlet-labs/bnd";
+import { paymentUri, resolvePayee as defaultResolvePayee, type Payee } from "@cashlet-labs/bnd/did";
 import { QrCode } from "./QrCode";
 
 export interface PayPanelProps {

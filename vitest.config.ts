@@ -5,12 +5,16 @@ import { defineConfig } from "vitest/config";
 const src = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
 // Tests run against package sources, so no build step is needed first.
-const alias = {
-  "@cashlet-labs/bnd-core": src("./packages/core/src/index.ts"),
-  "@cashlet-labs/bnd-nostr/testing": src("./packages/nostr/src/testing.ts"),
-  "@cashlet-labs/bnd-nostr": src("./packages/nostr/src/index.ts"),
-  "@cashlet-labs/bnd-did": src("./packages/did/src/index.ts"),
-};
+// Exact matches: a plain "@cashlet-labs/bnd" key would also catch its subpaths.
+const alias = [
+  { find: /^@cashlet-labs\/bnd\/nostr$/, replacement: src("./packages/bnd/src/nostr/index.ts") },
+  { find: /^@cashlet-labs\/bnd\/did$/, replacement: src("./packages/bnd/src/did/index.ts") },
+  {
+    find: /^@cashlet-labs\/bnd\/testing$/,
+    replacement: src("./packages/bnd/src/nostr/testing.ts"),
+  },
+  { find: /^@cashlet-labs\/bnd$/, replacement: src("./packages/bnd/src/core/index.ts") },
+];
 
 export default defineConfig({
   test: {
@@ -20,7 +24,7 @@ export default defineConfig({
         test: {
           name: "node",
           include: [
-            "packages/*/test/**/*.test.ts",
+            "packages/bnd/test/**/*.test.ts",
             "apps/dev-relay/test/**/*.test.ts",
             "apps/verifier/test/**/*.test.ts",
             "test/**/*.test.ts",

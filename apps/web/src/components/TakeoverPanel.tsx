@@ -12,11 +12,11 @@ import {
   proveBchControl,
   verifyBinding,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import {
   publishToRelay as defaultPublishToRelay,
   queryRelay as defaultQueryRelay,
-} from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd/nostr";
 import { secp256k1 } from "@noble/curves/secp256k1.js";
 import { SITE_RELAYS, SITE_RELAYS_LABEL } from "../relays";
 import type { ConnectedNostrSigner } from "../signers/nostr";

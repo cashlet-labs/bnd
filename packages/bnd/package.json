@@ -1,0 +1,79 @@
+{
+  "name": "@cashlet-labs/bnd",
+  "version": "0.4.0",
+  "description": "BND: bind a Bitcoin Cash key to a Nostr key. Binding, proofs, verification, login, rotation, relay discovery, did:bnd and pay by identity",
+  "keywords": [
+    "bitcoin-cash",
+    "bch",
+    "nostr",
+    "identity",
+    "did",
+    "did-method",
+    "did:bnd",
+    "cashaddr",
+    "bip340",
+    "bip21"
+  ],
+  "type": "module",
+  "license": "MIT",
+  "author": "Septem Labs <hello@septemlabs.com>",
+  "homepage": "https://github.com/cashlet-labs/bnd/tree/main/packages/bnd#readme",
+  "bugs": {
+    "url": "https://github.com/cashlet-labs/bnd/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cashlet-labs/bnd.git",
+    "directory": "packages/bnd"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "sideEffects": false,
+  "files": [
+    "bin",
+    "dist",
+    "src"
+  ],
+  "main": "./dist/core/index.js",
+  "types": "./dist/core/index.d.ts",
+  "bin": {
+    "bnd-resolve": "bin/bnd-resolve.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/core/index.d.ts",
+      "import": "./dist/core/index.js"
+    },
+    "./nostr": {
+      "types": "./dist/nostr/index.d.ts",
+      "import": "./dist/nostr/index.js"
+    },
+    "./did": {
+      "types": "./dist/did/index.d.ts",
+      "import": "./dist/did/index.js"
+    },
+    "./testing": {
+      "types": "./dist/nostr/testing.d.ts",
+      "import": "./dist/nostr/testing.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@bitauth/libauth": "3.0.0",
+    "@noble/curves": "2.4.0",
+    "@noble/hashes": "2.4.0",
+    "@scure/base": "2.4.0",
+    "@scure/bip32": "2.4.0",
+    "@scure/bip39": "2.4.0"
+  },
+  "devDependencies": {
+    "nostr-tools": "2.26.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

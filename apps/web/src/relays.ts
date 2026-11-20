@@ -1,4 +1,4 @@
-import { DEFAULT_RELAYS } from "@cashlet-labs/bnd-nostr";
+import { DEFAULT_RELAYS } from "@cashlet-labs/bnd/nostr";
 import { LOCAL_DEMO_RELAY, parseRelayList } from "../security-headers";
 import { DEFAULT_NOSTR_CONNECT_RELAYS } from "./signers/nostr";
 

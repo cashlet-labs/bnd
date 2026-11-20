@@ -1,9 +1,9 @@
 import { useState } from "react";
-import type { VerifiedBinding } from "@cashlet-labs/bnd-core";
+import type { VerifiedBinding } from "@cashlet-labs/bnd";
 import {
   publishBinding as defaultPublishBinding,
   type PublishSummary,
-} from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd/nostr";
 import type { ConnectedBchSigner } from "../signers/bch";
 import {
   connectNip07,

@@ -1,5 +1,5 @@
-import { didOf } from "@cashlet-labs/bnd-did";
-import type { VerifiedBinding } from "@cashlet-labs/bnd-core";
+import { didOf } from "@cashlet-labs/bnd/did";
+import type { VerifiedBinding } from "@cashlet-labs/bnd";
 
 /**
  * The identity's did:bnd, which stays the same across key rotations, with a

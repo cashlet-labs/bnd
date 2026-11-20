@@ -1,4 +1,4 @@
-import { signTxProofRequest, type TxProofRequest } from "@cashlet-labs/bnd-core";
+import { signTxProofRequest, type TxProofRequest } from "@cashlet-labs/bnd";
 import { decodeTransaction, hexToBin } from "@bitauth/libauth";
 import { HDKey } from "@scure/bip32";
 import { mnemonicToSeedSync } from "@scure/bip39";

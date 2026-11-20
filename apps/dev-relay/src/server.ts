@@ -1,4 +1,4 @@
-import { MemoryRelay } from "@cashlet-labs/bnd-nostr/testing";
+import { MemoryRelay } from "@cashlet-labs/bnd/testing";
 import { WebSocketServer } from "ws";
 import { bndWritePolicy } from "./policy.js";
 

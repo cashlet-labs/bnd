@@ -1,4 +1,4 @@
-import { DEFAULT_RELAYS } from "@cashlet-labs/bnd-nostr";
+import { DEFAULT_RELAYS } from "@cashlet-labs/bnd/nostr";
 import { startVerifier } from "./server.js";
 
 const port = Number(process.env.PORT ?? 8787);

@@ -1,4 +1,4 @@
-import type { VerifiedBinding } from "@cashlet-labs/bnd-core";
+import type { VerifiedBinding } from "@cashlet-labs/bnd";
 import { chainSteps } from "../chain";
 
 const ROLE_NAMES = { nostr: "Nostr key", bch: "BCH key", recovery: "recovery key" } as const;

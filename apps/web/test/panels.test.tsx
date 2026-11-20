@@ -2,16 +2,12 @@ import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useState } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import {
-  createBinding,
-  type CreateBindingOptions,
-  type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
+import { createBinding, type CreateBindingOptions, type VerifiedBinding } from "@cashlet-labs/bnd";
 import type {
   DiscoveryResult,
   PublishSummary,
   ReverseDiscoveryResult,
-} from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd/nostr";
 import { BchWalletPanel } from "../src/components/BchWalletPanel";
 import { BindingPanel } from "../src/components/BindingPanel";
 import { DiscoverPanel } from "../src/components/DiscoverPanel";

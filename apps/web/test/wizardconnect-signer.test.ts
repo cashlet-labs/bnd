@@ -6,7 +6,7 @@ import {
   deriveNostrKey,
   proveBchControl,
   verifyBchProof,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import { afterEach, describe, expect, it } from "vitest";
 import { startDevRelay } from "../../dev-relay/src/server.js";
 import { startWizardConnect } from "../src/signers/wizardconnect";

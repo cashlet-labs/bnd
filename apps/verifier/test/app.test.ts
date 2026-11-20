@@ -10,9 +10,9 @@ import {
   type AuthChallenge,
   type BchProofType,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
-import { didOf } from "@cashlet-labs/bnd-did";
-import { publishBinding } from "@cashlet-labs/bnd-nostr";
+} from "@cashlet-labs/bnd";
+import { didOf } from "@cashlet-labs/bnd/did";
+import { publishBinding } from "@cashlet-labs/bnd/nostr";
 import { afterEach, describe, expect, it } from "vitest";
 import { startDevRelay, type DevRelay } from "../../dev-relay/src/server.js";
 import type { LoginLogEntry } from "../src/app.js";

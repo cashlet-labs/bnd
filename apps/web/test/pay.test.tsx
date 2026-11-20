@@ -1,5 +1,5 @@
-import { createBinding, encodeBchAddress, hexToBytes } from "@cashlet-labs/bnd-core";
-import { didOf, type PayeeResult } from "@cashlet-labs/bnd-did";
+import { createBinding, encodeBchAddress, hexToBytes } from "@cashlet-labs/bnd";
+import { didOf, type PayeeResult } from "@cashlet-labs/bnd/did";
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";

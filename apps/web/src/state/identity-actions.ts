@@ -4,7 +4,7 @@ import {
   type Approvers,
   type BchProofType,
   type VerifiedBinding,
-} from "@cashlet-labs/bnd-core";
+} from "@cashlet-labs/bnd";
 import type { ConnectedBchSigner } from "../signers/bch";
 import type { ConnectedNostrSigner } from "../signers/nostr";
 import type { RecoveryKey } from "../signers/recovery";
@@ -67,7 +67,7 @@ function recoverySigner(change: IdentityChange) {
 
 /**
  * Make the successor or revocation for `action`. Every result is verified by
- * bnd-core before it is returned, so a signer that approves the wrong thing
+ * the bnd library before it is returned, so a signer that approves the wrong thing
  * is caught here. Nothing is published.
  */
 export async function changeIdentity(

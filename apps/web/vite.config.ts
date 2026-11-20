@@ -36,11 +36,22 @@ export default defineConfig(({ mode }) => {
     ],
     resolve: {
       // Use package sources directly, as the tests do, so no build step is needed first.
-      alias: {
-        "@cashlet-labs/bnd-core": root("../../packages/core/src/index.ts"),
-        "@cashlet-labs/bnd-nostr": root("../../packages/nostr/src/index.ts"),
-        "@cashlet-labs/bnd-did": root("../../packages/did/src/index.ts"),
-      },
+      // Exact matches: a plain "@cashlet-labs/bnd" key would also catch its subpaths.
+      alias: [
+        {
+          find: /^@cashlet-labs\/bnd\/nostr$/,
+          replacement: root("../../packages/bnd/src/nostr/index.ts"),
+        },
+        {
+          find: /^@cashlet-labs\/bnd\/did$/,
+          replacement: root("../../packages/bnd/src/did/index.ts"),
+        },
+        {
+          find: /^@cashlet-labs\/bnd\/testing$/,
+          replacement: root("../../packages/bnd/src/nostr/testing.ts"),
+        },
+        { find: /^@cashlet-labs\/bnd$/, replacement: root("../../packages/bnd/src/core/index.ts") },
+      ],
     },
     build: { target: "es2022", sourcemap: true },
     // The dev server needs inline scripts and its own socket for reloads, so the

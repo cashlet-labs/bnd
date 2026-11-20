@@ -7,9 +7,7 @@ ARG NGINX=nginxinc/nginx-unprivileged:1.31.7-alpine@sha256:b5047b9b76845eac12435
 FROM ${NODE} AS build
 WORKDIR /build
 COPY package.json package-lock.json tsconfig.base.json ./
-COPY packages/core/package.json packages/core/
-COPY packages/nostr/package.json packages/nostr/
-COPY packages/did/package.json packages/did/
+COPY packages/bnd/package.json packages/bnd/
 COPY apps/dev-relay/package.json apps/dev-relay/
 COPY apps/verifier/package.json apps/verifier/
 COPY apps/web/package.json apps/web/
