@@ -11,7 +11,7 @@ test("the landing page loads without errors or WebAssembly", async ({ page }) =>
     if (request.resourceType() === "script") scripts.push(request.url());
   });
   await page.goto("/");
-  await expect(page).toHaveTitle("Cashlet BND · Bitcoin Cash and Nostr identity");
+  await expect(page).toHaveTitle("BND · Bitcoin Cash and Nostr identity");
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Verified by anyone.");
   expect(errors).toEqual([]);
   // The demo and verifier code, which carries the WebAssembly crypto, loads only when needed.
