@@ -1,15 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import logo from "../assets/logo.png";
-import { REPO_URL, SPEC_URL } from "../links";
+import { NPM_URL, REPO_URL, SEPTEM_URL, SPEC_URL } from "../links";
 import { ThemeToggle } from "./ThemeToggle";
 
 function Brand() {
   return (
-    <Link to="/" className="brand" aria-label="Cashlet home">
+    <Link to="/" className="brand" aria-label="BND home">
       <img src={logo} alt="" width={28} height={28} />
-      <span className="brand-name">Cashlet</span>
-      <span className="brand-product">BND</span>
+      <span className="brand-name">BND</span>
+      <span className="brand-product">Open protocol</span>
     </Link>
   );
 }
@@ -29,6 +29,9 @@ export function Header() {
           <a href={SPEC_URL} target="_blank" rel="noopener noreferrer">
             Spec
           </a>
+          <a className="nav-optional" href={NPM_URL} target="_blank" rel="noopener noreferrer">
+            npm
+          </a>
           <a href={REPO_URL} target="_blank" rel="noopener noreferrer">
             GitHub
           </a>
@@ -45,8 +48,14 @@ export function Footer() {
       <div className="footer-inner">
         <div className="footer-brand">
           <img src={logo} alt="" width={20} height={20} />
-          <span>Cashlet</span>
-          <span className="muted">© 2026 Cashlet Labs · Open source · MIT</span>
+          <span>BND</span>
+          <span className="muted">
+            An open protocol by{" "}
+            <a href={SEPTEM_URL} target="_blank" rel="noopener noreferrer">
+              Septem Labs
+            </a>{" "}
+            · MIT
+          </span>
         </div>
         <div className="footer-links">
           <Link to="/demo">Demo</Link>

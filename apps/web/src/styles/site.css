@@ -411,7 +411,76 @@ p.verified {
   margin-top: 0.4rem;
 }
 
+/* Landing: the standards strip, the install block and links inside cards. */
+.standards {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  list-style: none;
+  margin: 0 0 48px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.standards li {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--soft);
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+.standards li.standards-label {
+  border: 0;
+  padding-left: 0;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.card-link {
+  display: inline-block;
+  margin-top: 0.85rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.install {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 28px;
+  align-items: center;
+  margin-top: 16px;
+  padding: 24px;
+}
+.install h3 {
+  margin-top: 0;
+}
+.install p {
+  color: var(--soft);
+}
+.code-block {
+  margin: 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  line-height: 1.65;
+  color: var(--text);
+}
+.code-block code {
+  font-size: 0.85rem;
+}
+
 @media (max-width: 760px) {
+  .install {
+    grid-template-columns: 1fr;
+  }
+  .brand-product,
+  .nav-optional {
+    display: none;
+  }
   main section.hero {
     flex-direction: column;
     align-items: flex-start;

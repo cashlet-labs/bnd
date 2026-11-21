@@ -1,6 +1,7 @@
 /*
- * Cashlet design tokens. Dark is the Cashlet extension and landing palette. Light uses
- * the same hues, darkened where needed so text and accents keep their contrast on white.
+ * BND design tokens, on the Septem Labs brand: the shared ink and paper neutrals, Septem
+ * Blue, and Bitcoin Cash green (#0AC18E) as BND's accent. Light uses the same hues,
+ * darkened where needed so text and accents keep their contrast on white.
  * Without a saved choice the page follows the system setting.
  */
 :root,
@@ -21,26 +22,26 @@
   --soft: #b7c5ce;
   --muted: #8293a2;
 
-  --green: #39e6a0;
-  --green2: #10bf83;
-  --blue: #5c9dff;
+  --green: #1fd19c;
+  --green2: #0ac18e;
+  --blue: #6b9bff;
   --red: #f87171;
   --amber: #fbbf24;
 
-  --primary-from: #44edab;
-  --primary-to: #14c987;
-  --primary-border: #42efab;
+  --primary-from: #2fdcaa;
+  --primary-to: #0ac18e;
+  --primary-border: #2fdcaa;
   --primary-text: #04291e;
-  --primary-shadow: #1bd8911a;
+  --primary-shadow: #0ac18e1f;
   --secondary-bg: #17232d;
   --secondary-text: #c4d0d7;
   --danger-bg: #7f1d1d;
   --danger-border: #991b1b;
   --danger-text: #fca5a5;
 
-  --tint-green: rgba(57, 230, 160, 0.1);
-  --tint-green-line: rgba(57, 230, 160, 0.25);
-  --tint-blue: rgba(92, 157, 255, 0.12);
+  --tint-green: rgba(10, 193, 142, 0.12);
+  --tint-green-line: rgba(10, 193, 142, 0.3);
+  --tint-blue: rgba(107, 155, 255, 0.12);
   --tint-amber: rgba(251, 191, 36, 0.12);
   --tint-amber-line: rgba(251, 191, 36, 0.35);
   --tint-red: rgba(248, 113, 113, 0.12);
@@ -60,26 +61,26 @@
   --soft: #33434f;
   --muted: #5b6b78;
 
-  --green: #0a8f5f;
-  --green2: #07784f;
-  --blue: #2563c9;
+  --green: #078a65;
+  --green2: #067556;
+  --blue: #1d4fd8;
   --red: #c62828;
   --amber: #a16207;
 
-  --primary-from: #44edab;
-  --primary-to: #14c987;
-  --primary-border: #12b67a;
+  --primary-from: #2fdcaa;
+  --primary-to: #0ac18e;
+  --primary-border: #089e74;
   --primary-text: #04291e;
-  --primary-shadow: #1bd8912e;
+  --primary-shadow: #0ac18e2e;
   --secondary-bg: #eef3f6;
   --secondary-text: #1f2d37;
   --danger-bg: #fdecec;
   --danger-border: #f3b4b4;
   --danger-text: #a51d1d;
 
-  --tint-green: rgba(10, 143, 95, 0.09);
-  --tint-green-line: rgba(10, 143, 95, 0.3);
-  --tint-blue: rgba(37, 99, 201, 0.09);
+  --tint-green: rgba(7, 138, 101, 0.09);
+  --tint-green-line: rgba(7, 138, 101, 0.3);
+  --tint-blue: rgba(29, 79, 216, 0.09);
   --tint-amber: rgba(161, 98, 7, 0.1);
   --tint-amber-line: rgba(161, 98, 7, 0.35);
   --tint-red: rgba(198, 40, 40, 0.08);
