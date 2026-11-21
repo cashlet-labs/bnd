@@ -25,4 +25,5 @@ signers and relays.
 
 ## Supported versions
 
-The project is a draft and only the latest release receives fixes.
+Only the latest release receives fixes. The specification is a draft, so a fix
+may also change the protocol.
