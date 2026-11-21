@@ -54,9 +54,14 @@ puts those together with the rest of the system.
   can tell owners and thieves apart.
 - **Withheld bindings.** A verifier with no pin, reaching only relays from which
   a thief wiped the real binding, cannot see the fork and accepts the thief's
-  chain. Pins, enforcing relays and later anchoring (Phase 11) narrow this.
+  chain. Pins and enforcing relays narrow this.
 - **Disputes are not settled automatically.** A disputed identity is unusable
-  until the owner publishes a successor approved by two keys.
+  until the owner publishes a successor approved by two keys. Planned: anchors
+  in Bitcoin Cash transactions that settle a dispute when every branch is
+  anchored, in favour of the earliest. Letting an anchored branch beat an
+  unanchored one is deliberately ruled out, because it would let a thief holding
+  only the Nostr key win against an owner who never anchored
+  ([BND-1 section 9.6](../spec/BND-1.md#96-resolving-an-identity)).
 - **Lost key without a recovery key.** It cannot be replaced; the user starts a
   new identity.
 - **A recovery key from the same mnemonic** protects against one lost key, not

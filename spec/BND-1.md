@@ -624,9 +624,15 @@ key, or that have a step naming it, in their record:
 A Nostr key's first binding is its only root. Every later binding for it must be
 a successor; a second root is a dispute, not a replacement.
 
-Anchoring on BCH (Phase 11) will add one rule: in a dispute, a chain whose
-bindings are anchored in BCH transactions wins over one that is not. Until
-then, disputes are not settled automatically.
+Disputes are not settled automatically. A later version may settle some of
+them with anchors: Bitcoin Cash transactions that prove a binding existed by a
+given block. An anchor would commit to the binding's signed event, not only to
+its binding ID, because the ID can be computed from public keys alone and could
+otherwise be anchored before the binding was signed. Anchors would settle a
+dispute only when every branch is anchored, in favour of the branch anchored
+first. A rule that let an anchored branch win over an unanchored one would let
+a thief holding only the Nostr key take over an owner who never anchored, by
+anchoring a second root first.
 
 ### 9.7 Pinning
 
@@ -662,8 +668,9 @@ Remaining limits:
 
 - A verifier that has no pin for an identity, and asks only relays from which
   a thief holding the Nostr key wiped the real binding, cannot see the fork and
-  accepts the thief's chain. Pins (9.7), relays that enforce succession (9.8)
-  and, later, anchoring close this.
+  accepts the thief's chain. Pins (9.7) and relays that enforce succession
+  (9.8) narrow this. Anchors would not: the verifier never sees the real chain,
+  so it cannot look for its anchors.
 - `createdAt` is chosen by the signer. A thief can backdate a root. Resolution
   does not use time to pick between chains, so backdating gains nothing beyond
   the dispute.

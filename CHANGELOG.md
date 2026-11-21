@@ -3,6 +3,14 @@
 Releases of this repository. Package versions are listed with each release.
 The protocol is a draft; each release names the draft it implements.
 
+## Unreleased
+
+- Specification: section 9.6 now describes how anchors would settle disputes
+  safely (only when every branch is anchored, earliest first, committing to the
+  signed event), replacing a rule that would have let a thief holding only the
+  Nostr key win. Anchoring stays planned, not implemented. Section 10 and the
+  threat model no longer claim anchors would close the withheld-binding attack.
+
 ## 0.4.0 (2026-11-20)
 
 Package: `@cashlet-labs/bnd` 0.4.0, the first release on npm. Draft: BND-1
