@@ -5,6 +5,11 @@ The protocol is a draft; each release names the draft it implements.
 
 ## Unreleased
 
+- New: `apps/uni-resolver-driver`, a `did:bnd` driver for the DIF Universal
+  Resolver (`GET /1.0/identifiers/{did}`), as a Docker image. Not part of the
+  npm package.
+- The hosted demo's Docker and nginx files are no longer in the repository.
+
 - Specification: section 9.6 now describes how anchors would settle disputes
   safely (only when every branch is anchored, earliest first, committing to the
   signed event), replacing a rule that would have let a thief holding only the

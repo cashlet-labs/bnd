@@ -25,15 +25,16 @@ using it.
 
 ## Reference implementation and examples
 
-| Path             | What it is                                                                     | Docs                                              |
-| ---------------- | ------------------------------------------------------------------------------ | ------------------------------------------------- |
-| `packages/bnd`   | `@cashlet-labs/bnd`, the library: one package with the entry points below.     | [README](../packages/bnd/README.md)               |
-| `src/core`       | `@cashlet-labs/bnd`: records, proofs, events, succession, login. No I/O.       |                                                   |
-| `src/nostr`      | `@cashlet-labs/bnd/nostr`: publish, discover, check a binding is current.      |                                                   |
-| `src/did`        | `@cashlet-labs/bnd/did`: `did:bnd` resolution, pay by identity, `bnd-resolve`. |                                                   |
-| `apps/web`       | Example: the demo page.                                                        | [Demo](demo.md), [wallets](wallet-connections.md) |
-| `apps/verifier`  | Example: a login service and public DID resolver.                              | [Demo](demo.md#configuration)                     |
-| `apps/dev-relay` | Example: an in-memory relay that enforces succession.                          | [Demo](demo.md)                                   |
+| Path                       | What it is                                                                     | Docs                                              |
+| -------------------------- | ------------------------------------------------------------------------------ | ------------------------------------------------- |
+| `packages/bnd`             | `@cashlet-labs/bnd`, the library: one package with the entry points below.     | [README](../packages/bnd/README.md)               |
+| `src/core`                 | `@cashlet-labs/bnd`: records, proofs, events, succession, login. No I/O.       |                                                   |
+| `src/nostr`                | `@cashlet-labs/bnd/nostr`: publish, discover, check a binding is current.      |                                                   |
+| `src/did`                  | `@cashlet-labs/bnd/did`: `did:bnd` resolution, pay by identity, `bnd-resolve`. |                                                   |
+| `apps/web`                 | Example: the demo page.                                                        | [Demo](demo.md), [wallets](wallet-connections.md) |
+| `apps/verifier`            | Example: a login service and public DID resolver.                              | [Demo](demo.md#configuration)                     |
+| `apps/dev-relay`           | Example: an in-memory relay that enforces succession.                          | [Demo](demo.md)                                   |
+| `apps/uni-resolver-driver` | A `did:bnd` driver for the DIF Universal Resolver.                             | [README](../apps/uni-resolver-driver/README.md)   |
 
 `core` never imports `nostr` or `did`, and `nostr` never imports `did`; a lint
 rule enforces it. An application that only verifies bindings bundles only the
