@@ -16,7 +16,6 @@
     "apps/*/src",
     "apps/*/test",
     "test",
-    "deploy/**/*.ts",
     "*.config.ts"
   ],
   "exclude": ["apps/web"]

@@ -1,6 +1,6 @@
 /**
  * Security headers for the built page, shared by `vite preview` (vite.config.ts)
- * and the deployed nginx (deploy/web/write-nginx-headers.ts), so both serve the
+ * and the deployed nginx, so both serve the
  * same policy.
  *
  * Scripts, styles, fonts and images come only from the page itself (images also

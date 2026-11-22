@@ -1,8 +1,0 @@
-# Local testing: the page on http://127.0.0.1:8088 without Traefik.
-
-services:
-  web:
-    ports: ["127.0.0.1:8088:8080"]
-  verifier:
-    environment:
-      PUBLIC_URL: http://127.0.0.1:8088
