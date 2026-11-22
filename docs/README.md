@@ -34,7 +34,6 @@ using it.
 | `apps/web`       | Example: the demo page.                                                        | [Demo](demo.md), [wallets](wallet-connections.md) |
 | `apps/verifier`  | Example: a login service and public DID resolver.                              | [Demo](demo.md#configuration)                     |
 | `apps/dev-relay` | Example: an in-memory relay that enforces succession.                          | [Demo](demo.md)                                   |
-| `deploy/`        | Hosting the examples with Docker.                                              | [Deploy](deploy.md)                               |
 
 `core` never imports `nostr` or `did`, and `nostr` never imports `did`; a lint
 rule enforces it. An application that only verifies bindings bundles only the

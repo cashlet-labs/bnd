@@ -10,10 +10,8 @@ playwright-report/
 test-results/
 
 # Deployment: the VPS scripts and their settings stay on this machine.
-deploy/deploy.env
-deploy/deploy.env.example
-deploy/scripts/*
-!deploy/scripts/test-deploy.sh
+# Hosting files for the demo site stay on this machine.
+deploy/
 vps-deploy/
 
 # Local notes and plans, never committed.

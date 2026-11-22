@@ -160,7 +160,7 @@ audience and the page refuses challenges for other sites.
 ## Page security
 
 The built page is served with this policy (the hosted demo uses the same
-headers; see [deploy.md](deploy.md)):
+headers):
 
 ```text
 default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self';

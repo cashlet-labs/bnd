@@ -1,0 +1,18 @@
+{
+  "name": "@cashlet-labs/uni-resolver-driver",
+  "version": "0.1.0",
+  "private": true,
+  "description": "did:bnd driver for the DIF Universal Resolver",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "esbuild src/cli.ts --bundle --platform=node --target=node22 --format=esm --outfile=dist/driver.mjs --legal-comments=none",
+    "start": "node dist/driver.mjs"
+  },
+  "dependencies": {
+    "@cashlet-labs/bnd": "*"
+  }
+}

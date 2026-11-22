@@ -27,6 +27,7 @@ export default defineConfig({
             "packages/bnd/test/**/*.test.ts",
             "apps/dev-relay/test/**/*.test.ts",
             "apps/verifier/test/**/*.test.ts",
+            "apps/uni-resolver-driver/test/**/*.test.ts",
             "test/**/*.test.ts",
           ],
           environment: "node",
