@@ -14,6 +14,8 @@ the binding, BND-1 defines login with both keys, key rotation and recovery with
 two of three keys, a DID that survives rotation (`did:bnd`), and paying an
 identity at its current, verified address.
 
+![Bind, publish, discover, verify](docs/assets/bnd-flow.png)
+
 Status: release 0.4.0 on npm. The specification (BND-1, did:bnd 0.1) is a
 draft and may change before version 1.
 
