@@ -18,6 +18,10 @@ verifier needs only the event and the public keys inside it.
 
 ## The pieces
 
+![BND architecture: apps, the library and the networks](assets/bnd-architecture.png)
+
+![Paying a friend by their npub](assets/bnd-pay-by-npub.png)
+
 ```mermaid
 flowchart LR
   subgraph User
