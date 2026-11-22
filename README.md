@@ -50,6 +50,14 @@ npm install && npm run demo   # then open http://127.0.0.1:4173
 - [Threat model](docs/threat-model.md)
 - [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md) · [Changelog](CHANGELOG.md)
 
+## Support BND
+
+BND is free and open. Donations in BCH or CashTokens keep the relays, the DID
+resolver and the demo running:
+`bitcoincash:zplfhfkwgpc4ud8k99x97wz689tn0xm5psj0wx2tkt`
+
+![Support BND](docs/assets/support-bnd.png)
+
 ## Licence
 
 Code under [MIT](LICENSE). Specification text under
