@@ -7,6 +7,8 @@ verify that one person controls both.
 [Live demo](https://bnd.septemlabs.com) · [Documentation](docs/README.md) ·
 [npm](https://www.npmjs.com/package/@cashlet-labs/bnd)
 
+[![Support BND: bitcoincash:zplfhfkwgpc4ud8k99x97wz689tn0xm5psj0wx2tkt](docs/assets/support-bnd.png)](#support-bnd)
+
 Each key signs a statement naming the other, and the result is published as an
 ordinary Nostr event. Any application can find it on relays and verify it
 offline: no identity provider, account, fee or on-chain transaction. On top of
